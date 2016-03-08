@@ -19,7 +19,7 @@
             </div>
         </div>
                 
-    <div class="row">
+    <div class="row" style="margin-bottom: 40px;">
         <div class="col-md-5" style="margin-right:10%;">               
 
 	<?php
@@ -43,11 +43,13 @@
 	echo $this->Form->input('type',array('div'=>false,'error'=>false,'type'=>'text', 'before' => '<div class="form-group">', 'after' => '</div>', 'class'=>'validate[required] form-control'));
 		echo $this->Form->input('flavor',array('div'=>false,'error'=>false,'type'=>'text', 'before' => '<div class="form-group">', 'after' => '</div>', 'class'=>'validate[required] form-control'));
 		echo $this->Form->input('label',array('div'=>false,'error'=>false,'type'=>'text', 'before' => '<div class="form-group">', 'after' => '</div>', 'class'=>'validate[required] form-control'));
-		echo $this->Form->input('image',array('div'=>false,'error'=>false,'type'=>'file', 'before' => '<div class="form-group">', 'after' => '</div>', 'class'=>'validate[required] form-control'));
-		echo $this->Html->image('product/home/'.$this->request->data['Product']['image']);
+		echo $this->Form->input('image',array('div'=>false,'error'=>false,'type'=>'file', 'before' => '<div class="form-group">', 'after' => '</div>', 'class'=>'validate[required] form-control'));	
 		//echo $this->Form->input('edit_image',array('div'=>false,'error'=>false,'type'=>'hidden','value'=>$this->request->data['Product']['image']));
-		?>
+		?>    
+		<?php echo $this->Html->image('product/small/'.$this->request->data['Product']['image']);?>
+ 
     </div>
+
 </div>
 <div class="row">
         <div class="col-md-12">

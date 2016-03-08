@@ -48,6 +48,7 @@ class AppController extends Controller {
                 'controller' => 'users',
                 'action' => 'login'
             ),
+			'authError' => "you can't access the private section of this site",
             'authenticate' => array(
                 'Form' => array(
                     'passwordHasher' => 'Blowfish'
@@ -58,20 +59,26 @@ class AppController extends Controller {
     );
 
     public function beforeFilter() {
-       $this->Auth->allow('add','edit','index', 'view');
+       $this->Auth->allow('index');
     }
 	
 	public function isAuthorized($user) {
   	   // Admin can access every action
-		if (isset($user['role']) && $user['role'] === 'admin') {
-			return true;
-		}
-		
-		if (isset($user['role']) && $user['role'] === 'author') {
+		if ((isset($user['role']) && $user['role'] === 'admin') || (isset($user['role']) && $user['role'] === 'author')) {
 			return true;
 		}
 		// Default deny
 		return false;
 	}
 	
+	public function isDeny($user){
+		if (isset($user['role']) && $user['role'] === 'author') {
+			return true;
+		}
+		return false;
+	}
+	
+	public function isOwnedBy($post, $user) {
+    	return $this->field('id', array('id' => $post, 'user_id' => $user)) !== false;
+	}
 }
