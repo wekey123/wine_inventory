@@ -2,6 +2,7 @@
 #################################################
 /app/Config/database.php
 /app/webroot/img/product
+/app/webroot/design
 /app/tmp
 /lib/Cake/Console/Templates/skel/tmp/
 /plugins

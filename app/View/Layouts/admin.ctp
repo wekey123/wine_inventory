@@ -29,7 +29,8 @@
 	echo $this->Html->script('bootstrap');
 	?>
     <div id="wrapper">
-        <?php echo $this->element('nav'); ?>
+   	    <?php echo $this->element('headerlogo'); ?>
+        <?php   if($this->Session->check('Auth.User')) echo $this->element('nav'); ?>
 		
         <?php echo $this->fetch('content'); ?>
     </div>

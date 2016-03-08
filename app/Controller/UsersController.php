@@ -4,10 +4,11 @@
 App::uses('AppController', 'Controller');
 
 class UsersController extends AppController {
-
+	
+	public $layout = 'admin';
     public function beforeFilter() {
         parent::beforeFilter();
-        $this->Auth->allow('logout');
+        $this->Auth->allow('login','logout');
 		
 		/*if (in_array($this->action, array('edit', 'delete'))) {
 			$user_Id = (int) $this->request->params['pass'][0];
@@ -25,14 +26,27 @@ class UsersController extends AppController {
     }
 
     public function view($id = null) {
-        $this->User->id = $id;
-        if (!$this->User->exists()) {
-            throw new NotFoundException(__('Invalid user'));
-        }
-        $this->set('user', $this->User->findById($id));
+		$user = $this->Auth->user();
+		 $this->User->id = $id;
+		if (($user['id'] == $id) || (isset($user['role']) && $user['role'] === 'admin')) {
+			if (!$this->User->exists()) {
+				throw new NotFoundException(__('Invalid user'));
+			}
+			$this->set('user', $this->User->findById($id));
+		}else{
+			$this->Flash->error($this->Auth->authError);
+			return $this->redirect( array('controller' => 'users', 'action' => 'index'));
+		}
     }
 
     public function add() {
+		//Access Check Starts
+		$user = $this->Auth->user();
+		if(parent::isDeny($user)){
+			$this->Flash->error($this->Auth->authError);
+			return $this->redirect( array('controller' => 'users', 'action' => 'index'));
+		}
+		//Access Check end
         if ($this->request->is('post')) {
             $this->User->create();
             if ($this->User->save($this->request->data)) {
@@ -46,26 +60,38 @@ class UsersController extends AppController {
     }
 
     public function edit($id = null) {
-        $this->User->id = $id;
-        if (!$this->User->exists()) {
-            throw new NotFoundException(__('Invalid user'));
-        }
-        if ($this->request->is('post') || $this->request->is('put')) {
-            if ($this->User->save($this->request->data)) {
-                $this->Flash->success(__('The user has been saved'));
-                return $this->redirect(array('action' => 'index'));
-            }
-            $this->Flash->error(
-                __('The user could not be saved. Please, try again.')
-            );
-        } else {
-            $this->request->data = $this->User->findById($id);
-            unset($this->request->data['User']['password']);
-        }
+        $user = $this->Auth->user();
+		$this->User->id = $id;
+		if (($user['id'] == $id) || (isset($user['role']) && $user['role'] === 'admin')) {
+			if (!$this->User->exists()) {
+				throw new NotFoundException(__('Invalid user'));
+			}
+			if ($this->request->is('post') || $this->request->is('put')) {
+				if ($this->User->save($this->request->data)) {
+					$this->Flash->success(__('The user has been saved'));
+					return $this->redirect(array('action' => 'index'));
+				}
+				$this->Flash->error(
+					__('The user could not be saved. Please, try again.')
+				);
+			} else {
+				$this->request->data = $this->User->findById($id);
+				unset($this->request->data['User']['password']);
+			}
+		}else{
+			$this->Flash->error($this->Auth->authError);
+			return $this->redirect( array('controller' => 'users', 'action' => 'index'));
+		}
     }
 
     public function delete($id = null) {
-		
+		//Access Check Starts
+		$user = $this->Auth->user();
+		if(parent::isDeny($user)){
+			$this->Flash->error($this->Auth->authError);
+			return $this->redirect( array('controller' => 'users', 'action' => 'index'));
+		}
+		//Access Check end
         $this->request->allowMethod('post');
 
         $this->User->id = $id;
@@ -84,12 +110,12 @@ class UsersController extends AppController {
 	public function login() {
 		if ($this->request->is('post')) {
 			if ($this->Auth->login()) {
-				$user = $this->Auth->user();
+				/*$user = $this->Auth->user();
 				if (isset($user['role']) && $user['role'] === 'author') {
 					$this->Auth->loginRedirect = array('controller' => 'users','action' => 'view',$user['id']);
 				}else{
 					$this->Auth->loginRedirect = array('controller' => 'users','action' => 'index');
-				}
+				}*/
 				return $this->redirect($this->Auth->redirectUrl());
 			}
 			$this->Flash->error('Invalid username or password, try again');
@@ -100,5 +126,6 @@ class UsersController extends AppController {
 	public function logout() {
 		return $this->redirect($this->Auth->logout());
 	}
+	
 
 }

@@ -16,13 +16,18 @@ class ProductsController extends AppController {
  * @var array
  */
  	public $uses = array('Product','Vary','Category');
-	public $components = array('Paginator', 'Flash', 'Session' ,'Image');
+	public $components = array('Paginator', 'Flash', 'Session' ,'Image','Auth');
 	public $layout = 'admin';
 /**
  * index method
  *
  * @return void
  */
+
+     public function beforeFilter() {
+        $this->Auth->deny('index');
+    }
+	
 	public function index() {
 		$this->Product->recursive = 0;
 		$this->set('products', $this->Paginator->paginate());
@@ -36,6 +41,7 @@ class ProductsController extends AppController {
  * @return void
  */
 	public function view($id = null) {
+
 		if (!$this->Product->exists($id)) {
 			throw new NotFoundException(__('Invalid product'));
 		}
@@ -49,6 +55,13 @@ class ProductsController extends AppController {
  * @return void
  */
 	public function add() {
+		//Access Check Starts
+		$user = $this->Auth->user();
+		if(parent::isDeny($user)){
+			$this->Flash->error($this->Auth->authError);
+			return $this->redirect( array('controller' => 'products', 'action' => 'index'));
+		}
+		//Access Check end
 		if ($this->request->is('post')) {
 			//echo '<pre>';print_r($this->request->data);exit;
 			if($this->request->data['Product']['image']['name'] != ''){
@@ -97,6 +110,14 @@ class ProductsController extends AppController {
  * @return void
  */
 	public function edit($id = null) {
+		//Access Check Starts
+		$user = $this->Auth->user();
+		if(parent::isDeny($user)){
+			$this->Flash->error($this->Auth->authError);
+			return $this->redirect( array('controller' => 'products', 'action' => 'index'));
+		}
+		//Access Check end
+		
 		if (!$this->Product->exists($id)) {
 			throw new NotFoundException(__('Invalid product'));
 		}
@@ -143,6 +164,14 @@ class ProductsController extends AppController {
  * @return void
  */
 	public function delete($id = null) {
+		//Access Check Starts
+		$user = $this->Auth->user();
+		if(parent::isDeny($user)){
+			$this->Flash->error($this->Auth->authError);
+			return $this->redirect( array('controller' => 'products', 'action' => 'index'));
+		}
+		//Access Check end
+
 		$this->Product->id = $id;
 		if (!$this->Product->exists()) {
 			throw new NotFoundException(__('Invalid product'));
