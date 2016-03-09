@@ -23,6 +23,10 @@ class DashboardController extends AppController {
  *
  * @return void
  */
+   public function beforeFilter() {
+        $this->Auth->deny('index');
+    }
+
 	public function index() {
 		
 	}
