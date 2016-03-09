@@ -60,7 +60,7 @@
                 <a id="test">Add More Varients</a>
                 <?php $varys= $this->request->data['Vary'];
 				$i=0;
-						foreach($varys as $vary){
+				foreach($varys as $vary){
 				?>
                  <div class="form-group varHead"><label>Varient Name</label><label>SKU</label><label>BarCode</label><label>Price</label></div>
                  <div class="form-group varHead">
@@ -99,19 +99,5 @@
 	 $('.testremove').on('click',function(){alert($(this).attr('rel'));
 		 $("#TextBoxDiv" + $(this).attr('rel')).remove();
 	 });
-	  $("#getVarientValue").click(function () {
-			 var arr = [];
-				var price,sku,barcode,Varoptions,newDiv;
-				for(i=1; i<counter; i++){
-					varient = $('#varient' + i).val();
-					price = $('#price' + i).val();
-					sku=  $('#sku' + i).val();
-					barcode = $('#barcode' + i).val();
-					newDiv = $(document.createElement('div')).attr("id", 'ProductVarientPrice' + i);
-					newDiv.after().html('<input type="hidden" name="data[Vary][val]['+i+'][price]" value="'+price+'"><input type="hidden" name="data[Vary][val]['+i+'][sku]" value="'+sku+'"><input type="hidden" name="data[Vary][val]['+i+'][barcode]" value="'+barcode+'"><input type="hidden" name="data[Vary][val]['+i+'][variant]" value="'+varient+'">');
-					newDiv.appendTo("#varient-wrapper");
-				}
-				//alert($('#varient-wrapper').html());
-				//return false;
-		});
+
 </script>

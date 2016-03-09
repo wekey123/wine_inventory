@@ -57,7 +57,6 @@ class ProductsController extends AppController {
 	public function add() {
 		//Access Check Starts
 		$user = $this->Auth->user();
-		debug($user);
 		if(parent::isDeny($user)){
 			$this->Flash->error($this->Auth->authError);
 			return $this->redirect( array('controller' => 'products', 'action' => 'index'));
@@ -75,7 +74,6 @@ class ProductsController extends AppController {
 				$product_id = $this->Product->getLastInsertId();
 				if(isset($this->request->data['Vary']['val'])){
 				  foreach($this->request->data['Vary']['val']  as  $value){					  
-					$this->request->data['Vary']['user_id'] = $user['id'];
 					$this->request->data['Vary']['product_id'] = $product_id; 
 					$this->request->data['Vary']['variant'] = $value['variant'];
 					$this->request->data['Vary']['type'] = 'product';
@@ -127,8 +125,10 @@ class ProductsController extends AppController {
 			throw new NotFoundException(__('Invalid product'));
 		}
 		if ($this->request->is(array('post', 'put'))) {
+			
+			$this->request->data['Product']['user_id'] = $user['id'];
 			if($this->request->data['Product']['image']['name'] != ''){
-					$this->request->data['Product']['image'] = $this->request->data['Product']['image']!='' ? $this->Image->upload_image_and_thumbnail($this->request->data['Product']['image'],573,380,180,110, "product") : '';
+				$this->request->data['Product']['image'] = $this->request->data['Product']['image']!='' ? $this->Image->upload_image_and_thumbnail($this->request->data['Product']['image'],573,380,180,110, "product") : '';
 			}else{
 			$this->request->data['Product']['image']=$this->request->data['Product']['image_edit'];
 			}
@@ -137,7 +137,6 @@ class ProductsController extends AppController {
 				  foreach($this->request->data['Vary']['val']  as  $value){
 					if($value['id'])
 					$this->request->data['Vary']['id'] = $value['id'];    
-					$this->request->data['Vary']['user_id'] = $user['id'];
 					$this->request->data['Vary']['product_id'] = $id;  
 					$this->request->data['Vary']['variant'] = $value['variant'];
 					$this->request->data['Vary']['price'] = $value['price'];

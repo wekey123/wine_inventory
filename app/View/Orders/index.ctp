@@ -2,11 +2,12 @@
    <div class="container">
      <div class="row">
         <div class="col-md-12">
+           <?php echo $this->Html->link('Order Products', array('action' => 'add'),array('class'=>'btn btn-primary','style'=>'margin-bottom:20px; float:right')); ?>
             <h4 class="page-head-line">Order Lists</h4>
         </div>
         <div class="col-md-12">
-         <a href="orders/add" class="btn btn-primary" style="margin-bottom:20px; float:right">Order Products</a>
-          </div>
+         <h5 style="color:#F0677C; float: left;"><?php echo $this->Flash->render(); ?></h5>
+        </div>
      </div>
  	<div class="row">	
  	 <div class="col-md-12">
@@ -21,11 +22,11 @@
 	<thead>
 	<tr>
 			<th><?php echo $this->Paginator->sort('id'); ?></th>
-			<th><?php echo $this->Paginator->sort('user_id'); ?></th>
-			<th><?php echo $this->Paginator->sort('product_id'); ?></th>
-			<th><?php echo $this->Paginator->sort('po_no'); ?></th>
+			<?php /*?><th><?php echo $this->Paginator->sort('product_id'); ?></th><?php */?>
+			<th><?php echo $this->Paginator->sort('po_no', 'Purchase Order Number'); ?></th>
 			<th><?php echo $this->Paginator->sort('total_quantity'); ?></th>
 			<th><?php echo $this->Paginator->sort('total_price'); ?></th>
+            <th><?php echo $this->Paginator->sort('user_id', 'Created By'); ?></th>
 			<th><?php echo $this->Paginator->sort('created'); ?></th>
 			<th><?php echo $this->Paginator->sort('modified'); ?></th>
 			<th class="actions"><?php echo __('Actions'); ?></th>
@@ -35,13 +36,13 @@
 	<?php $i=1;foreach ($orders as $order): ?>
 	<tr>
 		<td><?php echo h($i); ?>&nbsp;</td>
-		<td><?php echo h($order['Order']['user_id']); ?>&nbsp;</td>
-		<td>
+		<?php /*?><td>
 			<?php echo $this->Html->link($order['Product']['title'], array('controller' => 'products', 'action' => 'view', $order['Product']['id'])); ?>
-		</td>
+		</td><?php */?>
 		<td><?php echo h($order['Order']['po_no']); ?>&nbsp;</td>
 		<td><?php echo h($order[0]['total_quantity']); ?>&nbsp;</td>
 		<td><?php echo h($order[0]['total_price']); ?>&nbsp;</td>
+        <td><?php echo h($order['Order']['user_id']); ?>&nbsp;</td>
 		<td><?php echo h($order['Order']['created']); ?>&nbsp;</td>
 		<td><?php echo h($order['Order']['modified']); ?>&nbsp;</td>
 		<td class="actions">

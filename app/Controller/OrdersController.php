@@ -24,6 +24,10 @@ class OrdersController extends AppController {
  *
  * @return void
  */
+    public function beforeFilter() {
+        $this->Auth->deny('index');
+    }
+	
 	public function index() {
 		$this->Paginator->settings = array('fields' => array(
         'SUM(total_quantity) as total_quantity',
@@ -80,15 +84,16 @@ class OrdersController extends AppController {
  * @return void
  */
 	public function add() {
+		$user = $this->Auth->user();
 		if ($this->request->is('post')) {
-			//echo '<pre>';print_r($this->request->data);exit;
-			$po='ORD'.rand();
+			$po='ORD'.rand('111111','999999');
 			if(isset($this->request->data['Vary'])){
 				  foreach($this->request->data['Vary']  as  $value){
 					 if($value['total_quantity']==true){
 						$this->Order->create();
 						$this->request->data['Order']['total_quantity']=$value['total_quantity'];
 						$this->request->data['Order']['total_price']=$value['total_price'];
+						$this->request->data['Order']['user_id']=$user['id'];
 						$this->request->data['Order']['product_id']=$value['product_id'];
 						$this->request->data['Order']['po_no']=$po;
 						if ($this->Order->save($this->request->data)) {
