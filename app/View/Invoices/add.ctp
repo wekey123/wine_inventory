@@ -1,35 +1,112 @@
-<div class="invoices form">
-<?php echo $this->Form->create('Invoice'); ?>
-	<fieldset>
-		<legend><?php echo __('Add Invoice'); ?></legend>
-	<?php
-		echo $this->Form->input('user_id');
-		echo $this->Form->input('product_id');
-		echo $this->Form->input('po_no');
-		echo $this->Form->input('invoice_no');
-		echo $this->Form->input('invoice_date');
-		echo $this->Form->input('vendor_name');
-		echo $this->Form->input('vendor_address');
-		echo $this->Form->input('customer_id');
-		echo $this->Form->input('shipping_method');
-		echo $this->Form->input('payment_terms');
-		echo $this->Form->input('estimated_shipping_date');
-		echo $this->Form->input('total_quantity');
-		echo $this->Form->input('total_price');
-	?>
-	</fieldset>
-<?php echo $this->Form->end(__('Submit')); ?>
-</div>
-<div class="actions">
-	<h3><?php echo __('Actions'); ?></h3>
-	<ul>
+   <?php echo $this->Html->css('jquery-ui.css');echo $this->Html->script('jquery-1.10.2');echo $this->Html->script('jquery-ui'); ?>
+  <script>
+  $(function() {
+    var availableTags = <?php echo json_encode($orderlist); ?>;
+    $( "#tags" ).autocomplete({
+      source: availableTags,
+	  select: function (event, ui) {
+		  $('#invoiceForm').html('');
+			$.ajax({
+			  type: 'POST',
+			  url: '/invoices/ajax',  //whatever any url
+			  data: {label: ui.item.label},
+			  success: function(message) {
+				  $('#invoiceForm').append(message);
+			   }
+		   });
 
-		<li><?php echo $this->Html->link(__('List Invoices'), array('action' => 'index')); ?></li>
-		<li><?php echo $this->Html->link(__('List Orders'), array('controller' => 'orders', 'action' => 'index')); ?> </li>
-		<li><?php echo $this->Html->link(__('New Order'), array('controller' => 'orders', 'action' => 'add')); ?> </li>
-		<li><?php echo $this->Html->link(__('List Varies'), array('controller' => 'varies', 'action' => 'index')); ?> </li>
-		<li><?php echo $this->Html->link(__('New Vary'), array('controller' => 'varies', 'action' => 'add')); ?> </li>
-		<li><?php echo $this->Html->link(__('List Payments'), array('controller' => 'payments', 'action' => 'index')); ?> </li>
-		<li><?php echo $this->Html->link(__('New Payment'), array('controller' => 'payments', 'action' => 'add')); ?> </li>
-	</ul>
+	}
+    });
+	
+	$('.datepicker').datepicker({
+    format: 'mm/dd/yyyy',
+    startDate: '-3d'
+});
+  });
+  
+  
+  var total_price=0;var total_quantity=0;
+  $('#submitButton').click( function() {
+	  $('#invoiceSaveID').find("input[type='text']").each(function() {
+		fields[this.name] = $(this).val();
+		total_price += $(this).val() * parseFloat($(this).next().val());
+		total_quantity += parseFloat($(this).val());
+	});
+	  $('#total_price').val(total_price);
+	$('#total_quantity').val(total_quantity);
+	$('#orderAdd').submit();
+});
+  
+  </script>
+<style>
+.varHead label{
+	width:25%;
+	margin-bottom:0px;
+}
+.varHead input[type="text"]{
+	width:15%;
+	float:left;
+	margin-right:10%;
+	margin-bottom:0px;
+}
+</style>
+<div class="content-wrapper">
+    <div class="container">
+    <?php echo $this->Form->create('Invoice',array('id'=>'invoiceAdd','type' => 'file','role'=>'form')); ?>
+      <div class="row">
+            <div class="col-md-12">
+                <h1 class="page-head-line"><?php echo __('Add Invoice'); ?> </h1>
+            </div>
+        </div>
+                
+    <div class="row">
+        <div class="col-md-5" style="margin-right:10%;">               
+
+	<?php
+		echo $this->Form->input('po_no',array('div'=>false,'error'=>false,'type'=>'text', 'before' => '<div class="form-group">', 'after' => '</div>', 'class'=>'validate[required] form-control','id'=>'tags'));
+		//echo $this->Form->input('invoice_no');
+		echo $this->Form->input('invoice_date',array('div'=>false,'error'=>false,'type'=>'text', 'before' => '<div class="form-group">', 'after' => '</div>', 'class'=>'validate[required] form-control datepicker'));
+		echo $this->Form->input('vendor_name',array('div'=>false,'error'=>false,'type'=>'text', 'before' => '<div class="form-group">', 'after' => '</div>', 'class'=>'validate[required] form-control'));
+		echo $this->Form->input('vendor_address',array('div'=>false,'error'=>false,'type'=>'textarea', 'before' => '<div class="form-group">', 'after' => '</div>', 'class'=>'validate[required] form-control'));
+		echo $this->Form->input('user_id',array('div'=>false,'error'=>false,'type'=>'hidden'));
+		echo $this->Form->input('total_price',array('div'=>false,'error'=>false,'type'=>'hidden','id'=>'total_price'));
+		echo $this->Form->input('total_quantity',array('div'=>false,'error'=>false,'type'=>'hidden','id'=>'total_quantity'));
+		
+	?>
+	</div>
+    <div class="col-md-5"> 
+   		<?php 
+			echo $this->Form->input('customer_id',array('div'=>false,'error'=>false,'type'=>'text', 'before' => '<div class="form-group">', 'after' => '</div>', 'class'=>'validate[required] form-control'));
+		echo $this->Form->input('shipping_method',array('div'=>false,'error'=>false,'type'=>'text', 'before' => '<div class="form-group">', 'after' => '</div>', 'class'=>'validate[required] form-control'));
+		echo $this->Form->input('estimated_shipping_date',array('div'=>false,'error'=>false,'type'=>'text', 'before' => '<div class="form-group">', 'after' => '</div>', 'class'=>'validate[required] form-control datepicker'));
+		echo $this->Form->input('payment_terms',array('div'=>false,'error'=>false,'type'=>'textarea', 'before' => '<div class="form-group">', 'after' => '</div>', 'class'=>'validate[required] form-control'));
+		
+		?>
+    </div>
 </div>
+
+    <div class="row">
+            <div class="col-md-12">
+                <div id="invoiceForm"></div>
+            </div>
+        </div>
+     <?php echo $this->Form->submit(__('Submit'),array('div'=>false, 'class'=>'btn btn-lg btn-success btn-block' ,'id' => 'submitButton1')); echo $this->Form->end();	?>
+</div>
+</div>
+
+<script> 
+  var total_price=0;var total_quantity=0;
+  $('#submitButton1').click( function() {alert('');
+	  $('#invoiceSaveID').find("input[type='text']").each(function() {
+		total_price += $(this).val() * parseFloat($(this).next().val());
+		total_quantity += parseFloat($(this).val());
+	});
+	  $('#total_price').val(total_price);
+	$('#total_quantity').val(total_quantity);
+	$('#invoiceAdd').submit();
+});
+  
+  </script>
+
+
+
