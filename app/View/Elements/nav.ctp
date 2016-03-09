@@ -13,7 +13,7 @@
     
 
 	<?php
-	$menus=array('Dashboard'=>array('dashboard'),'Product'=>array('products'),'User'=>array('users'));
+	$menus=array('Dashboard'=>array('dashboard'),'Product'=>array('products'),'User'=>array('users'),'Order'=>array('orders'));
 	function getPageName($name, $array){
 		foreach($array as $key => $value){
 			if(is_array($value) && in_array($name, $value))
@@ -36,7 +36,7 @@
                             <li> <?php echo $this->Html->link('Dashboard',array('controller'=>'dashboard','action' => 'index'),array('class'=>trim($menuActive)=='Dashboard'  ? 'menu-top-active' : '')); ?> </li>
                             <li> <?php echo $this->Html->link('User',array('controller'=>'users','action' => 'index'),array('class'=>trim($menuActive)=='User'  ? 'menu-top-active' : '')); ?> </li>
                              <li> <?php echo $this->Html->link('Product',array('controller'=>'products','action' => 'index'),array('class'=>trim($menuActive)=='Product'  ? 'menu-top-active' : '')); ?> </li>
-                             <li> <?php echo $this->Html->link('Orders',array('controller'=>'orders','action' => 'index'),array('class'=>trim($menuActive)=='Orders'  ? 'menu-top-active' : '')); ?> </li>
+                             <li> <?php echo $this->Html->link('Orders',array('controller'=>'orders','action' => 'index'),array('class'=>trim($menuActive)=='Order'  ? 'menu-top-active' : '')); ?> </li>
                              <li> <?php echo $this->Html->link('Invoice',array('controller'=>'invoices','action' => 'index'),array('class'=>trim($menuActive)=='Invoice'  ? 'menu-top-active' : '')); ?> </li>
                              <li> <?php echo $this->Html->link('Shipping',array('controller'=>'shipping','action' => 'index'),array('class'=>trim($menuActive)=='Shipping'  ? 'menu-top-active' : '')); ?> </li>
                              <li> <?php echo $this->Html->link('Inventory',array('controller'=>'inventory','action' => 'index'),array('class'=>trim($menuActive)=='Inventory'  ? 'menu-top-active' : '')); ?> </li>

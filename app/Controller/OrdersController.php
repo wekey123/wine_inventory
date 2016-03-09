@@ -50,19 +50,28 @@ class OrdersController extends AppController {
 		$this->Order->recursive = 2;
 		 $this->Order->bindModel(array(
             'hasMany' => array(
-                'Vary' => array('foreignKey' => 'product_id',
-                                    'conditions' => array('Vary.type' => 'order')
-                                )
+                'Vary' => array('foreignKey' => false,
+                                    'conditions' => array('Vary.type' => 'order','Vary.po_no'=>$no)
+                                ),
                             )
                 ),
             false
         );
+		
+		
 		$this->Order->unbindModel(array('belongsTo' => 'Product'));
 		if (!$this->Order->exists($id)) {
 			throw new NotFoundException(__('Invalid order'));
 		}
-		$options = array('conditions' => array('Order.po_no'=> $no));
-		$this->set('order', $this->Order->find('all', $options));
+		$options = array('fields' => array(
+        'SUM(total_quantity) as total_quantity',
+		'SUM(total_price) as total_price',
+        'po_no',
+		'user_id',
+		'created',
+		'modified'
+    ),'conditions' => array('Order.po_no'=> $no));
+		$this->set('order', $this->Order->find('first', $options));
 	}
 
 /**
@@ -86,7 +95,7 @@ class OrdersController extends AppController {
 							$i=1;
 						  foreach ($value['quantity'] as $quan){
 								$this->request->data['Vary']['product_id'] = $value['product_id'];
-								$this->request->data['Vary']['order_no'] = $po;   
+								$this->request->data['Vary']['po_no'] = $po;   
 								$this->request->data['Vary']['quantity'] = $quan;
 								$this->request->data['Vary']['variant'] = $value['variant'][$i];
 								$this->request->data['Vary']['sku'] = $value['sku'][$i];
