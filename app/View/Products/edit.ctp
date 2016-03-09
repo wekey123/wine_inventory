@@ -15,7 +15,8 @@
     <?php echo $this->Form->create('Product',array('id'=>'userAdd','type' => 'file','role'=>'form')); ?>
       <div class="row">
             <div class="col-md-12">
-                <h1 class="page-head-line"><?php echo __('Edit Product'); ?> </h1>
+            <?php echo $this->Html->link('View Product', array('action' => 'view', $this->request->data['Product']['id']),array('class'=>'btn btn-primary','style'=>'margin-bottom:20px; float:right')); ?>
+           <h1 class="page-head-line"><?php echo __('Edit Product'); ?> </h1>  
             </div>
         </div>
                 
@@ -44,7 +45,7 @@
 		echo $this->Form->input('flavor',array('div'=>false,'error'=>false,'type'=>'text', 'before' => '<div class="form-group">', 'after' => '</div>', 'class'=>'validate[required] form-control'));
 		echo $this->Form->input('label',array('div'=>false,'error'=>false,'type'=>'text', 'before' => '<div class="form-group">', 'after' => '</div>', 'class'=>'validate[required] form-control'));
 		echo $this->Form->input('image',array('div'=>false,'error'=>false,'type'=>'file', 'before' => '<div class="form-group">', 'after' => '</div>', 'class'=>'validate[required] form-control'));	
-		//echo $this->Form->input('edit_image',array('div'=>false,'error'=>false,'type'=>'hidden','value'=>$this->request->data['Product']['image']));
+		echo $this->Form->input('image_edit',array('div'=>false,'error'=>false,'type'=>'hidden','value'=>$this->request->data['Product']['image']));
 		?>    
 		<?php echo $this->Html->image('product/small/'.$this->request->data['Product']['image']);?>
  

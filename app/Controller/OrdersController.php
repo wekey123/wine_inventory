@@ -118,8 +118,8 @@ class OrdersController extends AppController {
 		}else{
 		/*$products = $this->Order->Product->find('list');
 		$this->set(compact('products'));*/
-		$options = array('conditions' => array('Product.user_id' => 0));
-		$products= $this->Product->find('all', $options);
+		//$options = array('conditions' => array('Product.user_id' => 0));
+		$products= $this->Product->find('all');
 		$this->set('products', $products);
 		}
 	}

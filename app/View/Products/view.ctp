@@ -10,6 +10,7 @@
 <div class="row">
 
        <div class="col-md-12">
+       <?php echo $this->Html->link('Edit Product', array('action' => 'edit', $product['Product']['id']),array('class'=>'btn btn-primary','style'=>'margin-bottom:20px; float:right')); ?>
             <h4 class="page-head-line">Product View</h4>
         </div>
         
@@ -24,7 +25,7 @@
         </div>
         <div class="row">
             <div class="col-md-2 heading"><?php echo __('Created By'); ?></div>
-            <div class="col-md-8"><?php  echo h($product['Product']['user_id']); ?></div>
+            <div class="col-md-8"><?php echo h($product['User']['username']); ?></div>
         </div>
         
         <div class="row">
@@ -106,8 +107,7 @@
 	<?php if (!empty($product['Vary'])): ?>
 	 <table class="table table-hover">
 	<tr>
-		<th><?php echo __('Id'); ?></th>
-		<th><?php echo __('Product Id'); ?></th>
+		<th><?php echo __('#'); ?></th>
 		<th><?php echo __('Variant'); ?></th>
 		<th><?php echo __('Sku'); ?></th>
 		<th><?php echo __('Barcode'); ?></th>
@@ -115,12 +115,11 @@
 		<th><?php echo __('Type'); ?></th>
 		<th><?php echo __('Created'); ?></th>
 		<th><?php echo __('Modified'); ?></th>
-		<th class="actions"><?php echo __('Actions'); ?></th>
+		<?php /*?><th class="actions"><?php echo __('Actions'); ?></th><?php */?>
 	</tr>
 	<?php foreach ($product['Vary'] as $vary): ?>
 		<tr>
 			<td><?php echo $vary['id']; ?></td>
-			<td><?php echo $vary['product_id']; ?></td>
 			<td><?php echo $vary['variant']; ?></td>
 			<td><?php echo $vary['sku']; ?></td>
 			<td><?php echo $vary['barcode']; ?></td>
@@ -128,11 +127,11 @@
 			<td><?php echo $vary['type']; ?></td>
 			<td><?php echo $vary['created']; ?></td>
 			<td><?php echo $vary['modified']; ?></td>
-			<td class="actions">
+			<?php /*?><td class="actions">
 				<?php echo $this->Html->link(__('View'), array('controller' => 'varies', 'action' => 'view', $vary['id'])); ?>
 				<?php echo $this->Html->link(__('Edit'), array('controller' => 'varies', 'action' => 'edit', $vary['id'])); ?>
 				<?php echo $this->Form->postLink(__('Delete'), array('controller' => 'varies', 'action' => 'delete', $vary['id']), array('confirm' => __('Are you sure you want to delete # %s?', $vary['id']))); ?>
-			</td>
+			</td><?php */?>
 		</tr>
 	<?php endforeach; ?>
 	</table>

@@ -64,7 +64,7 @@ class AppController extends Controller {
 	
 	public function isAuthorized($user) {
   	   // Admin can access every action
-		if ((isset($user['role']) && $user['role'] === 'admin') || (isset($user['role']) && $user['role'] === 'author')) {
+		if ((isset($user['role']) && $user['role'] === 'admin') || (isset($user['role']) && $user['role'] === 'staff')) {
 			return true;
 		}
 		// Default deny
@@ -72,13 +72,13 @@ class AppController extends Controller {
 	}
 	
 	public function isDeny($user){
-		if (isset($user['role']) && $user['role'] === 'author') {
+		if (isset($user['role']) && $user['role'] === 'staff') {
 			return true;
 		}
 		return false;
 	}
 	
-	public function isOwnedBy($post, $user) {
+	public function isOwnedBy($user_id) {
     	return $this->field('id', array('id' => $post, 'user_id' => $user)) !== false;
 	}
 }
