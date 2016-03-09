@@ -1,6 +1,25 @@
-<div class="invoices index">
-	<h2><?php echo __('Invoices'); ?></h2>
-	<table cellpadding="0" cellspacing="0">
+ <div class="content-wrapper">
+   <div class="container">
+     <div class="row">
+        <div class="col-md-12">
+            <h4 class="page-head-line">Invoices</h4>
+        </div>
+        <div class="col-md-12">
+        <h5 style="color:#F0677C; float: left;"><?php echo $this->Flash->render(); ?></h4>
+         <a href="invoices/add" class="btn btn-primary" style="margin-bottom:20px; float:right">Add Invoice</a>
+         </div>
+     </div>
+ 	<div class="row">	
+ 	 <div class="col-md-12">
+                     <!--    Hover Rows  -->
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                           <?php echo __('Invoices List'); ?>
+                        </div>
+                        <div class="panel-body">
+                            <div class="table-responsive">
+	
+	<table cellpadding="0" cellspacing="0" class="table table-hover">
 	<thead>
 	<tr>
 			<th><?php echo $this->Paginator->sort('id'); ?></th>
@@ -52,29 +71,9 @@
 <?php endforeach; ?>
 	</tbody>
 	</table>
-	<p>
-	<?php
-	echo $this->Paginator->counter(array(
-		'format' => __('Page {:page} of {:pages}, showing {:current} records out of {:count} total, starting on record {:start}, ending on {:end}')
-	));
-	?>	</p>
-	<div class="paging">
-	<?php
-		echo $this->Paginator->prev('< ' . __('previous'), array(), null, array('class' => 'prev disabled'));
-		echo $this->Paginator->numbers(array('separator' => ''));
-		echo $this->Paginator->next(__('next') . ' >', array(), null, array('class' => 'next disabled'));
-	?>
 	</div>
-</div>
-<div class="actions">
-	<h3><?php echo __('Actions'); ?></h3>
-	<ul>
-		<li><?php echo $this->Html->link(__('New Invoice'), array('action' => 'add')); ?></li>
-		<li><?php echo $this->Html->link(__('List Orders'), array('controller' => 'orders', 'action' => 'index')); ?> </li>
-		<li><?php echo $this->Html->link(__('New Order'), array('controller' => 'orders', 'action' => 'add')); ?> </li>
-		<li><?php echo $this->Html->link(__('List Varies'), array('controller' => 'varies', 'action' => 'index')); ?> </li>
-		<li><?php echo $this->Html->link(__('New Vary'), array('controller' => 'varies', 'action' => 'add')); ?> </li>
-		<li><?php echo $this->Html->link(__('List Payments'), array('controller' => 'payments', 'action' => 'index')); ?> </li>
-		<li><?php echo $this->Html->link(__('New Payment'), array('controller' => 'payments', 'action' => 'add')); ?> </li>
-	</ul>
-</div>
+                        </div>
+                    </div>
+                    <!-- End  Hover Rows  -->
+                </div>
+    </div>
