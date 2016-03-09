@@ -32,9 +32,9 @@
 	</tr>
 	</thead>
 	<tbody>
-	<?php $i=0;foreach ($orders as $order): ?>
+	<?php $i=1;foreach ($orders as $order): ?>
 	<tr>
-		<td><?php echo h($order['Order']['id']); ?>&nbsp;</td>
+		<td><?php echo h($i); ?>&nbsp;</td>
 		<td><?php echo h($order['Order']['user_id']); ?>&nbsp;</td>
 		<td>
 			<?php echo $this->Html->link($order['Product']['title'], array('controller' => 'products', 'action' => 'view', $order['Product']['id'])); ?>
@@ -46,8 +46,8 @@
 		<td><?php echo h($order['Order']['modified']); ?>&nbsp;</td>
 		<td class="actions">
 			<?php echo $this->Html->link(__('View'), array('action' => 'view', $order['Order']['id'], $order['Order']['po_no'])); ?>
-			<?php echo $this->Html->link(__('Edit'), array('action' => 'edit', $order['Order']['id'])); ?>
-			<?php echo $this->Form->postLink(__('Delete'), array('action' => 'delete', $order['Order']['id']), array('confirm' => __('Are you sure you want to delete # %s?', $order['Order']['id']))); ?>
+			<?php /*?><?php echo $this->Html->link(__('Edit'), array('action' => 'edit', $order['Order']['id'])); ?>
+			<?php echo $this->Form->postLink(__('Delete'), array('action' => 'delete', $order['Order']['id']), array('confirm' => __('Are you sure you want to delete # %s?', $order['Order']['id']))); ?><?php */?>
 		</td>
 	</tr>
 <?php $i++; endforeach; ?>
