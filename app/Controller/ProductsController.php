@@ -74,6 +74,7 @@ class ProductsController extends AppController {
 				  foreach($this->request->data['Vary']['val']  as  $value){
 					$this->request->data['Vary']['product_id'] = $product_id;  
 					$this->request->data['Vary']['variant'] = $value['variant'];
+					$this->request->data['Vary']['type'] = 'product';
 					$this->request->data['Vary']['price'] = $value['price'];
 					$this->request->data['Vary']['sku'] = $value['sku'];
 					$this->request->data['Vary']['barcode'] = $value['barcode'];					
@@ -127,7 +128,6 @@ class ProductsController extends AppController {
 			}else{
 			$this->request->data['Product']['image']=$this->request->data['Product']['image_edit'];
 			}
-			echo '<pre>';print_r($this->request->data);exit;
 			if ($this->Product->save($this->request->data)) {
 				if(isset($this->request->data['Vary']['val'])){
 				  foreach($this->request->data['Vary']['val']  as  $value){
