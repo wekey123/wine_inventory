@@ -10,12 +10,12 @@
 <div class="row">
 
        <div class="col-md-12">
+            <?php echo $this->Html->link('Edit Profile', array('action' => 'edit', $user['User']['id']),array('class'=>'btn btn-primary','style'=>'margin-bottom:20px; float:right')); ?>
             <h4 class="page-head-line">View Profile</h4>
         </div>
 
 		<div class="col-md-12">
             <h5 style="color:#F0677C; float: left;"><?php echo $this->Flash->render(); ?></h4>
-             <?php echo $this->Html->link('Edit Profile', array('action' => 'edit', $user['User']['id']),array('class'=>'btn btn-primary','style'=>'margin-bottom:20px; float:right')); ?>
           </div>
           
 		<div class="col-md-10">

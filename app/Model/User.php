@@ -4,6 +4,9 @@ App::uses('AppModel', 'Model');
 App::uses('BlowfishPasswordHasher', 'Controller/Component/Auth');
 
 class User extends AppModel {
+	
+
+	
     public $validate = array(
         'username' => array(
             'required' => array(
@@ -19,7 +22,7 @@ class User extends AppModel {
         ),
         'role' => array(
             'valid' => array(
-                'rule' => array('inList', array('admin', 'author')),
+                'rule' => array('inList', array('admin', 'staff')),
                 'message' => 'Please enter a valid role',
                 'allowEmpty' => false
             )

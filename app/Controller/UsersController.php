@@ -111,12 +111,6 @@ class UsersController extends AppController {
 	public function login() {
 		if ($this->request->is('post')) {
 			if ($this->Auth->login()) {
-				/*$user = $this->Auth->user();
-				if (isset($user['role']) && $user['role'] === 'author') {
-					$this->Auth->loginRedirect = array('controller' => 'users','action' => 'view',$user['id']);
-				}else{
-					$this->Auth->loginRedirect = array('controller' => 'users','action' => 'index');
-				}*/
 				return $this->redirect($this->Auth->redirectUrl());
 			}
 			$this->Flash->error('Invalid username or password, try again');

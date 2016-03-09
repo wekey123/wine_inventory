@@ -23,6 +23,16 @@ class Product extends AppModel {
  *
  * @var array
  */
+	public $belongsTo = array(
+		'User' => array(
+			'className' => 'User',
+			'foreignKey' => 'user_id',
+			'conditions' => '',
+			'fields' => '',
+			'order' => ''
+		)
+	);
+	
 	public $hasMany = array(
 		'Order' => array(
 			'className' => 'Order',
@@ -41,7 +51,7 @@ class Product extends AppModel {
 			'className' => 'Vary',
 			'foreignKey' => 'product_id',
 			'dependent' => false,
-			'conditions' => '',
+			'conditions' => array('Vary.type'=>'product'),
 			'fields' => '',
 			'order' => '',
 			'limit' => '',

@@ -57,12 +57,15 @@ class ProductsController extends AppController {
 	public function add() {
 		//Access Check Starts
 		$user = $this->Auth->user();
+		debug($user);
 		if(parent::isDeny($user)){
 			$this->Flash->error($this->Auth->authError);
 			return $this->redirect( array('controller' => 'products', 'action' => 'index'));
 		}
 		//Access Check end
 		if ($this->request->is('post')) {
+			$this->request->data['Product']['user_id'] = $user['id'];  
+			$this->request->data['Product']['status'] = 1;
 			//echo '<pre>';print_r($this->request->data);exit;
 			if($this->request->data['Product']['image']['name'] != ''){
 					$this->request->data['Product']['image'] = $this->request->data['Product']['image']!='' ? $this->Image->upload_image_and_thumbnail($this->request->data['Product']['image'],573,380,180,110, "product") : '';
@@ -71,8 +74,9 @@ class ProductsController extends AppController {
 			if ($this->Product->save($this->request->data)) {
 				$product_id = $this->Product->getLastInsertId();
 				if(isset($this->request->data['Vary']['val'])){
-				  foreach($this->request->data['Vary']['val']  as  $value){
-					$this->request->data['Vary']['product_id'] = $product_id;  
+				  foreach($this->request->data['Vary']['val']  as  $value){					  
+					$this->request->data['Vary']['user_id'] = $user['id'];
+					$this->request->data['Vary']['product_id'] = $product_id; 
 					$this->request->data['Vary']['variant'] = $value['variant'];
 					$this->request->data['Vary']['type'] = 'product';
 					$this->request->data['Vary']['price'] = $value['price'];
@@ -133,8 +137,9 @@ class ProductsController extends AppController {
 				  foreach($this->request->data['Vary']['val']  as  $value){
 					if($value['id'])
 					$this->request->data['Vary']['id'] = $value['id'];    
+					$this->request->data['Vary']['user_id'] = $user['id'];
 					$this->request->data['Vary']['product_id'] = $id;  
-					$this->request->data['Vary']['variant'] = $value['price'];
+					$this->request->data['Vary']['variant'] = $value['variant'];
 					$this->request->data['Vary']['price'] = $value['price'];
 					$this->request->data['Vary']['sku'] = $value['sku'];
 					$this->request->data['Vary']['barcode'] = $value['barcode'];					
@@ -151,7 +156,6 @@ class ProductsController extends AppController {
 		} else {
 			$options = array('conditions' => array('Product.' . $this->Product->primaryKey => $id));
 			$this->request->data = $this->Product->find('first', $options);
-			//echo '<pre>';print_r($this->request->data);
 			self::categoryList();
 		}
 	}

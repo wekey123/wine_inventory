@@ -24,7 +24,7 @@
 	<?php
 		echo $this->Form->input('username',array('div'=>false,'error'=>false,'type'=>'text', 'before' => '<div class="form-group">', 'after' => '</div>', 'class'=>'validate[required] form-control'));
 		echo $this->Form->input('password',array('div'=>false,'error'=>false,'before' => '<div class="form-group">', 'after' => '</div>', 'class'=>'validate[required] form-control'));
-		echo $this->Form->input('role',array('div'=>false,'error'=>false, 'type'=>'select', 'options'=>array('admin' => 'Admin', 'author' => 'Author'), 'before' => '<div class="form-group">', 'after' => '</div>' , 'class'=>'validate[required] form-control'));
+		echo $this->Form->input('role',array('div'=>false,'error'=>false, 'type'=>'select', 'options'=>array('admin' => 'Admin', 'staff' => 'Staff'), 'before' => '<div class="form-group">', 'after' => '</div>' , 'class'=>'validate[required] form-control'));
 	?>
     <div id="varient-wrapper"></div>
      <?php echo $this->Form->submit(__('Submit'),array('div'=>false, 'class'=>'btn btn-lg btn-success btn-block' ,'id' => 'getVarientValue')); echo $this->Form->end();	?>

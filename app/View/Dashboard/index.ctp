@@ -1,3 +1,13 @@
+<style>
+.dasboard_link{
+  color: #fff;
+}
+
+a.dasboard_link:hover {
+    color: #fff;
+	text-decoration: none;
+}
+</style>
 <div class="content-wrapper">
     <div class="container">
         <div class="row">
@@ -24,7 +34,7 @@
 </div>
                        
 </div>
-                     <h5>Projects</h5>
+					 <?php echo $this->Html->link('Products',array('controller'=>'products','action' => 'index'),array('class'=>'dasboard_link')); ?>
                 </div>
             </div>
              <div class="col-md-3 col-sm-3 col-xs-6">
@@ -35,7 +45,7 @@
 </div>
                        
 </div>
-                     <h5>Orders</h5>
+                     <?php echo $this->Html->link('Orders',array('controller'=>'orders','action' => 'index'),array('class'=>'dasboard_link')); ?>
                 </div>
             </div>
              <div class="col-md-3 col-sm-3 col-xs-6">
@@ -46,7 +56,7 @@
 </div>
                        
 </div>
-                     <h5>Invoice</h5>
+					 <?php echo $this->Html->link('Invoice',array('controller'=>'invoice','action' => 'index'),array('class'=>'dasboard_link')); ?>
                 </div>
             </div>
             <div class="col-md-3 col-sm-3 col-xs-6">
@@ -57,7 +67,7 @@
 </div>
                        
 </div>
-                     <h5>Inventory </h5>
+					 <?php echo $this->Html->link('Inventory',array('controller'=>'inventory','action' => 'index'),array('class'=>'dasboard_link')); ?>
                 </div>
             </div>
 
