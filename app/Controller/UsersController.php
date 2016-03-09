@@ -62,7 +62,8 @@ class UsersController extends AppController {
     public function edit($id = null) {
         $user = $this->Auth->user();
 		$this->User->id = $id;
-		if (($user['id'] == $id) || (isset($user['role']) && $user['role'] === 'admin')) {
+		//if (($user['id'] == $id) || (isset($user['role']) && $user['role'] === 'admin')) {
+		if (($user['id'] == $id)) {
 			if (!$this->User->exists()) {
 				throw new NotFoundException(__('Invalid user'));
 			}
@@ -79,7 +80,7 @@ class UsersController extends AppController {
 				unset($this->request->data['User']['password']);
 			}
 		}else{
-			$this->Flash->error($this->Auth->authError);
+			$this->Flash->error("you can't access the private page of the other user");
 			return $this->redirect( array('controller' => 'users', 'action' => 'index'));
 		}
     }
