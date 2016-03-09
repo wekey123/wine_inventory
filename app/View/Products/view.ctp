@@ -1,84 +1,153 @@
-<div class="products view">
-<h2><?php echo __('Product'); ?></h2>
-	<dl>
-		<dt><?php echo __('Id'); ?></dt>
-		<dd>
-			<?php echo h($product['Product']['id']); ?>
-			&nbsp;
-		</dd>
-		<dt><?php echo __('User Id'); ?></dt>
-		<dd>
-			<?php echo h($product['Product']['user_id']); ?>
-			&nbsp;
-		</dd>
-		<dt><?php echo __('Category Id'); ?></dt>
-		<dd>
-			<?php echo h($product['Product']['category_id']); ?>
-			&nbsp;
-		</dd>
-		<dt><?php echo __('Title'); ?></dt>
-		<dd>
-			<?php echo h($product['Product']['title']); ?>
-			&nbsp;
-		</dd>
-		<dt><?php echo __('Description'); ?></dt>
-		<dd>
-			<?php echo h($product['Product']['description']); ?>
-			&nbsp;
-		</dd>
-		<dt><?php echo __('Brand'); ?></dt>
-		<dd>
-			<?php echo h($product['Product']['brand']); ?>
-			&nbsp;
-		</dd>
-		<dt><?php echo __('Vendor'); ?></dt>
-		<dd>
-			<?php echo h($product['Product']['vendor']); ?>
-			&nbsp;
-		</dd>
-		<dt><?php echo __('Country'); ?></dt>
-		<dd>
-			<?php echo h($product['Product']['country']); ?>
-			&nbsp;
-		</dd>
-		<dt><?php echo __('Type'); ?></dt>
-		<dd>
-			<?php echo h($product['Product']['type']); ?>
-			&nbsp;
-		</dd>
-		<dt><?php echo __('Flavor'); ?></dt>
-		<dd>
-			<?php echo h($product['Product']['flavor']); ?>
-			&nbsp;
-		</dd>
-		<dt><?php echo __('Label'); ?></dt>
-		<dd>
-			<?php echo h($product['Product']['label']); ?>
-			&nbsp;
-		</dd>
-		<dt><?php echo __('Image'); ?></dt>
-		<dd>
-			<?php echo h($product['Product']['image']); ?>
-			&nbsp;
-		</dd>
-		<dt><?php echo __('Status'); ?></dt>
-		<dd>
-			<?php echo h($product['Product']['status']); ?>
-			&nbsp;
-		</dd>
-		<dt><?php echo __('Created'); ?></dt>
-		<dd>
-			<?php echo h($product['Product']['created']); ?>
-			&nbsp;
-		</dd>
-		<dt><?php echo __('Modified'); ?></dt>
-		<dd>
-			<?php echo h($product['Product']['modified']); ?>
-			&nbsp;
-		</dd>
-	</dl>
+<style>
+.heading{
+	    font-weight: bold;
+}
+</style>
+<div class="content-wrapper">
+   <div class="container">
+   
+   
+<div class="row">
+
+       <div class="col-md-12">
+            <h4 class="page-head-line">Product View</h4>
+        </div>
+        
+        <div class="col-md-10">
+        <div class="row">
+            <div class="col-md-2 heading"><?php echo __('Id'); ?></div>
+            <div class="col-md-8"><?php echo h($product['Product']['id']); ?></div>
+        </div>
+        <div class="row">
+            <div class="col-md-2 heading"><?php echo __('Category Name'); ?></div>
+            <div class="col-md-6 "><?php echo h($product['Product']['category_name']); ?></div>
+        </div>
+        <div class="row">
+            <div class="col-md-2 heading"><?php echo __('Created By'); ?></div>
+            <div class="col-md-8"><?php  echo h($product['Product']['user_id']); ?></div>
+        </div>
+        
+        <div class="row">
+            <div class="col-md-2 heading"><?php echo __('Title'); ?></div>
+            <div class="col-md-8"><?php echo h($product['Product']['title']); ?></div>
+        </div>
+
+		<div class="row">
+            <div class="col-md-2 heading"><?php echo __('Description'); ?></div>
+            <div class="col-md-8"><?php echo h($product['Product']['description']); ?></div>
+        </div>
+		
+        <div class="row">
+            <div class="col-md-2 heading"><?php echo __('Brand'); ?></div>
+            <div class="col-md-8"><?php echo h($product['Product']['brand']); ?></div>
+        </div>
+		
+        <div class="row">
+            <div class="col-md-2 heading"><?php echo __('Vendor'); ?></div>
+            <div class="col-md-8"><?php echo h($product['Product']['vendor']); ?></div>
+        </div>
+        
+		<div class="row">
+            <div class="col-md-2 heading"><?php echo __('Country'); ?></div>
+            <div class="col-md-8"><?php echo h($product['Product']['country']); ?></div>
+        </div>
+        
+		<div class="row">
+            <div class="col-md-2 heading"><?php echo __('Type'); ?></div>
+            <div class="col-md-8"><?php echo h($product['Product']['type']); ?></div>
+        </div>
+        
+		<div class="row">
+            <div class="col-md-2 heading"><?php echo __('Flavor'); ?></div>
+            <div class="col-md-8"><?php echo h($product['Product']['flavor']); ?></div>
+        </div>
+		
+        <div class="row">
+            <div class="col-md-2 heading"><?php echo __('Label'); ?></div>
+            <div class="col-md-8"><?php echo h($product['Product']['label']); ?></div>
+        </div>
+		
+        <div class="row">
+            <div class="col-md-2 heading"><?php echo __('Image'); ?></div>
+            <div class="col-md-8"><?php echo $this->Html->image('product/small/'.$product['Product']['image']);?></div>
+        </div>
+		
+         <div class="row">
+            <div class="col-md-2 heading"><?php echo __('Status'); ?></div>
+            <div class="col-md-8"><?php echo h($product['Product']['status']); ?></div>
+        </div>
+		
+        <div class="row">
+            <div class="col-md-2 heading"><?php echo __('Created'); ?></div>
+            <div class="col-md-8"><?php echo h($product['Product']['created']); ?></div>
+        </div>
+        
+		<div class="row">
+            <div class="col-md-2 heading"><?php echo __('Modified'); ?></div>
+            <div class="col-md-8"><?php echo h($product['Product']['modified']); ?></div>
+        </div>
+      </div>
+     </div>
+     
+     
+     
+     
+     
+     
+ <div class="row">	
+ <div class="col-md-12">
+         <!--    Hover Rows  -->
+         <div class="panel panel-default">
+            <div class="panel-heading">
+                Related Varients
+            </div>
+            <div class="panel-body">
+            <div class="table-responsive">
+	<?php if (!empty($product['Vary'])): ?>
+	 <table class="table table-hover">
+	<tr>
+		<th><?php echo __('Id'); ?></th>
+		<th><?php echo __('Product Id'); ?></th>
+		<th><?php echo __('Variant'); ?></th>
+		<th><?php echo __('Sku'); ?></th>
+		<th><?php echo __('Barcode'); ?></th>
+		<th><?php echo __('Price'); ?></th>
+		<th><?php echo __('Type'); ?></th>
+		<th><?php echo __('Created'); ?></th>
+		<th><?php echo __('Modified'); ?></th>
+		<th class="actions"><?php echo __('Actions'); ?></th>
+	</tr>
+	<?php foreach ($product['Vary'] as $vary): ?>
+		<tr>
+			<td><?php echo $vary['id']; ?></td>
+			<td><?php echo $vary['product_id']; ?></td>
+			<td><?php echo $vary['variant']; ?></td>
+			<td><?php echo $vary['sku']; ?></td>
+			<td><?php echo $vary['barcode']; ?></td>
+			<td><?php echo $vary['price']; ?></td>
+			<td><?php echo $vary['type']; ?></td>
+			<td><?php echo $vary['created']; ?></td>
+			<td><?php echo $vary['modified']; ?></td>
+			<td class="actions">
+				<?php echo $this->Html->link(__('View'), array('controller' => 'varies', 'action' => 'view', $vary['id'])); ?>
+				<?php echo $this->Html->link(__('Edit'), array('controller' => 'varies', 'action' => 'edit', $vary['id'])); ?>
+				<?php echo $this->Form->postLink(__('Delete'), array('controller' => 'varies', 'action' => 'delete', $vary['id']), array('confirm' => __('Are you sure you want to delete # %s?', $vary['id']))); ?>
+			</td>
+		</tr>
+	<?php endforeach; ?>
+	</table>
+<?php endif; ?>
+             </div>
+            </div>
+           </div>
+           <!-- End  Hover Rows  -->
+    </div>
 </div>
-<div class="actions">
+
+     
+  </div>
+</div>
+<?php /*?><div class="actions">
 	<h3><?php echo __('Actions'); ?></h3>
 	<ul>
 		<li><?php echo $this->Html->link(__('Edit Product'), array('action' => 'edit', $product['Product']['id'])); ?> </li>
@@ -90,8 +159,8 @@
 		<li><?php echo $this->Html->link(__('List Varies'), array('controller' => 'varies', 'action' => 'index')); ?> </li>
 		<li><?php echo $this->Html->link(__('New Vary'), array('controller' => 'varies', 'action' => 'add')); ?> </li>
 	</ul>
-</div>
-<div class="related">
+</div><?php */?>
+<?php /*?><div class="related">
 	<h3><?php echo __('Related Orders'); ?></h3>
 	<?php if (!empty($product['Order'])): ?>
 	<table cellpadding = "0" cellspacing = "0">
@@ -131,8 +200,8 @@
 			<li><?php echo $this->Html->link(__('New Order'), array('controller' => 'orders', 'action' => 'add')); ?> </li>
 		</ul>
 	</div>
-</div>
-<div class="related">
+</div><?php */?>
+<?php /*?><div class="related">
 	<h3><?php echo __('Related Varies'); ?></h3>
 	<?php if (!empty($product['Vary'])): ?>
 	<table cellpadding = "0" cellspacing = "0">
@@ -174,4 +243,6 @@
 			<li><?php echo $this->Html->link(__('New Vary'), array('controller' => 'varies', 'action' => 'add')); ?> </li>
 		</ul>
 	</div>
+</div><?php */?>
+</div>
 </div>

@@ -5,8 +5,9 @@
             <h4 class="page-head-line">Products</h4>
         </div>
         <div class="col-md-12">
+        <h5 style="color:#F0677C; float: left;"><?php echo $this->Flash->render(); ?></h4>
          <a href="products/add" class="btn btn-primary" style="margin-bottom:20px; float:right">Add Products</a>
-          </div>
+         </div>
      </div>
  	<div class="row">	
  	 <div class="col-md-12">
