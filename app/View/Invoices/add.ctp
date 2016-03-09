@@ -83,7 +83,7 @@
 
 <script> 
   var total_price=0;var total_quantity=0;
-  $('#submitButton1').click( function() {alert('');
+  $('#submitButton1').click( function() {
 	  $('#invoiceSaveID').find("input[type='text']").each(function() {
 		total_price += $(this).val() * parseFloat($(this).next().val());
 		total_quantity += parseFloat($(this).val());
