@@ -19,24 +19,11 @@
     });
 	
 	$('.datepicker').datepicker({
-    format: 'mm/dd/yyyy',
-    startDate: '-3d'
-});
-  });
-  
-  
-  var total_price=0;var total_quantity=0;
-  $('#submitButton').click( function() {
-	  $('#invoiceSaveID').find("input[type='text']").each(function() {
-		fields[this.name] = $(this).val();
-		total_price += $(this).val() * parseFloat($(this).next().val());
-		total_quantity += parseFloat($(this).val());
+		format: 'mm/dd/yyyy',
+		startDate: '-3d'
 	});
-	  $('#total_price').val(total_price);
-	$('#total_quantity').val(total_quantity);
-	$('#orderAdd').submit();
-});
-  
+  });
+ 
   </script>
 <style>
 .varHead label{
