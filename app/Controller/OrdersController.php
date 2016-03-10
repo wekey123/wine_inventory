@@ -15,7 +15,7 @@ class OrdersController extends AppController {
  *
  * @var array
  */
- 	public $uses = array('Order','Product','Vary','Category');
+ 	public $uses = array('Order','Product','Vary','Category','User');
 	public $components = array('Paginator', 'Flash', 'Session');
 	public $layout = 'admin';
 
@@ -37,7 +37,9 @@ class OrdersController extends AppController {
 		'created',
 		'modified',
 		'Product.title',
-		'Product.id'
+		'Product.id',
+		'User.username',
+		'User.id'
     ),'group' => 'po_no');
 		$this->Order->recursive = 0;
 		$this->set('orders', $this->Paginator->paginate());//echo '<pre>';print_r($this->Paginator->paginate());
@@ -50,7 +52,7 @@ class OrdersController extends AppController {
  * @param string $id
  * @return void
  */
-	public function view($id = null,$no = null) {
+	public function view($no = null) {
 		$this->Order->recursive = 2;
 		 $this->Order->bindModel(array(
             'hasMany' => array(
@@ -64,7 +66,7 @@ class OrdersController extends AppController {
 		
 		
 		$this->Order->unbindModel(array('belongsTo' => 'Product'));
-		if (!$this->Order->exists($id)) {
+		if (!$this->Order->find('count', array('conditions' => array('Order.po_no'=>$no)))) {
 			throw new NotFoundException(__('Invalid order'));
 		}
 		$options = array('fields' => array(

@@ -42,12 +42,12 @@
         
         <div class="row">
             <div class="col-md-2 heading"><?php echo __('Created'); ?></div>
-            <div class="col-md-8"><?php echo h($user['User']['created']); ?></div>
+            <div class="col-md-8"><?php echo $this->Util->dateFormat($user['User']['created']); ?></div>
         </div>
         
         <div class="row">
             <div class="col-md-2 heading"><?php echo __('Modified'); ?></div>
-            <div class="col-md-8"><?php echo h($user['User']['modified']); ?></div>
+            <div class="col-md-8"><?php echo $this->Util->dateFormat($user['User']['modified']); ?></div>
         </div>
 </div>
 		

@@ -80,12 +80,12 @@
 		
         <div class="row">
             <div class="col-md-2 heading"><?php echo __('Created'); ?></div>
-            <div class="col-md-8"><?php echo h($product['Product']['created']); ?></div>
+            <div class="col-md-8"><?php echo $this->Util->dateFormat($product['Product']['created']); ?></div>
         </div>
         
 		<div class="row">
             <div class="col-md-2 heading"><?php echo __('Modified'); ?></div>
-            <div class="col-md-8"><?php echo h($product['Product']['modified']); ?></div>
+            <div class="col-md-8"><?php echo $this->Util->dateFormat($product['Product']['modified']); ?></div>
         </div>
       </div>
      </div>
@@ -125,8 +125,8 @@
 			<td><?php echo $vary['barcode']; ?></td>
 			<td><?php echo $vary['price']; ?></td>
 			<td><?php echo $vary['type']; ?></td>
-			<td><?php echo $vary['created']; ?></td>
-			<td><?php echo $vary['modified']; ?></td>
+			<td><?php echo $this->Util->dateFormat($vary['created']); ?></td>
+			<td><?php echo $this->Util->dateFormat($vary['modified']); ?></td>
 			<?php /*?><td class="actions">
 				<?php echo $this->Html->link(__('View'), array('controller' => 'varies', 'action' => 'view', $vary['id'])); ?>
 				<?php echo $this->Html->link(__('Edit'), array('controller' => 'varies', 'action' => 'edit', $vary['id'])); ?>

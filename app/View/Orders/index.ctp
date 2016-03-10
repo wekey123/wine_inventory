@@ -41,12 +41,12 @@
 		</td><?php */?>
 		<td><?php echo h($order['Order']['po_no']); ?>&nbsp;</td>
 		<td><?php echo h($order[0]['total_quantity']); ?>&nbsp;</td>
-		<td><?php echo h($order[0]['total_price']); ?>&nbsp;</td>
-        <td><?php echo h($order['Order']['user_id']); ?>&nbsp;</td>
-		<td><?php echo h($order['Order']['created']); ?>&nbsp;</td>
-		<td><?php echo h($order['Order']['modified']); ?>&nbsp;</td>
+		<td><?php echo $this->Util->currencyFormat($order[0]['total_price'], 'USD');  ?>&nbsp;</td>
+        <td><?php echo h($order['User']['username']); ?>&nbsp;</td>
+		<td><?php  echo $this->Util->dateFormat($order['Order']['created']); ?>&nbsp;</td>
+		<td><?php  echo $this->Util->dateFormat($order['Order']['modified']); ?>&nbsp;</td>
 		<td class="actions">
-			<?php echo $this->Html->link(__('View'), array('action' => 'view', $order['Order']['id'], $order['Order']['po_no'])); ?>
+			<?php echo $this->Html->link(__('View'), array('action' => 'view',$order['Order']['po_no'])); ?>
 			<?php /*?><?php echo $this->Html->link(__('Edit'), array('action' => 'edit', $order['Order']['id'])); ?>
 			<?php echo $this->Form->postLink(__('Delete'), array('action' => 'delete', $order['Order']['id']), array('confirm' => __('Are you sure you want to delete # %s?', $order['Order']['id']))); ?><?php */?>
 		</td>
