@@ -15,9 +15,12 @@
                             <div class="alert alert-warning">
                                <strong><?php echo __('Order Number'); ?></strong> <span> : </span> <span><?php echo h($order['Order']['po_no']); ?></span> <br />
                                <strong><?php echo __('Total Quantity'); ?></strong> <span> : </span> <span><?php echo h($order[0]['total_quantity']); ?></span> <br />
-                               <strong><?php echo __('Total Price'); ?></strong> <span> : </span> <span><?php echo h($order[0]['total_price']); ?></span> <br />
+                               <strong><?php echo __('Total Price'); ?></strong> <span> : </span> <span><?php  echo $this->Util->currencyFormat($order[0]['total_price']);  ?></span> <br />
                                <strong><?php echo __('Created By'); ?></strong> <span> : </span> <span><?php echo h($order['User']['username']); ?></span> <br />
-                               <strong><?php echo __('Created On'); ?></strong> <span> : </span> <span><?php echo h($order['Order']['created']); ?></span> <br />
+                               <strong><?php echo __('Created On'); ?></strong> <span> : </span> <span><?php 
+
+							   echo $this->Util->dateFormat(strtotime($order['Order']['created'])); 
+							   //echo h($order['Order']['created']); ?></span> <br />
                             </div>
                         </div>
             		</div>
@@ -51,7 +54,7 @@
                                             <td><?php echo h($product['Product']['title']); ?>&nbsp;</td>
                                             <td><?php echo h($product['variant']); ?>&nbsp;</td>
                                             <td><?php echo h($product['quantity']); ?>&nbsp;</td>
-                                            <td><?php echo h($product['price']); ?>&nbsp;</td>
+                                            <td><?php echo $this->Util->currencyFormat($product['price']); ?>&nbsp;</td>
                                             <td><?php echo h($product['sku']); ?>&nbsp;</td>
                                             <td><?php echo h($product['barcode']); ?>&nbsp;</td>
                                             <td><?php echo h($product['po_no']); ?>&nbsp;</td>

@@ -25,6 +25,7 @@ class InvoicesController extends AppController {
  */
 	public function index() {
 		$this->Invoice->recursive = 0;
+		//debug($this->Paginator->paginate());
 		$this->set('invoices', $this->Paginator->paginate());
 	}
 
@@ -35,11 +36,25 @@ class InvoicesController extends AppController {
  * @param string $id
  * @return void
  */
-	public function view($id = null) {
-		if (!$this->Invoice->exists($id)) {
-			throw new NotFoundException(__('Invalid invoice'));
+ 
+	public function view($no = null) {
+		$this->Invoice->recursive = 2;
+		$this->Invoice->bindModel(array(
+            'hasMany' => array(
+                'Vary' => array('foreignKey' => false,
+                                    'conditions' => array('Vary.type' => 'invoice','Vary.po_no'=>$no)
+                                ),
+                            )
+                ),
+            false
+        );
+		
+		
+		if (!$this->Invoice->find('count', array('conditions' => array('Invoice.invoice_no'=>$no)))) {
+			throw new NotFoundException(__('Invalid Invoide'));
 		}
-		$options = array('conditions' => array('Invoice.' . $this->Invoice->primaryKey => $id));
+		$options = array('conditions' => array('Invoice.invoice_no'=> $no));
+		//debug($this->Invoice->find('first', $options)); exit;
 		$this->set('invoice', $this->Invoice->find('first', $options));
 	}
 
@@ -49,9 +64,13 @@ class InvoicesController extends AppController {
  * @return void
  */
 	public function add() {
+		$user = $this->Auth->user();
 		if ($this->request->is('post')) {
 			$po='INV'.rand();
+			$this->request->data['Invoice']['user_id']=$user['id'];
 			$this->request->data['Invoice']['invoice_no']=$po;
+			$this->request->data['Invoice']['invoice_date'] = date("Y-m-d", strtotime($this->request->data['Invoice']['invoice_date']));
+			$this->request->data['Invoice']['estimated_shipping_date'] = date("Y-m-d", strtotime($this->request->data['Invoice']['estimated_shipping_date']));
 			//echo '<pre>';print_r($this->request->data);exit;
 			$this->Invoice->create();
 			if ($this->Invoice->save($this->request->data)) {
