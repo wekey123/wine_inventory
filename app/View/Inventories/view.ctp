@@ -1,305 +1,204 @@
-<div class="inventories view">
-<h2><?php echo __('Inventory'); ?></h2>
-	<dl>
-		<dt><?php echo __('Id'); ?></dt>
-		<dd>
-			<?php echo h($inventory['Inventory']['id']); ?>
-			&nbsp;
-		</dd>
-		<dt><?php echo __('User'); ?></dt>
-		<dd>
-			<?php echo $this->Html->link($inventory['User']['id'], array('controller' => 'users', 'action' => 'view', $inventory['User']['id'])); ?>
-			&nbsp;
-		</dd>
-		<dt><?php echo __('Order'); ?></dt>
-		<dd>
-			<?php echo $this->Html->link($inventory['Order']['id'], array('controller' => 'orders', 'action' => 'view', $inventory['Order']['id'])); ?>
-			&nbsp;
-		</dd>
-		<dt><?php echo __('Invoice No'); ?></dt>
-		<dd>
-			<?php echo h($inventory['Inventory']['invoice_no']); ?>
-			&nbsp;
-		</dd>
-		<dt><?php echo __('Product  No'); ?></dt>
-		<dd>
-			<?php echo h($inventory['Inventory']['product _no']); ?>
-			&nbsp;
-		</dd>
-		<dt><?php echo __('Payment No'); ?></dt>
-		<dd>
-			<?php echo h($inventory['Inventory']['payment_no']); ?>
-			&nbsp;
-		</dd>
-		<dt><?php echo __('Shipping No'); ?></dt>
-		<dd>
-			<?php echo h($inventory['Inventory']['shipping_no']); ?>
-			&nbsp;
-		</dd>
-		<dt><?php echo __('Total Quantity'); ?></dt>
-		<dd>
-			<?php echo h($inventory['Inventory']['total_quantity']); ?>
-			&nbsp;
-		</dd>
-		<dt><?php echo __('Total Price'); ?></dt>
-		<dd>
-			<?php echo h($inventory['Inventory']['total_price']); ?>
-			&nbsp;
-		</dd>
-		<dt><?php echo __('Created'); ?></dt>
-		<dd>
-			<?php echo h($inventory['Inventory']['created']); ?>
-			&nbsp;
-		</dd>
-		<dt><?php echo __('Modified'); ?></dt>
-		<dd>
-			<?php echo h($inventory['Inventory']['modified']); ?>
-			&nbsp;
-		</dd>
-	</dl>
-</div>
-<div class="actions">
-	<h3><?php echo __('Actions'); ?></h3>
-	<ul>
-		<li><?php echo $this->Html->link(__('Edit Inventory'), array('action' => 'edit', $inventory['Inventory']['id'])); ?> </li>
-		<li><?php echo $this->Form->postLink(__('Delete Inventory'), array('action' => 'delete', $inventory['Inventory']['id']), array('confirm' => __('Are you sure you want to delete # %s?', $inventory['Inventory']['id']))); ?> </li>
-		<li><?php echo $this->Html->link(__('List Inventories'), array('action' => 'index')); ?> </li>
-		<li><?php echo $this->Html->link(__('New Inventory'), array('action' => 'add')); ?> </li>
-		<li><?php echo $this->Html->link(__('List Users'), array('controller' => 'users', 'action' => 'index')); ?> </li>
-		<li><?php echo $this->Html->link(__('New User'), array('controller' => 'users', 'action' => 'add')); ?> </li>
-		<li><?php echo $this->Html->link(__('List Orders'), array('controller' => 'orders', 'action' => 'index')); ?> </li>
-		<li><?php echo $this->Html->link(__('New Order'), array('controller' => 'orders', 'action' => 'add')); ?> </li>
-		<li><?php echo $this->Html->link(__('List Payments'), array('controller' => 'payments', 'action' => 'index')); ?> </li>
-		<li><?php echo $this->Html->link(__('New Payment'), array('controller' => 'payments', 'action' => 'add')); ?> </li>
-		<li><?php echo $this->Html->link(__('List Shippings'), array('controller' => 'shippings', 'action' => 'index')); ?> </li>
-		<li><?php echo $this->Html->link(__('New Shipping'), array('controller' => 'shippings', 'action' => 'add')); ?> </li>
-		<li><?php echo $this->Html->link(__('List Varies'), array('controller' => 'varies', 'action' => 'index')); ?> </li>
-		<li><?php echo $this->Html->link(__('New Vary'), array('controller' => 'varies', 'action' => 'add')); ?> </li>
-		<li><?php echo $this->Html->link(__('List Invoices'), array('controller' => 'invoices', 'action' => 'index')); ?> </li>
-		<li><?php echo $this->Html->link(__('New Invoice'), array('controller' => 'invoices', 'action' => 'add')); ?> </li>
-	</ul>
-</div>
-	<div class="related">
-		<h3><?php echo __('Related Payments'); ?></h3>
-	<?php if (!empty($inventory['Payment'])): ?>
-		<dl>
-			<dt><?php echo __('Id'); ?></dt>
-		<dd>
-	<?php echo $inventory['Payment']['id']; ?>
-&nbsp;</dd>
-		<dt><?php echo __('User Id'); ?></dt>
-		<dd>
-	<?php echo $inventory['Payment']['user_id']; ?>
-&nbsp;</dd>
-		<dt><?php echo __('Po No'); ?></dt>
-		<dd>
-	<?php echo $inventory['Payment']['po_no']; ?>
-&nbsp;</dd>
-		<dt><?php echo __('Invoice No'); ?></dt>
-		<dd>
-	<?php echo $inventory['Payment']['invoice_no']; ?>
-&nbsp;</dd>
-		<dt><?php echo __('Payment No'); ?></dt>
-		<dd>
-	<?php echo $inventory['Payment']['payment_no']; ?>
-&nbsp;</dd>
-		<dt><?php echo __('Payment Amount'); ?></dt>
-		<dd>
-	<?php echo $inventory['Payment']['payment_amount']; ?>
-&nbsp;</dd>
-		<dt><?php echo __('Payment Date'); ?></dt>
-		<dd>
-	<?php echo $inventory['Payment']['payment_date']; ?>
-&nbsp;</dd>
-		<dt><?php echo __('Payment Method'); ?></dt>
-		<dd>
-	<?php echo $inventory['Payment']['payment_method']; ?>
-&nbsp;</dd>
-		<dt><?php echo __('Created'); ?></dt>
-		<dd>
-	<?php echo $inventory['Payment']['created']; ?>
-&nbsp;</dd>
-		<dt><?php echo __('Modified'); ?></dt>
-		<dd>
-	<?php echo $inventory['Payment']['modified']; ?>
-&nbsp;</dd>
-		</dl>
-	<?php endif; ?>
-		<div class="actions">
-			<ul>
-				<li><?php echo $this->Html->link(__('Edit Payment'), array('controller' => 'payments', 'action' => 'edit', $inventory['Payment']['id'])); ?></li>
-			</ul>
-		</div>
-	</div>
-		<div class="related">
-		<h3><?php echo __('Related Shippings'); ?></h3>
-	<?php if (!empty($inventory['Shipping'])): ?>
-		<dl>
-			<dt><?php echo __('Id'); ?></dt>
-		<dd>
-	<?php echo $inventory['Shipping']['id']; ?>
-&nbsp;</dd>
-		<dt><?php echo __('User Id'); ?></dt>
-		<dd>
-	<?php echo $inventory['Shipping']['user_id']; ?>
-&nbsp;</dd>
-		<dt><?php echo __('Po No'); ?></dt>
-		<dd>
-	<?php echo $inventory['Shipping']['po_no']; ?>
-&nbsp;</dd>
-		<dt><?php echo __('Invoice No'); ?></dt>
-		<dd>
-	<?php echo $inventory['Shipping']['invoice_no']; ?>
-&nbsp;</dd>
-		<dt><?php echo __('Shipping No'); ?></dt>
-		<dd>
-	<?php echo $inventory['Shipping']['shipping_no']; ?>
-&nbsp;</dd>
-		<dt><?php echo __('Shipping Quantity'); ?></dt>
-		<dd>
-	<?php echo $inventory['Shipping']['shipping_quantity']; ?>
-&nbsp;</dd>
-		<dt><?php echo __('Defective Quantity'); ?></dt>
-		<dd>
-	<?php echo $inventory['Shipping']['defective_quantity']; ?>
-&nbsp;</dd>
-		<dt><?php echo __('Missing Quantity'); ?></dt>
-		<dd>
-	<?php echo $inventory['Shipping']['missing_quantity']; ?>
-&nbsp;</dd>
-		<dt><?php echo __('Shipping Method'); ?></dt>
-		<dd>
-	<?php echo $inventory['Shipping']['shipping_method']; ?>
-&nbsp;</dd>
-		<dt><?php echo __('Tracking No'); ?></dt>
-		<dd>
-	<?php echo $inventory['Shipping']['tracking_no']; ?>
-&nbsp;</dd>
-		<dt><?php echo __('Weight'); ?></dt>
-		<dd>
-	<?php echo $inventory['Shipping']['weight']; ?>
-&nbsp;</dd>
-		<dt><?php echo __('Received Date'); ?></dt>
-		<dd>
-	<?php echo $inventory['Shipping']['received_date']; ?>
-&nbsp;</dd>
-		<dt><?php echo __('Created'); ?></dt>
-		<dd>
-	<?php echo $inventory['Shipping']['created']; ?>
-&nbsp;</dd>
-		<dt><?php echo __('Modified'); ?></dt>
-		<dd>
-	<?php echo $inventory['Shipping']['modified']; ?>
-&nbsp;</dd>
-		</dl>
-	<?php endif; ?>
-		<div class="actions">
-			<ul>
-				<li><?php echo $this->Html->link(__('Edit Shipping'), array('controller' => 'shippings', 'action' => 'edit', $inventory['Shipping']['id'])); ?></li>
-			</ul>
-		</div>
-	</div>
-	<div class="related">
-	<h3><?php echo __('Related Varies'); ?></h3>
-	<?php if (!empty($inventory['Vary'])): ?>
-	<table cellpadding = "0" cellspacing = "0">
-	<tr>
-		<th><?php echo __('Id'); ?></th>
-		<th><?php echo __('Product Id'); ?></th>
-		<th><?php echo __('Variant'); ?></th>
-		<th><?php echo __('Sku'); ?></th>
-		<th><?php echo __('Barcode'); ?></th>
-		<th><?php echo __('Price'); ?></th>
-		<th><?php echo __('Quantity'); ?></th>
-		<th><?php echo __('Type'); ?></th>
-		<th><?php echo __('Po No'); ?></th>
-		<th><?php echo __('Created'); ?></th>
-		<th><?php echo __('Modified'); ?></th>
-		<th class="actions"><?php echo __('Actions'); ?></th>
-	</tr>
-	<?php foreach ($inventory['Vary'] as $vary): ?>
-		<tr>
-			<td><?php echo $vary['id']; ?></td>
-			<td><?php echo $vary['product_id']; ?></td>
-			<td><?php echo $vary['variant']; ?></td>
-			<td><?php echo $vary['sku']; ?></td>
-			<td><?php echo $vary['barcode']; ?></td>
-			<td><?php echo $vary['price']; ?></td>
-			<td><?php echo $vary['quantity']; ?></td>
-			<td><?php echo $vary['type']; ?></td>
-			<td><?php echo $vary['po_no']; ?></td>
-			<td><?php echo $vary['created']; ?></td>
-			<td><?php echo $vary['modified']; ?></td>
-			<td class="actions">
-				<?php echo $this->Html->link(__('View'), array('controller' => 'varies', 'action' => 'view', $vary['id'])); ?>
-				<?php echo $this->Html->link(__('Edit'), array('controller' => 'varies', 'action' => 'edit', $vary['id'])); ?>
-				<?php echo $this->Form->postLink(__('Delete'), array('controller' => 'varies', 'action' => 'delete', $vary['id']), array('confirm' => __('Are you sure you want to delete # %s?', $vary['id']))); ?>
-			</td>
-		</tr>
-	<?php endforeach; ?>
-	</table>
-<?php endif; ?>
+<div class="content-wrapper">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <h4 class="page-head-line"><?php echo __('Order View'); ?></h4>
 
-	<div class="actions">
-		<ul>
-			<li><?php echo $this->Html->link(__('New Vary'), array('controller' => 'varies', 'action' => 'add')); ?> </li>
-		</ul>
-	</div>
-</div>
-<div class="related">
-	<h3><?php echo __('Related Invoices'); ?></h3>
-	<?php if (!empty($inventory['Invoice'])): ?>
-	<table cellpadding = "0" cellspacing = "0">
-	<tr>
-		<th><?php echo __('Id'); ?></th>
-		<th><?php echo __('User Id'); ?></th>
-		<th><?php echo __('Product Id'); ?></th>
-		<th><?php echo __('Po No'); ?></th>
-		<th><?php echo __('Invoice No'); ?></th>
-		<th><?php echo __('Invoice Date'); ?></th>
-		<th><?php echo __('Vendor Name'); ?></th>
-		<th><?php echo __('Vendor Address'); ?></th>
-		<th><?php echo __('Customer Id'); ?></th>
-		<th><?php echo __('Shipping Method'); ?></th>
-		<th><?php echo __('Payment Terms'); ?></th>
-		<th><?php echo __('Estimated Shipping Date'); ?></th>
-		<th><?php echo __('Total Quantity'); ?></th>
-		<th><?php echo __('Total Price'); ?></th>
-		<th><?php echo __('Created'); ?></th>
-		<th><?php echo __('Modified'); ?></th>
-		<th class="actions"><?php echo __('Actions'); ?></th>
-	</tr>
-	<?php foreach ($inventory['Invoice'] as $invoice): ?>
-		<tr>
-			<td><?php echo $invoice['id']; ?></td>
-			<td><?php echo $invoice['user_id']; ?></td>
-			<td><?php echo $invoice['product_id']; ?></td>
-			<td><?php echo $invoice['po_no']; ?></td>
-			<td><?php echo $invoice['invoice_no']; ?></td>
-			<td><?php echo $invoice['invoice_date']; ?></td>
-			<td><?php echo $invoice['vendor_name']; ?></td>
-			<td><?php echo $invoice['vendor_address']; ?></td>
-			<td><?php echo $invoice['customer_id']; ?></td>
-			<td><?php echo $invoice['shipping_method']; ?></td>
-			<td><?php echo $invoice['payment_terms']; ?></td>
-			<td><?php echo $invoice['estimated_shipping_date']; ?></td>
-			<td><?php echo $invoice['total_quantity']; ?></td>
-			<td><?php echo $invoice['total_price']; ?></td>
-			<td><?php echo $invoice['created']; ?></td>
-			<td><?php echo $invoice['modified']; ?></td>
-			<td class="actions">
-				<?php echo $this->Html->link(__('View'), array('controller' => 'invoices', 'action' => 'view', $invoice['id'])); ?>
-				<?php echo $this->Html->link(__('Edit'), array('controller' => 'invoices', 'action' => 'edit', $invoice['id'])); ?>
-				<?php echo $this->Form->postLink(__('Delete'), array('controller' => 'invoices', 'action' => 'delete', $invoice['id']), array('confirm' => __('Are you sure you want to delete # %s?', $invoice['id']))); ?>
-			</td>
-		</tr>
-	<?php endforeach; ?>
-	</table>
-<?php endif; ?>
+                </div>
+                <div class="col-md-12">
+                 <h5 style="color:#F0677C; float: left;"><?php echo $this->Flash->render(); ?></h5>
+       			 </div>
+         </div><?php //echo '<pre>';print_r($inventory); ?>
+            <?php //foreach ($inventory as $inventory) {?>
+          		  <div class="row">
+                        <div class="col-md-12">
+                            <div class="alert alert-warning">
+                               <strong><?php echo __('Order Number'); ?></strong> <span> : </span> <span><?php echo h($inventory['Order'][0]['po_no']); ?></span> <br />
+                               <strong><?php echo __('Total Quantity'); ?></strong> <span> : </span> <span><?php echo h($inventory['Order'][0][0]['total_quantity']); ?></span> <br />
+                               <strong><?php echo __('Total Price'); ?></strong> <span> : </span> <span><?php echo h($inventory['Order'][0][0]['total_price']); ?></span> <br />
+                               <strong><?php echo __('Created By'); ?></strong> <span> : </span> <span><?php echo h($inventory['User']['username']); ?></span> <br />
+                               <strong><?php echo __('Created On'); ?></strong> <span> : </span> <span><?php echo h($inventory['Order'][0][0]['created']); ?></span> <br />
+                            </div>
+                        </div>
+            		</div>
+                    
+                    
+                    <div class="row">
+                    <div class="col-md-12 col-sm-12">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            Inventory Process
+                        </div>
+                        <div class="panel-body">
+                            <ul class="nav nav-pills">
+                                <li class="active"><a href="#home-pills" data-toggle="tab">Order</a>
+                                </li>
+                                <li class=""><a href="#profile-pills" data-toggle="tab">Invoice</a>
+                                </li>
+                                <li class=""><a href="#messages-pills" data-toggle="tab">Inventory</a>
+                                </li>
+                            </ul>
 
-	<div class="actions">
-		<ul>
-			<li><?php echo $this->Html->link(__('New Invoice'), array('controller' => 'invoices', 'action' => 'add')); ?> </li>
-		</ul>
-	</div>
-</div>
+                            <div class="tab-content">
+                                <div class="tab-pane fade active in" id="home-pills">
+                                    <h4></h4>
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading">
+                                            Order List
+                                        </div>
+                                        <div class="panel-body">
+                                            <div class="table-responsive">
+                                                <table class="table table-hover">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>#</th>
+                                                            <th><?php echo $this->Paginator->sort('Product Name'); ?></th>
+                                                            <th><?php echo $this->Paginator->sort('Varient'); ?></th>
+                                                            <th><?php echo $this->Paginator->sort('Quantity'); ?></th>
+                                                            <th><?php echo $this->Paginator->sort('Price'); ?></th>
+                                                            <th><?php echo $this->Paginator->sort('SKU'); ?></th>
+                                                            <th><?php echo $this->Paginator->sort('Barcode'); ?></th>
+                                                            <th><?php echo $this->Paginator->sort('Order Number'); ?></th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                     <?php $i =1;foreach ($inventory['Vary'] as $product): if($product['type']=='order'){ ?>
+                                                        <tr>
+                                                            <td><?php echo $i; ?>&nbsp;</td>
+                                                            <td><?php //echo h($product['Product']['title']); ?>&nbsp;</td>
+                                                            <td><?php echo h($product['variant']); ?>&nbsp;</td>
+                                                            <td><?php echo h($product['quantity']); ?>&nbsp;</td>
+                                                            <td><?php echo h($product['price']); ?>&nbsp;</td>
+                                                            <td><?php echo h($product['sku']); ?>&nbsp;</td>
+                                                            <td><?php echo h($product['barcode']); ?>&nbsp;</td>
+                                                            <td><?php echo h($product['po_no']); ?>&nbsp;</td>
+                                                        </tr>
+                                                    <?php $i++;}endforeach; ?>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="tab-pane fade" id="profile-pills">
+                                    <h4></h4>
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading">
+                                            Invoice List
+                                        </div>
+                                        <div class="panel-body">
+                                            <div class="table-responsive">
+                                                <table class="table table-hover">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>#</th>
+                                                            <th><?php echo $this->Paginator->sort('Product Name'); ?></th>
+                                                            <th><?php echo $this->Paginator->sort('Varient'); ?></th>
+                                                            <th><?php echo $this->Paginator->sort('Quantity'); ?></th>
+                                                            <th><?php echo $this->Paginator->sort('Price'); ?></th>
+                                                            <th><?php echo $this->Paginator->sort('SKU'); ?></th>
+                                                            <th><?php echo $this->Paginator->sort('Barcode'); ?></th>
+                                                            <th><?php echo $this->Paginator->sort('Order Number'); ?></th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                     <?php $i =1;foreach ($inventory['Vary'] as $product):  if($product['type']=='invoice'){  ?>
+                                                        <tr>
+                                                            <td><?php echo $i; ?>&nbsp;</td>
+                                                            <td><?php //echo h($product['Product']['title']); ?>&nbsp;</td>
+                                                            <td><?php echo h($product['variant']); ?>&nbsp;</td>
+                                                            <td><?php echo h($product['quantity']); ?>&nbsp;</td>
+                                                            <td><?php echo h($product['price']); ?>&nbsp;</td>
+                                                            <td><?php echo h($product['sku']); ?>&nbsp;</td>
+                                                            <td><?php echo h($product['barcode']); ?>&nbsp;</td>
+                                                            <td><?php echo h($product['po_no']); ?>&nbsp;</td>
+                                                        </tr>
+                                                    <?php $i++; } endforeach; ?>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="tab-pane fade" id="messages-pills">
+                                    <h4></h4>
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading">
+                                            Inventory List
+                                        </div>
+                                        <div class="panel-body">
+                                            <div class="table-responsive">
+                                                <table class="table table-hover">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>#</th>
+                                                            <th><?php echo $this->Paginator->sort('Product Name'); ?></th>
+                                                            <th><?php echo $this->Paginator->sort('Varient'); ?></th>
+                                                            <th><?php echo $this->Paginator->sort('Quantity'); ?></th>
+                                                            <th><?php echo $this->Paginator->sort('Price'); ?></th>
+                                                            <th><?php echo $this->Paginator->sort('SKU'); ?></th>
+                                                            <th><?php echo $this->Paginator->sort('Barcode'); ?></th>
+                                                            <th><?php echo $this->Paginator->sort('Order Number'); ?></th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                     <?php $i =1;foreach ($inventory['Vary'] as $product):  if($product['type']=='inventory'){  ?>
+                                                        <tr>
+                                                            <td><?php echo $i; ?>&nbsp;</td>
+                                                            <td><?php //echo h($product['Product']['title']); ?>&nbsp;</td>
+                                                            <td><?php echo h($product['variant']); ?>&nbsp;</td>
+                                                            <td><?php echo h($product['quantity']); ?>&nbsp;</td>
+                                                            <td><?php echo h($product['price']); ?>&nbsp;</td>
+                                                            <td><?php echo h($product['sku']); ?>&nbsp;</td>
+                                                            <td><?php echo h($product['barcode']); ?>&nbsp;</td>
+                                                            <td><?php echo h($product['po_no']); ?>&nbsp;</td>
+                                                        </tr>
+                                                    <?php $i++; } endforeach; ?>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                               
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                	</div>
+                    
+                    
+                    <div class="row">
+                    <?php $r = 1; foreach ($inventory['Payment'] as $inventorys) {?>
+                    <div class="col-md-4 col-sm-4">
+                    <div class="panel panel-info">
+                        <div class="panel-heading">
+                            Release 1
+                        </div>
+                        <div class="panel-body">
+                            <strong><?php echo __('Invoice Number'); ?></strong> <span> : </span> <span><?php echo h($inventorys['invoice_no']); ?></span> <br />
+                            <strong><?php echo __('Payment Number'); ?></strong> <span> : </span> <span><?php echo h($inventorys['payment_no']); ?></span> <br />
+                            <strong><?php echo __('Payment Amount'); ?></strong> <span> : </span> <span><?php echo h($inventorys['payment_amount']); ?></span> <br />
+                            <strong><?php echo __('Payment Date'); ?></strong> <span> : </span> <span><?php echo h($inventorys['payment_date']); ?></span> <br />
+                            <strong><?php echo __('Payment Method'); ?></strong> <span> : </span> <span><?php echo h($inventorys['payment_method']); ?></span> <br />
+                            <strong><?php echo __('Created By'); ?></strong> <span> : </span> <span><?php echo h($inventory['User']['username']); ?></span> <br />
+                            <strong><?php echo __('Created On'); ?></strong> <span> : </span> <span><?php echo h($inventorys['created']); ?></span> <br />
+                        </div>
+                       
+                    </div>
+                </div>
+                    
+                    
+                    
+                        
+                    <?php $r++;} ?>
+            		</div>
+                    
+            </div>
+                    
+                    
+                    
+            <?php //} ?>
+        </div>
+    </div>
+ 

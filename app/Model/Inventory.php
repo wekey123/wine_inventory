@@ -21,13 +21,6 @@ class Inventory extends AppModel {
  * @var array
  */
 	public $hasOne = array(
-		'Payment' => array(
-			'className' => 'Payment',
-			'foreignKey' => 'po_no',
-			'conditions' => '',
-			'fields' => '',
-			'order' => ''
-		),
 		'Shipping' => array(
 			'className' => 'Shipping',
 			'foreignKey' => 'po_no',
@@ -49,13 +42,6 @@ class Inventory extends AppModel {
 			'conditions' => '',
 			'fields' => '',
 			'order' => ''
-		),
-		'Order' => array(
-			'className' => 'Order',
-			'foreignKey' => 'po_no',
-			'conditions' => '',
-			'fields' => '',
-			'order' => ''
 		)
 	);
 
@@ -67,7 +53,7 @@ class Inventory extends AppModel {
 	public $hasMany = array(
 		'Vary' => array(
 			'className' => 'Vary',
-			'foreignKey' => 'product_id',
+			'foreignKey' => false,
 			'dependent' => false,
 			'conditions' => '',
 			'fields' => '',
@@ -80,7 +66,33 @@ class Inventory extends AppModel {
 		),
 		'Invoice' => array(
 			'className' => 'Invoice',
-			'foreignKey' => 'po_no',
+			'foreignKey' => false,
+			'dependent' => false,
+			'conditions' => '',
+			'fields' => '',
+			'order' => '',
+			'limit' => '',
+			'offset' => '',
+			'exclusive' => '',
+			'finderQuery' => '',
+			'counterQuery' => ''
+		),
+		'Order' => array(
+			'className' => 'Order',
+			'foreignKey' => false,
+			'dependent' => false,
+			'conditions' => '',
+			'fields' => '',
+			'order' => '',
+			'limit' => '',
+			'offset' => '',
+			'exclusive' => '',
+			'finderQuery' => '',
+			'counterQuery' => ''
+		),
+		'Payment' => array(
+			'className' => 'Payment',
+			'foreignKey' => false,
 			'dependent' => false,
 			'conditions' => '',
 			'fields' => '',

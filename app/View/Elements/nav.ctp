@@ -13,7 +13,7 @@
     
 
 	<?php
-	$menus=array('Dashboard'=>array('dashboard'),'Product'=>array('products'),'User'=>array('users'),'Order'=>array('orders'),'Invoice'=>array('invoices'),'Payment'=>array('payments'));
+	$menus=array('Dashboard'=>array('dashboard'),'Product'=>array('products'),'User'=>array('users'),'Order'=>array('orders'),'Invoice'=>array('invoices'),'Payment'=>array('payments'),'Inventory'=>array('inventories'));
 	function getPageName($name, $array){
 		foreach($array as $key => $value){
 			if(is_array($value) && in_array($name, $value))
@@ -39,8 +39,8 @@
                              <li> <?php echo $this->Html->link('Orders',array('controller'=>'orders','action' => 'index'),array('class'=>trim($menuActive)=='Order'  ? 'menu-top-active' : '')); ?> </li>
                              <li> <?php echo $this->Html->link('Invoice',array('controller'=>'invoices','action' => 'index'),array('class'=>trim($menuActive)=='Invoice'  ? 'menu-top-active' : '')); ?> </li>
                              <li> <?php echo $this->Html->link('Payment',array('controller'=>'payments','action' => 'index'),array('class'=>trim($menuActive)=='Payment'  ? 'menu-top-active' : '')); ?> </li>
-                             <li> <?php echo $this->Html->link('Shipping',array('controller'=>'shipping','action' => 'index'),array('class'=>trim($menuActive)=='Shipping'  ? 'menu-top-active' : '')); ?> </li>
-                             <li> <?php echo $this->Html->link('Inventory',array('controller'=>'inventory','action' => 'index'),array('class'=>trim($menuActive)=='Inventory'  ? 'menu-top-active' : '')); ?> </li>
+                             <?php /*?><li> <?php echo $this->Html->link('Shipping',array('controller'=>'shipping','action' => 'index'),array('class'=>trim($menuActive)=='Shipping'  ? 'menu-top-active' : '')); ?> </li><?php */?>
+                             <li> <?php echo $this->Html->link('Inventory',array('controller'=>'inventories','action' => 'index'),array('class'=>trim($menuActive)=='Inventory'  ? 'menu-top-active' : '')); ?> </li>
                              <?php /*?><li> <?php echo $this->Html->link('Settings',array('controller'=>'categories','action' => 'index'),array('class'=>trim($menuActive)=='Settings'  ? 'menu-top-active' : '')); ?> </li><?php */?>
                              <li> <?php echo $this->Html->link('Logout',array('controller'=>'users','action' => 'logout')); ?> </li>
                         </ul>
