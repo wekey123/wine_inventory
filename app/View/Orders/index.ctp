@@ -1,3 +1,4 @@
+<?php echo $this->element('tableScript'); ?>
  <div class="content-wrapper">
    <div class="container">
      <div class="row">
@@ -17,43 +18,43 @@
                            <?php echo __('Orders'); ?>
                         </div>
                         <div class="panel-body">
-                            <div class="table-responsive">
-	<table cellpadding="0" cellspacing="0" class="table table-hover">
-	<thead>
-	<tr>
-			<th><?php echo $this->Paginator->sort('id'); ?></th>
-			<?php /*?><th><?php echo $this->Paginator->sort('product_id'); ?></th><?php */?>
-			<th><?php echo $this->Paginator->sort('po_no', 'Purchase Order Number'); ?></th>
-			<th><?php echo $this->Paginator->sort('total_quantity'); ?></th>
-			<th><?php echo $this->Paginator->sort('total_price'); ?></th>
-            <th><?php echo $this->Paginator->sort('user_id', 'Created By'); ?></th>
-			<th><?php echo $this->Paginator->sort('created'); ?></th>
-			<th><?php echo $this->Paginator->sort('modified'); ?></th>
-			<th class="actions"><?php echo __('Actions'); ?></th>
-	</tr>
-	</thead>
-	<tbody>
-	<?php $i=1;foreach ($orders as $order): ?>
-	<tr>
-		<td><?php echo h($i); ?>&nbsp;</td>
-		<?php /*?><td>
-			<?php echo $this->Html->link($order['Product']['title'], array('controller' => 'products', 'action' => 'view', $order['Product']['id'])); ?>
-		</td><?php */?>
-		<td><?php echo h($order['Order']['po_no']); ?>&nbsp;</td>
-		<td><?php echo h($order[0]['total_quantity']); ?>&nbsp;</td>
-		<td><?php echo $this->Util->currencyFormat($order[0]['total_price'], 'USD');  ?>&nbsp;</td>
-        <td><?php echo h($order['User']['username']); ?>&nbsp;</td>
-		<td><?php  echo $this->Util->dateFormat($order['Order']['created']); ?>&nbsp;</td>
-		<td><?php  echo $this->Util->dateFormat($order['Order']['modified']); ?>&nbsp;</td>
-		<td class="actions">
-			<?php echo $this->Html->link(__('View'), array('action' => 'view',$order['Order']['po_no'])); ?>
-			<?php /*?><?php echo $this->Html->link(__('Edit'), array('action' => 'edit', $order['Order']['id'])); ?>
-			<?php echo $this->Form->postLink(__('Delete'), array('action' => 'delete', $order['Order']['id']), array('confirm' => __('Are you sure you want to delete # %s?', $order['Order']['id']))); ?><?php */?>
-		</td>
-	</tr>
-<?php $i++; endforeach; ?>
-	</tbody>
-	</table>
+                           <div class="table-responsive" style="overflow-x:hidden;">
+                                <table id="example" class="table table-striped table-bordered" cellspacing="0" width="100%">
+                                    <thead>
+                                    <tr>
+                                            <th><?php echo $this->Paginator->sort('id'); ?></th>
+                                            <?php /*?><th><?php echo $this->Paginator->sort('product_id'); ?></th><?php */?>
+                                            <th><?php echo $this->Paginator->sort('po_no', 'Purchase Order Number'); ?></th>
+                                            <th><?php echo $this->Paginator->sort('total_quantity'); ?></th>
+                                            <th><?php echo $this->Paginator->sort('total_price'); ?></th>
+                                            <th><?php echo $this->Paginator->sort('user_id', 'Created By'); ?></th>
+                                            <th><?php echo $this->Paginator->sort('created'); ?></th>
+                                            <th><?php echo $this->Paginator->sort('modified'); ?></th>
+                                            <th class="actions"><?php echo __('Actions'); ?></th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <?php $i=1;foreach ($orders as $order): ?>
+                                    <tr>
+                                        <td><?php echo h($i); ?>&nbsp;</td>
+                                        <?php /*?><td>
+                                            <?php echo $this->Html->link($order['Product']['title'], array('controller' => 'products', 'action' => 'view', $order['Product']['id'])); ?>
+                                        </td><?php */?>
+                                        <td><?php echo h($order['Order']['po_no']); ?>&nbsp;</td>
+                                        <td><?php echo h($order[0]['total_quantity']); ?>&nbsp;</td>
+                                        <td><?php echo $this->Util->currencyFormat($order[0]['total_price'], 'USD');  ?>&nbsp;</td>
+                                        <td><?php echo h($order['User']['username']); ?>&nbsp;</td>
+                                        <td><?php  echo $this->Util->dateFormat($order['Order']['created']); ?>&nbsp;</td>
+                                        <td><?php  echo $this->Util->dateFormat($order['Order']['modified']); ?>&nbsp;</td>
+                                        <td class="actions">
+                                            <?php echo $this->Html->link(__('View'), array('action' => 'view',$order['Order']['po_no'])); ?>
+                                            <?php /*?><?php echo $this->Html->link(__('Edit'), array('action' => 'edit', $order['Order']['id'])); ?>
+                                            <?php echo $this->Form->postLink(__('Delete'), array('action' => 'delete', $order['Order']['id']), array('confirm' => __('Are you sure you want to delete # %s?', $order['Order']['id']))); ?><?php */?>
+                                        </td>
+                                    </tr>
+                                <?php $i++; endforeach; ?>
+                                    </tbody>
+                                </table>
 	
                             </div>
                         </div>

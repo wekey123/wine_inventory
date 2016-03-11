@@ -1,3 +1,4 @@
+<?php echo $this->element('tableScript'); ?>
 <div class="content-wrapper">
    <div class="container">
      <div class="row">
@@ -17,48 +18,48 @@
                             Products List
                         </div>
                         <div class="panel-body">
-                            <div class="table-responsive">
-                                <table class="table table-hover">
-	<thead>
-	<tr>
-			<th><?php echo $this->Paginator->sort('id'); ?></th>
-			<th><?php echo $this->Paginator->sort('user_id'); ?></th>
-			<th><?php echo $this->Paginator->sort('po_no'); ?></th>
-			<th><?php echo $this->Paginator->sort('invoice_no'); ?></th>
-			<th><?php echo $this->Paginator->sort('shipping_no'); ?></th>
-			<th><?php echo $this->Paginator->sort('total_quantity'); ?></th>
-			<th><?php echo $this->Paginator->sort('total_price'); ?></th>
-			<th><?php echo $this->Paginator->sort('created'); ?></th>
-			<th><?php echo $this->Paginator->sort('modified'); ?></th>
-			<th class="actions"><?php echo __('Actions'); ?></th>
-	</tr>
-	</thead>
-	<tbody>
-	<?php foreach ($inventories as $inventory): ?>
-	<tr>
-		<td><?php echo h($inventory['Inventory']['id']); ?>&nbsp;</td>
-		<td>
-			<?php echo $this->Html->link($inventory['User']['username'], array('controller' => 'users', 'action' => 'view', $inventory['User']['id'])); ?>
-		</td>
-		<td>
-			<?php echo $this->Html->link($inventory['Inventory']['po_no'], array('controller' => 'orders', 'action' => 'view', $inventory['Inventory']['po_no'])); ?>
-		</td>
-		<td><?php echo h($inventory['Inventory']['invoice_no']); ?>&nbsp;</td>
-		<td><?php echo h($inventory['Inventory']['shipping_no']); ?>&nbsp;</td>
-		<td><?php echo h($inventory['Inventory']['total_quantity']); ?>&nbsp;</td>
-		<td><?php echo h($inventory['Inventory']['total_price']); ?>&nbsp;</td>
-		<td><?php echo h($inventory['Inventory']['created']); ?>&nbsp;</td>
-		<td><?php echo h($inventory['Inventory']['modified']); ?>&nbsp;</td>
-		<td class="actions">
-			<?php echo $this->Html->link(__('View'), array('action' => 'view', $inventory['Inventory']['id'], $inventory['Inventory']['po_no'], $inventory['Inventory']['invoice_no'])); ?>
-			<?php echo $this->Html->link(__('Edit'), array('action' => 'edit', $inventory['Inventory']['id'])); ?>
-			<?php echo $this->Form->postLink(__('Delete'), array('action' => 'delete', $inventory['Inventory']['id']), array('confirm' => __('Are you sure you want to delete # %s?', $inventory['Inventory']['id']))); ?>
-		</td>
-	</tr>
-<?php endforeach; ?>
-	</tbody>
-	</table>
-     </div>
+                            <div class="table-responsive" style="overflow-x:hidden;">
+                                <table id="example" class="table table-striped table-bordered" cellspacing="0" width="100%">
+                                	<thead>
+                                <tr>
+                                        <th><?php echo $this->Paginator->sort('id'); ?></th>
+                                        <th><?php echo $this->Paginator->sort('user_id'); ?></th>
+                                        <th><?php echo $this->Paginator->sort('po_no'); ?></th>
+                                        <th><?php echo $this->Paginator->sort('invoice_no'); ?></th>
+                                        <th><?php echo $this->Paginator->sort('shipping_no'); ?></th>
+                                        <th><?php echo $this->Paginator->sort('total_quantity'); ?></th>
+                                        <th><?php echo $this->Paginator->sort('total_price'); ?></th>
+                                        <th><?php echo $this->Paginator->sort('created'); ?></th>
+                                        <th><?php echo $this->Paginator->sort('modified'); ?></th>
+                                        <th class="actions"><?php echo __('Actions'); ?></th>
+                                </tr>
+                                </thead>
+                                	<tbody>
+                                <?php foreach ($inventories as $inventory): ?>
+                                <tr>
+                                    <td><?php echo h($inventory['Inventory']['id']); ?>&nbsp;</td>
+                                    <td>
+                                        <?php echo $this->Html->link($inventory['User']['username'], array('controller' => 'users', 'action' => 'view', $inventory['User']['id'])); ?>
+                                    </td>
+                                    <td>
+                                        <?php echo $this->Html->link($inventory['Inventory']['po_no'], array('controller' => 'orders', 'action' => 'view', $inventory['Inventory']['po_no'])); ?>
+                                    </td>
+                                    <td><?php echo h($inventory['Inventory']['invoice_no']); ?>&nbsp;</td>
+                                    <td><?php echo h($inventory['Inventory']['shipping_no']); ?>&nbsp;</td>
+                                    <td><?php echo h($inventory['Inventory']['total_quantity']); ?>&nbsp;</td>
+                                    <td><?php echo h($inventory['Inventory']['total_price']); ?>&nbsp;</td>
+                                    <td><?php echo h($inventory['Inventory']['created']); ?>&nbsp;</td>
+                                    <td><?php echo h($inventory['Inventory']['modified']); ?>&nbsp;</td>
+                                    <td class="actions">
+                                        <?php echo $this->Html->link(__('View'), array('action' => 'view', $inventory['Inventory']['id'], $inventory['Inventory']['po_no'], $inventory['Inventory']['invoice_no'])); ?>
+                                        <?php echo $this->Html->link(__('Edit'), array('action' => 'edit', $inventory['Inventory']['id'])); ?>
+                                        <?php echo $this->Form->postLink(__('Delete'), array('action' => 'delete', $inventory['Inventory']['id']), array('confirm' => __('Are you sure you want to delete # %s?', $inventory['Inventory']['id']))); ?>
+                                    </td>
+                                </tr>
+                            <?php endforeach; ?>
+                                </tbody>
+                                </table>
+     						</div>
                         </div>
                     </div>
                     <!-- End  Hover Rows  -->
