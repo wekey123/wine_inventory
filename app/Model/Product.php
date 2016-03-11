@@ -14,8 +14,25 @@ class Product extends AppModel {
  * @var string
  */
 	public $displayField = 'title';
-
-
+	public $validate = array(
+        'title' => array(
+            'rule' => array('minLength', '8'),
+            'message' => 'Minimum 8 characters long'
+        ),
+		'category_name' => array(
+            'rule' => 'notBlank',
+        ),
+		'brand' => array(
+           'rule' => 'notBlank',
+        ),
+		'image' => array(
+			'rule' => array(
+				'extension',
+				array('gif', 'jpeg', 'png', 'jpg')
+			),
+			'message' => 'Please supply a valid image.'
+		)
+    );
 	// The Associations below have been created with all possible keys, those that are not needed can be removed
 
 /**

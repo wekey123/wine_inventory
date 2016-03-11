@@ -26,12 +26,12 @@
 	<?php
 		echo $this->Form->input('id');
 		echo $this->Form->input('user_id',array('div'=>false,'error'=>false,'type'=>'hidden'));
-		echo $this->Form->input('category_name',array('div'=>false,'error'=>false, 'type'=>'select', 'options'=>$category, 'before' => '<div class="form-group">', 'after' => '</div>' , 'class'=>'validate[required] form-control'));
+		echo $this->Form->input('category_name',array('div'=>false,'error'=>false, 'type'=>'select', 'options'=>$category, 'before' => '<div class="form-group">', 'after' => '</div>' , 'class'=>'validate[required] form-control','between'=>'<label><span class="mandatory">*</span> Category Name</label>','label'=>false));
 		//echo $this->Form->input('category_id',array('div'=>false,'error'=>false,'type'=>'hidden'));
 		echo $this->Form->input('status',array('div'=>false,'error'=>false,'type'=>'hidden',));
-		echo $this->Form->input('title',array('div'=>false,'error'=>false,'type'=>'text', 'before' => '<div class="form-group">', 'after' => '</div>', 'class'=>'validate[required] form-control'));
+		echo $this->Form->input('title',array('div'=>false,'error'=>false,'type'=>'text', 'before' => '<div class="form-group">', 'after' => '</div>', 'class'=>'validate[required] form-control','between'=>'<label><span class="mandatory">*</span> Title</label>','label'=>false));
 		echo $this->Form->input('description',array('div'=>false,'error'=>false,'type'=>'textarea', 'before' => '<div class="form-group">', 'after' => '</div>', 'class'=>'validate[required] form-control'));
-		echo $this->Form->input('brand',array('div'=>false,'error'=>false,'type'=>'text', 'before' => '<div class="form-group">', 'after' => '</div>', 'class'=>'validate[required] form-control'));
+		echo $this->Form->input('brand',array('div'=>false,'error'=>false,'type'=>'text', 'before' => '<div class="form-group">', 'after' => '</div>', 'class'=>'validate[required] form-control','between'=>'<label><span class="mandatory">*</span> Brand</label>','label'=>false));
 		echo $this->Form->input('vendor',array('div'=>false,'error'=>false,'type'=>'text', 'before' => '<div class="form-group">', 'after' => '</div>', 'class'=>'validate[required] form-control'));
 		
 		
@@ -44,7 +44,7 @@
 	echo $this->Form->input('type',array('div'=>false,'error'=>false,'type'=>'text', 'before' => '<div class="form-group">', 'after' => '</div>', 'class'=>'validate[required] form-control'));
 		echo $this->Form->input('flavor',array('div'=>false,'error'=>false,'type'=>'text', 'before' => '<div class="form-group">', 'after' => '</div>', 'class'=>'validate[required] form-control'));
 		echo $this->Form->input('label',array('div'=>false,'error'=>false,'type'=>'text', 'before' => '<div class="form-group">', 'after' => '</div>', 'class'=>'validate[required] form-control'));
-		echo $this->Form->input('image',array('div'=>false,'error'=>false,'type'=>'file', 'before' => '<div class="form-group">', 'after' => '</div>', 'class'=>'validate[required] form-control'));	
+		echo $this->Form->input('image',array('div'=>false,'error'=>false,'type'=>'file', 'before' => '<div class="form-group">', 'after' => '</div>', 'class'=>'validate[required] form-control','required' => false));	
 		echo $this->Form->input('image_edit',array('div'=>false,'error'=>false,'type'=>'hidden','value'=>$this->request->data['Product']['image']));
 		?>    
 		<?php echo $this->Html->image('product/small/'.$this->request->data['Product']['image']);?>
@@ -57,18 +57,18 @@
             <div class="panel panel-default">
             	<div class="panel-heading">Varients <!--<span class="varient-enable glyphicon glyphicon-plus"></span>--></div>              
                 <div class="panel-body" id="varient_body">           
-                <a id="test">Add More Varients</a>
+                <a id="test">Add More Varients</a><span class="error_msg_var"></span>
                 <?php $varys= $this->request->data['Vary'];
 				$i=0;
 				foreach($varys as $vary){
 				?>
                  <div class="form-group varHead"><label>Varient Name</label><label>SKU</label><label>BarCode</label><label>Price</label></div>
                  <div class="form-group varHead">
-                 <input type="text" id="vname<?php echo $i;?>" value="<?php echo $vary['variant'];?>" class="form-control" name="data[Vary][val][<?php echo $i;?>][variant]"  >
+                 <input type="text" id="varient<?php echo $i;?>" value="<?php echo $vary['variant'];?>" class="form-control" name="data[Vary][val][<?php echo $i;?>][variant]"  >
                  <input type="text" id="sku<?php echo $i;?>" value="<?php echo $vary['sku'];?>" class="form-control" name="data[Vary][val][<?php echo $i;?>][sku]" >
                  <input type="text" id="barcode<?php echo $i;?>" value="<?php echo $vary['barcode'];?>" class="form-control" name="data[Vary][val][<?php echo $i;?>][barcode]" >
-                 <input type="text" id="Price<?php echo $i;?>" value="<?php echo $vary['price'];?>" class="form-control" name="data[Vary][val][<?php echo $i;?>][price]" >
-                 <input type="hidden" name="data[Vary][val][<?php echo $i;?>][id]" value="<?php echo $vary['id']; ?>"  />
+                 <input type="text" id="price<?php echo $i;?>" value="<?php echo $vary['price'];?>" class="form-control" name="data[Vary][val][<?php echo $i;?>][price]" >
+                 <input onclick="" type="hidden" name="data[Vary][val][<?php echo $i;?>][id]" value="<?php echo $vary['id']; ?>"  />
                  </div>
                  <?php $i++;} ?>
                  <div id='TextBoxesGroup'>	</div>
@@ -80,24 +80,5 @@
      <?php echo $this->Form->submit(__('Submit'),array('div'=>false, 'class'=>'btn btn-lg btn-success btn-block' ,'id' => 'getVarientValue')); echo $this->Form->end();	?>
 </div>
 </div>
-<script>
- var counter = <?php echo $i ?>;
-	 $('#test').on('click',function(e){
-			if(counter>10){
-					alert("Only 10 textboxes allow");
-					return false;
-			}else{
-			var newTextBoxDiv = $(document.createElement('div'))
-				 .attr("id", 'TextBoxDiv' + counter);
-						
-			newTextBoxDiv.after().html('<div class="form-group varHead"><label>Varient</label><label>SKU</label><label>BarCode</label><label>Price</label></div><div class="form-group varHead"><input type="text" id="varient' + counter + '" value="" class="form-control"  ><input type="text" id="sku' + counter + '" value="" class="form-control" ><input type="text" id="barcode' + counter + '" value="" class="form-control" ><input type="text" id="price' + counter + '" value="" class="form-control" style="margin-right:1%" > <a class="testremove" rel="' + counter + '">remove</a></div>');
-					
-			newTextBoxDiv.appendTo("#TextBoxesGroup");
-			counter++;
-		  }
-	 });
-	 $('.testremove').on('click',function(){alert($(this).attr('rel'));
-		 $("#TextBoxDiv" + $(this).attr('rel')).remove();
-	 });
-
-</script>
+<input type="hidden" name="" id="countValues" value="<?php echo $i; ?>" />
+<?php echo $this->Html->script('inventory'); ?>
