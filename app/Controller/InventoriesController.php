@@ -26,7 +26,6 @@ class InventoriesController extends AppController {
  */
 	public function index() {
 		$this->Inventory->recursive = 0;
-		//echo '<pre>';print_r($this->Paginator->paginate());exit;
 		$this->set('inventories', $this->Paginator->paginate());
 	}
 
@@ -56,6 +55,11 @@ class InventoriesController extends AppController {
 									'SUM(total_quantity) as total_quantity','SUM(total_price) as total_price','po_no','user_id','created','modified',
 									),'group' => 'po_no'
 								),
+                            ),
+			'hasOne'=> array(
+                'Shipping' => array('foreignKey' => false,
+                                    'conditions' => array('Shipping.po_no'=>$ord_id)
+                                )
                             )
                 ),
             false
@@ -74,9 +78,11 @@ class InventoriesController extends AppController {
 		if ($this->request->is('post')) {
 			$user = $this->Auth->user();
 		 	$this->request->data['Inventory']['user_id']= $user['id'];
+			echo '<pre>';print_r($this->request->data);exit;
 			$this->Shipping->create();
 			if ($this->Shipping->save($this->request->data)) {
-			//echo '<pre>';print_r($this->request->data);exit;
+			$this->request->data['Inventory']['shipping_no']= $this->request->data['Inventory']['shipping_no'];
+			$this->request->data['Inventory']['total_quantity']= $this->request->data['Inventory']['shipping_quantity'];
 				$this->Inventory->create();
 				if ($this->Inventory->save($this->request->data)) {
 					

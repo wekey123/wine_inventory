@@ -2,7 +2,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-12">
-                    <h4 class="page-head-line"><?php echo __('Order View'); ?></h4>
+                    <h4 class="page-head-line"><?php echo __('Inventory Details'); ?></h4>
 
                 </div>
                 <div class="col-md-12">
@@ -11,15 +11,29 @@
          </div><?php //echo '<pre>';print_r($inventory); ?>
             <?php //foreach ($inventory as $inventory) {?>
           		  <div class="row">
-                        <div class="col-md-12">
+                        <div class="col-md-6">
                             <div class="alert alert-warning">
                                <strong><?php echo __('Order Number'); ?></strong> <span> : </span> <span><?php echo h($inventory['Order'][0]['po_no']); ?></span> <br />
-                               <strong><?php echo __('Total Quantity'); ?></strong> <span> : </span> <span><?php echo h($inventory['Order'][0][0]['total_quantity']); ?></span> <br />
-                               <strong><?php echo __('Total Price'); ?></strong> <span> : </span> <span><?php echo h($inventory['Order'][0][0]['total_price']); ?></span> <br />
-                               <strong><?php echo __('Created By'); ?></strong> <span> : </span> <span><?php echo h($inventory['User']['username']); ?></span> <br />
-                               <strong><?php echo __('Created On'); ?></strong> <span> : </span> <span><?php echo h($inventory['Order'][0][0]['created']); ?></span> <br />
+                               <strong><?php echo __('Shipping Number'); ?></strong> <span> : </span> <span><?php echo h($inventory['Shipping']['shipping_no']); ?></span> <br />
+                               <strong><?php echo __('Total Quantity'); ?></strong> <span> : </span> <span><?php echo h($inventory['Shipping']['shipping_quantity']); ?></span> <br />
+                               <strong><?php echo __('Defect Quantity'); ?></strong> <span> : </span> <span><?php echo h($inventory['Shipping']['defective_quantity']); ?></span> <br />
+                               <strong><?php echo __('Shipped Via'); ?></strong> <span> : </span> <span><?php echo h($inventory['Shipping']['shipping_method']); ?></span> <br />
                             </div>
                         </div>
+                        
+                         <div class="col-md-6">
+                            <div class="alert alert-warning">
+                               
+                               <strong><?php echo __('Tracking Number'); ?></strong> <span> : </span> <span><?php echo h($inventory['Shipping']['tracking_no']); ?></span> <br />
+                               <strong><?php echo __('Total Weight'); ?></strong> <span> : </span> <span><?php echo h($inventory['Shipping']['weight']); ?></span> <br />
+                               
+                               <strong><?php echo __('Received On'); ?></strong> <span> : </span> <span><?php echo h($inventory['Shipping']['received_date']); ?></span> <br />
+                               
+                               <strong><?php echo __('Created By'); ?></strong> <span> : </span> <span><?php  $users = $this->Util->getUserdetails($inventory['Order'][0]['user_id']); echo isset($users['User']['username']) ? $users['User']['username'] : '';?></span> <br />
+                               <strong><?php echo __('Created On'); ?></strong> <span> : </span> <span><?php echo h($inventory['Order'][0]['created']); ?></span> <br />
+                            </div>
+                        </div>
+                        
             		</div>
                     
                     
@@ -134,11 +148,13 @@
                                                             <th>#</th>
                                                             <th><?php echo $this->Paginator->sort('Product Name'); ?></th>
                                                             <th><?php echo $this->Paginator->sort('Varient'); ?></th>
-                                                            <th><?php echo $this->Paginator->sort('Quantity'); ?></th>
+                                                            <th><?php echo $this->Paginator->sort('Received Quantity'); ?></th>
+                                                            <th><?php echo $this->Paginator->sort('Missing Quantity'); ?></th>
+                                                            <th><?php echo $this->Paginator->sort('Defect Quantity'); ?></th>
                                                             <th><?php echo $this->Paginator->sort('Price'); ?></th>
-                                                            <th><?php echo $this->Paginator->sort('SKU'); ?></th>
+                                                           <?php /*?> <th><?php echo $this->Paginator->sort('SKU'); ?></th>
                                                             <th><?php echo $this->Paginator->sort('Barcode'); ?></th>
-                                                            <th><?php echo $this->Paginator->sort('Order Number'); ?></th>
+                                                            <th><?php echo $this->Paginator->sort('Order Number'); ?></th><?php */?>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
@@ -148,10 +164,12 @@
                                                             <td><?php //echo h($product['Product']['title']); ?>&nbsp;</td>
                                                             <td><?php echo h($product['variant']); ?>&nbsp;</td>
                                                             <td><?php echo h($product['quantity']); ?>&nbsp;</td>
+                                                            <td><?php echo h($product['missing']); ?>&nbsp;</td>
+                                                            <td><?php echo h($product['defect']); ?>&nbsp;</td>
                                                             <td><?php echo h($product['price']); ?>&nbsp;</td>
-                                                            <td><?php echo h($product['sku']); ?>&nbsp;</td>
+                                                            <?php /*?><td><?php echo h($product['sku']); ?>&nbsp;</td>
                                                             <td><?php echo h($product['barcode']); ?>&nbsp;</td>
-                                                            <td><?php echo h($product['po_no']); ?>&nbsp;</td>
+                                                            <td><?php echo h($product['po_no']); ?>&nbsp;</td><?php */?>
                                                         </tr>
                                                     <?php $i++; } endforeach; ?>
                                                     </tbody>

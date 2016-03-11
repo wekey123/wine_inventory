@@ -17,6 +17,9 @@
             </div>
             <div class="panel-body">
                 <div class="table-responsive">
+                
+                 <input id="filter" type="text" class="form-control" placeholder="Type here...">
+                
                     <table class="table table-hover">
                         <thead>
                             <tr>
@@ -28,7 +31,7 @@
                                 <th><?php echo $this->Paginator->sort('action'); ?></th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody class="searchable">
                          <?php $i=1; foreach ($products as $product): ?>
                             <tr id="NoncollapseExample<?php echo $i;?>">
                                 <td><?php echo h($product['Product']['id']); ?>&nbsp;</td>
@@ -113,4 +116,22 @@ $('.saveOrder').click(function(){
 $('#submitButton').click( function() {
 	$('#orderAdd').submit();
 });
+$(document).ready(function () {
+
+    (function ($) {
+
+        $('#filter').keyup(function () {
+
+            var rex = new RegExp($(this).val(), 'i');
+            $('.searchable tr').hide();
+            $('.searchable tr').filter(function () {
+                return rex.test($(this).text());
+            }).show();
+
+        })
+
+    }(jQuery));
+
+});
+
 </script>
