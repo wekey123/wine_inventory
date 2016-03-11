@@ -1,3 +1,4 @@
+<?php echo $this->element('tableScript'); ?>
 <div class="row">	
  	 <div class="col-md-12">
                      <!--    Hover Rows  -->
@@ -6,8 +7,8 @@
                             Products List
                         </div>
                         <div class="panel-body">
-                            <div class="table-responsive">
-                                <table class="table table-hover">
+                            <div class="table-responsive" style="overflow-x:hidden;">
+                                <table id="inventory_tab" class="table table-striped table-bordered" cellspacing="0" width="100%">
                                     <thead>
                                         <tr>
                                             <th>#</th>
@@ -56,3 +57,8 @@
                     <!-- End  Hover Rows  -->
                 </div>
     </div>
+    <script>
+    $(document).ready(function() {
+		$('#inventory_tab').DataTable();
+	} );
+    </script>
