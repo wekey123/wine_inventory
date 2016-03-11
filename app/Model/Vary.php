@@ -13,7 +13,21 @@ class Vary extends AppModel {
  * @var string
  */
 	public $displayField = 'product_id';
-
+	public $validate = array(
+        
+		'variant' => array(
+            'rule' => 'notBlank',
+        ),
+		'sku' => array(
+           'rule' => 'notBlank',
+        ),
+		'barcode' => array(
+           'rule' => 'notBlank',
+        ),
+		'price' => array(
+           'rule' => 'notBlank',
+        ),
+    );
 
 	// The Associations below have been created with all possible keys, those that are not needed can be removed
 

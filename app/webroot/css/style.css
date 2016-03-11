@@ -312,3 +312,24 @@ footer {
 .btn-google {
     background-color: #c32f10;
 }
+
+/************  Common CSS *************/
+.varHead label{
+	width:25%;
+	margin-bottom:0px;
+}
+.varHead input[type="text"]{
+	width:15%;
+	float:left;
+	margin-right:10%;
+	margin-bottom:0px;
+}
+.error_msg_var{
+	margin-left: 30%;
+    color: red;
+}
+label.mandatory:after {
+    content: ' *';
+    color: red;
+    display: inline;
+}

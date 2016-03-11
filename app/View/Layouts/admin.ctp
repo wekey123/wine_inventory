@@ -35,6 +35,6 @@
         <?php echo $this->fetch('content'); ?>
     </div>
     <!-- /#wrapper -->
-
+		
 </body>
 </html>
