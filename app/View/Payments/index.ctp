@@ -1,3 +1,4 @@
+ <?php echo $this->element('tableScript'); ?>
  <div class="content-wrapper">
    <div class="container">
      <div class="row">
@@ -17,8 +18,8 @@
                            <?php echo __('Payments List'); ?>
                         </div>
                         <div class="panel-body">
-                            <div class="table-responsive">
-									<table cellpadding="0" cellspacing="0" class="table table-hover">
+                           <div class="table-responsive" style="overflow-x:hidden;">
+                                <table id="example" class="table table-striped table-bordered" cellspacing="0" width="100%">
 	<thead>
 	<tr>
 			<th><?php echo $this->Paginator->sort('#'); ?></th>
@@ -49,7 +50,7 @@
 		<td><?php echo $this->Util->DateFormat($payment['Payment']['created']); ?>&nbsp;</td>
 <?php /*?>		<td><?php echo $this->Util->DateFormat($payment['Payment']['modified']); ?>&nbsp;</td><?php */?>
 		<td class="actions">
-			<?php echo $this->Html->link(__('View'), array('action' => 'view', $payment['Payment']['id'])); ?>
+			<?php echo $this->Html->link(__('View'), array('action' => 'view', $payment['Payment']['invoice_no'])); ?>
 			<?php /*?><?php echo $this->Html->link(__('Edit'), array('action' => 'edit', $payment['Payment']['id'])); ?>
 			<?php echo $this->Form->postLink(__('Delete'), array('action' => 'delete', $payment['Payment']['id']), array('confirm' => __('Are you sure you want to delete # %s?', $payment['Payment']['id']))); ?><?php */?>
 		</td>

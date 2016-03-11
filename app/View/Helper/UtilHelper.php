@@ -22,7 +22,7 @@
 App::uses('AppHelper', 'View/Helper');
 //App::uses('TimeHelper', 'View/Helper')
 App::uses('User', 'Model');
-
+App::uses('Product', 'Model');
 
 /**
  * Application helper
@@ -35,6 +35,9 @@ App::uses('User', 'Model');
 class UtilHelper extends AppHelper {
 	
 	 public $helpers = array('Time','Number');
+	 
+	 private $invoiceTotalPrice;
+	 private $PaymentDueAmount;
 	 
 	 public function dateFormat($stringdate) {
 			//date_default_timezone_set('Asia/Kolkata');
@@ -54,9 +57,29 @@ class UtilHelper extends AppHelper {
 
 		 $model = new User();
 		 if($id != ''){ 
-		 	$model->find("first",array('conditions'=>array('User.id'=>$id)));
 		    return $model->find("first",array('conditions'=>array('User.id'=>$id)));
 		 }else
 		     return '';
+	}
+	
+	public function getProductdetails($pid){
+		 $model = new Product();
+		 if($pid != ''){ 
+		 	return $model->find("first",array('conditions'=>array('Product.id'=>$pid)));
+		 }else
+		     return '';
+	}
+	
+	
+	public function setInvoiceTotalPrice($invoiceTotalPrice){
+		$this->invoiceTotalPrice = $invoiceTotalPrice;
+	}
+	
+	public function setTotalAmountPayed($totalAmountPayed){
+		$this->PaymentDueAmount = $this->invoiceTotalPrice - $totalAmountPayed;
+	}
+	
+	public function getAmountDue(){
+		return $this->PaymentDueAmount;
 	}
 }

@@ -36,12 +36,30 @@ class PaymentsController extends AppController {
  * @param string $id
  * @return void
  */
-	public function view($id = null) {
-		if (!$this->Payment->exists($id)) {
-			throw new NotFoundException(__('Invalid payment'));
+	public function view($no = null) {
+		
+		 $this->Invoice->bindModel(array(
+            'hasMany' => array(
+                'Vary' => array('foreignKey' => false,
+                                    'conditions' => array('Vary.type' => 'invoice','Vary.po_no'=>$no)
+                                ),
+				'Payment' => array('foreignKey' => false,
+                                    'conditions' => array('Payment.invoice_no' => $no)
+                                ),
+                            )
+                ),
+            false
+        );
+		
+		if (!$this->Invoice->find('count', array('conditions' => array('Invoice.invoice_no'=>$no)))) {
+			throw new NotFoundException(__('Invalid invoice'));
 		}
-		$options = array('conditions' => array('Payment.' . $this->Payment->primaryKey => $id));
-		$this->set('payment', $this->Payment->find('first', $options));
+		
+		 $options = array('conditions' => array('Invoice.invoice_no' => $no));
+		 $paymentView = $this->Invoice->find('first', $options);
+		// debug($paymentView); exit;
+		 $this->set('invoice', $paymentView);
+
 	}
 
 /**

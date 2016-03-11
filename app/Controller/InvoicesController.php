@@ -51,7 +51,7 @@ class InvoicesController extends AppController {
 		
 		
 		if (!$this->Invoice->find('count', array('conditions' => array('Invoice.invoice_no'=>$no)))) {
-			throw new NotFoundException(__('Invalid Invoide'));
+			throw new NotFoundException(__('Invalid invoice'));
 		}
 		$options = array('conditions' => array('Invoice.invoice_no'=> $no));
 		//debug($this->Invoice->find('first', $options)); exit;
