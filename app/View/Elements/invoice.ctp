@@ -36,7 +36,7 @@
                                       
                                         <input type="hidden" name="Vary[product_id][<?php echo $i; ?>]" value="<?php echo h($product['product_id']); ?>"  />
                                             </td>
-                                            <td><?php echo h($product['price']); ?>&nbsp;</td>
+                                            <td><?php echo $this->Util->currencyFormat($product['price']); ?>&nbsp;</td>
                                             <td><?php echo h($product['sku']); ?>&nbsp;</td>
                                             <td><?php echo h($product['barcode']); ?>&nbsp;</td>
                                             <td><?php echo h($product['po_no']); ?>&nbsp;</td>

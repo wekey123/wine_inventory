@@ -50,7 +50,10 @@ class PaymentsController extends AppController {
  * @return void
  */
 	public function add() {
+		$user = $this->Auth->user();
 		if ($this->request->is('post')) {
+			$this->request->data['Payment']['user_id'] = $user['id'];
+			$this->request->data['Payment']['payment_date'] = date("Y-m-d", strtotime($this->request->data['Payment']['payment_date']));
 			$this->Payment->create();
 			if ($this->Payment->save($this->request->data)) {
 				$this->Flash->success(__('The payment has been saved.'));

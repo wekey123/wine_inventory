@@ -20,7 +20,9 @@
  */
 
 App::uses('AppHelper', 'View/Helper');
-//App::uses('TimeHelper', 'View/Helper');
+//App::uses('TimeHelper', 'View/Helper')
+App::uses('User', 'Model');
+
 
 /**
  * Application helper
@@ -47,4 +49,14 @@ class UtilHelper extends AppHelper {
 	public function currencyFormat($nubmer) {
             return $this->Number->currency($nubmer, 'USD');  
     }
+	
+	public function getUserdetails($id){
+
+		 $model = new User();
+		 if($id != ''){ 
+		 	$model->find("first",array('conditions'=>array('User.id'=>$id)));
+		    return $model->find("first",array('conditions'=>array('User.id'=>$id)));
+		 }else
+		     return '';
+	}
 }

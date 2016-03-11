@@ -8,12 +8,12 @@
                                <?php //echo '<pre>'; print_r($invoice);?>
                                
                                 <strong><?php echo __('Invoice Number'); ?></strong> <span> : </span> <span><?php echo h($invoice['Invoice']['invoice_no']); ?></span> <br />
-                               <strong><?php echo __('Invoice Date'); ?></strong> <span> : </span> <span><?php echo h($invoice['Invoice']['invoice_date']); ?></span> <br /> 
+                               <strong><?php echo __('Invoice Date'); ?></strong> <span> : </span> <span><?php echo $this->Util->DateOnlyFormat($invoice['Invoice']['invoice_date']); ?></span> <br /> 
                                <strong><?php echo __('Total Product'); ?></strong> <span> : </span> <span><?php echo h($invoice['Invoice']['total_quantity']); ?></span> <br />
-                                <strong><?php echo __('Total Amount'); ?></strong> <span> : </span> <span><?php echo h($invoice['Invoice']['total_price']); ?></span> <br />
+                                <strong><?php echo __('Total Amount'); ?></strong> <span> : </span> <span><?php echo $this->Util->currencyFormat($invoice['Invoice']['total_price']); ?></span> <br />
                                <strong><?php echo __('Vendor Name'); ?></strong> <span> : </span> <span><?php echo h($invoice['Invoice']['vendor_name']); ?></span> <br />
                                <strong><?php echo __('Shipping By'); ?></strong> <span> : </span> <span><?php echo h($invoice['Invoice']['shipping_method']); ?></span> <br />
-                              <strong><?php echo __('Created Date'); ?></strong> <span> : </span> <span><?php echo h($invoice['Invoice']['created']); ?></span> <br />
+                              <strong><?php echo __('Created Date'); ?></strong> <span> : </span> <span><?php echo $this->Util->DateFormat($invoice['Invoice']['created']); ?></span> <br />
                                
                                 
                             </div>
@@ -32,10 +32,12 @@
                                
                                 <strong><?php echo __('Invoice Number'); ?></strong> <span> : </span> <span><?php echo h($pay['invoice_no']); ?></span> <br />
                                <strong><?php echo __('Payment Number'); ?></strong> <span> : </span> <span><?php echo h($pay['payment_no']); ?></span> <br /> 
-                                <strong><?php echo __('Payment Amount'); ?></strong> <span> : </span> <span><?php echo h($pay['payment_amount']); ?></span> <br />
-                               <strong><?php echo __('Payment Date'); ?></strong> <span> : </span> <span><?php echo h($pay['payment_date']); ?></span> <br />
+                                <strong><?php echo __('Payed Amount'); ?></strong> <span> : </span> <span>
+								<?php echo $this->Util->currencyFormat($invoice['Invoice']['total_price']-$pay['payment_amount']); ?></span> <br />
+                                <strong><?php echo __('Amount Due'); ?></strong> <span> : </span> <span><?php echo $this->Util->currencyFormat($pay['payment_amount']); ?></span> <br />
+                               <strong><?php echo __('Payment Date'); ?></strong> <span> : </span> <span><?php echo $this->Util->DateOnlyFormat($pay['payment_date']); ?></span> <br />
                                <strong><?php echo __('Payment Method'); ?></strong> <span> : </span> <span><?php echo h($pay['payment_method']); ?></span> <br />
-                              <strong><?php echo __('Created Date'); ?></strong> <span> : </span> <span><?php echo h($pay['created']); ?></span> <br />
+                              <strong><?php echo __('Created Date'); ?></strong> <span> : </span> <span><?php echo $this->Util->DateFormat($pay['created']); ?></span> <br />
                                <?php $i++;} ?>
                                 
                             </div>
