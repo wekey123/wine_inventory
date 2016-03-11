@@ -50,7 +50,6 @@
         <div class="col-md-5" style="margin-right:10%;">   
 	<?php
 		echo $this->Form->input('user_id',array('div'=>false,'error'=>false,'type'=>'hidden'));
-		//echo $this->Form->input('po_no',array('div'=>false,'error'=>false,'type'=>'hidden'));
 		echo $this->Form->input('product _no',array('div'=>false,'error'=>false,'type'=>'hidden'));
 		echo $this->Form->input('payment_no',array('div'=>false,'error'=>false,'type'=>'hidden'));
 		

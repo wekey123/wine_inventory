@@ -79,15 +79,17 @@
                                                      <?php $i =1;foreach ($inventory['Vary'] as $product): if($product['type']=='order'){ ?>
                                                         <tr>
                                                             <td><?php echo $i; ?>&nbsp;</td>
-                                                            <td><?php //echo h($product['Product']['title']); ?>&nbsp;</td>
+                                                            <td><?php $products = $this->Util->getProductdetails($product['product_id']);  echo isset($products['Product']['title']) ? $products['Product']['title'] : ''; ?>&nbsp;</td>
                                                             <td><?php echo h($product['variant']); ?>&nbsp;</td>
-                                                            <td><?php echo h($product['quantity']); ?>&nbsp;</td>
-                                                            <td><?php echo h($product['price']); ?>&nbsp;</td>
+                                                            <td><?php echo h($product['quantity']); $orderQuantitySum[] = $product['quantity']; ?>&nbsp;</td>
+                                                            <td><?php echo $this->Util->currencyFormat($product['price']); $orderPriceSum[] = $product['price']; ?>&nbsp;</td>
                                                             <td><?php echo h($product['sku']); ?>&nbsp;</td>
                                                             <td><?php echo h($product['barcode']); ?>&nbsp;</td>
                                                             <td><?php echo h($product['po_no']); ?>&nbsp;</td>
                                                         </tr>
+                                                       </tr>
                                                     <?php $i++;}endforeach; ?>
+                                                     <tr><td colspan="3">Total:</td><td><?php echo array_sum($orderQuantitySum); ?></td><td colspan="4"><?php echo $this->Util->currencyFormat(array_sum($orderPriceSum)); ?></td>
                                                     </tbody>
                                                 </table>
                                             </div>
@@ -112,22 +114,23 @@
                                                             <th><?php echo $this->Paginator->sort('Price'); ?></th>
                                                             <th><?php echo $this->Paginator->sort('SKU'); ?></th>
                                                             <th><?php echo $this->Paginator->sort('Barcode'); ?></th>
-                                                            <th><?php echo $this->Paginator->sort('Order Number'); ?></th>
+                                                            <th><?php echo $this->Paginator->sort('Invoice Number'); ?></th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
                                                      <?php $i =1;foreach ($inventory['Vary'] as $product):  if($product['type']=='invoice'){  ?>
                                                         <tr>
                                                             <td><?php echo $i; ?>&nbsp;</td>
-                                                            <td><?php //echo h($product['Product']['title']); ?>&nbsp;</td>
+                                                            <td><?php $products = $this->Util->getProductdetails($product['product_id']);  echo isset($products['Product']['title']) ? $products['Product']['title'] : ''; ?>&nbsp;</td>
                                                             <td><?php echo h($product['variant']); ?>&nbsp;</td>
-                                                            <td><?php echo h($product['quantity']); ?>&nbsp;</td>
-                                                            <td><?php echo h($product['price']); ?>&nbsp;</td>
+                                                            <td><?php echo h($product['quantity']); $invoiceQuantitySum[] = $product['quantity']; ?>&nbsp;</td>
+                                                            <td><?php echo $this->Util->currencyFormat($product['price']); $invoicePriceSum[] = $product['price']; ?>&nbsp;</td>
                                                             <td><?php echo h($product['sku']); ?>&nbsp;</td>
                                                             <td><?php echo h($product['barcode']); ?>&nbsp;</td>
                                                             <td><?php echo h($product['po_no']); ?>&nbsp;</td>
                                                         </tr>
                                                     <?php $i++; } endforeach; ?>
+                                                    <tr><td colspan="3">Total:</td><td><?php echo array_sum($invoiceQuantitySum); ?></td><td colspan="4"><?php echo $this->Util->currencyFormat(array_sum($invoicePriceSum)); ?></td>
                                                     </tbody>
                                                 </table>
                                             </div>
@@ -161,18 +164,19 @@
                                                      <?php $i =1;foreach ($inventory['Vary'] as $product):  if($product['type']=='inventory'){  ?>
                                                         <tr>
                                                             <td><?php echo $i; ?>&nbsp;</td>
-                                                            <td><?php //echo h($product['Product']['title']); ?>&nbsp;</td>
+                                                            <td><?php $products = $this->Util->getProductdetails($product['product_id']);  echo isset($products['Product']['title']) ? $products['Product']['title'] : ''; ?>&nbsp;</td>
                                                             <td><?php echo h($product['variant']); ?>&nbsp;</td>
-                                                            <td><?php echo h($product['quantity']); ?>&nbsp;</td>
-                                                            <td><?php echo h($product['missing']); ?>&nbsp;</td>
-                                                            <td><?php echo h($product['defect']); ?>&nbsp;</td>
-                                                            <td><?php echo h($product['price']); ?>&nbsp;</td>
+                                                            <td><?php echo h($product['quantity']); $inventoryQuantitySum[] = $product['quantity']; ?>&nbsp;</td>
+                                                            <td><?php echo h($product['missing']);  $inventorymissingSum[] = $product['missing'];?>&nbsp;</td>
+                                                            <td><?php echo h($product['defect']);  $inventorydefectSum[] = $product['defect'];?>&nbsp;</td>
+                                                            <td><?php echo $this->Util->currencyFormat($product['price']); $inventorypriceSum[] = $product['price']; ?>&nbsp;</td>
                                                             <?php /*?><td><?php echo h($product['sku']); ?>&nbsp;</td>
                                                             <td><?php echo h($product['barcode']); ?>&nbsp;</td>
                                                             <td><?php echo h($product['po_no']); ?>&nbsp;</td><?php */?>
                                                         </tr>
                                                     <?php $i++; } endforeach; ?>
                                                     </tbody>
+                                                    <tr><td colspan="3">Total:</td><td><?php echo array_sum($inventoryQuantitySum); ?></td><td><?php echo array_sum($inventorymissingSum); ?></td><td><?php echo array_sum($inventorydefectSum); ?></td><td><?php echo $this->Util->currencyFormat(array_sum($inventorypriceSum)); ?></td>
                                                 </table>
                                             </div>
                                         </div>
@@ -191,13 +195,13 @@
                     <div class="col-md-4 col-sm-4">
                     <div class="panel panel-info">
                         <div class="panel-heading">
-                            Release 1
+                            Payment Release # <?php echo $r; ?>
                         </div>
                         <div class="panel-body">
                             <strong><?php echo __('Invoice Number'); ?></strong> <span> : </span> <span><?php echo h($inventorys['invoice_no']); ?></span> <br />
                             <strong><?php echo __('Payment Number'); ?></strong> <span> : </span> <span><?php echo h($inventorys['payment_no']); ?></span> <br />
-                            <strong><?php echo __('Payment Amount'); ?></strong> <span> : </span> <span><?php echo h($inventorys['payment_amount']); ?></span> <br />
-                            <strong><?php echo __('Payment Date'); ?></strong> <span> : </span> <span><?php echo h($inventorys['payment_date']); ?></span> <br />
+                            <strong><?php echo __('Payment Amount'); ?></strong> <span> : </span> <span><?php echo $this->Util->currencyFormat($inventorys['payment_amount']); ?></span> <br />
+                            <strong><?php echo __('Payment Date'); ?></strong> <span> : </span> <span><?php echo $this->Util->dateOnlyFormat($inventorys['payment_date']); ?></span> <br />
                             <strong><?php echo __('Payment Method'); ?></strong> <span> : </span> <span><?php echo h($inventorys['payment_method']); ?></span> <br />
                             <strong><?php echo __('Created By'); ?></strong> <span> : </span> <span><?php echo h($inventory['User']['username']); ?></span> <br />
                             <strong><?php echo __('Created On'); ?></strong> <span> : </span> <span><?php echo h($inventorys['created']); ?></span> <br />

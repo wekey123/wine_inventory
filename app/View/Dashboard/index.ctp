@@ -56,7 +56,7 @@ a.dasboard_link:hover {
 </div>
                        
 </div>
-					 <?php echo $this->Html->link('Invoice',array('controller'=>'invoice','action' => 'index'),array('class'=>'dasboard_link')); ?>
+					 <?php echo $this->Html->link('Invoice',array('controller'=>'invoices','action' => 'index'),array('class'=>'dasboard_link')); ?>
                 </div>
             </div>
             <div class="col-md-3 col-sm-3 col-xs-6">
@@ -67,7 +67,7 @@ a.dasboard_link:hover {
 </div>
                        
 </div>
-					 <?php echo $this->Html->link('Inventory',array('controller'=>'inventory','action' => 'index'),array('class'=>'dasboard_link')); ?>
+					 <?php echo $this->Html->link('Inventory',array('controller'=>'inventories','action' => 'index'),array('class'=>'dasboard_link')); ?>
                 </div>
             </div>
 
