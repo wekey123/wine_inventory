@@ -35,14 +35,6 @@
         <?php echo $this->fetch('content'); ?>
     </div>
     <!-- /#wrapper -->
-	
-	
-<script>
-$(document).ready(function() {
-    $('#example').DataTable();
-} );
-</script>
-	 
 
 </body>
 </html>
