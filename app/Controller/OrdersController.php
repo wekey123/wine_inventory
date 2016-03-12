@@ -178,4 +178,25 @@ class OrdersController extends AppController {
 		}
 		return $this->redirect(array('action' => 'index'));
 	}
+	
+	public function download()
+	{
+		//$this->Order->recursive = 2;
+		$this->Order->bindModel(array(
+            'hasMany' => array(
+                'Vary' => array('foreignKey' => false,
+                                    'conditions' => array('Vary.type' => 'order','Vary.po_no !='=>'')
+                                ),
+                            )
+                ),
+            false
+        );
+		$options = array('group' => 'Order.po_no');
+		$Orders = $this->Order->find('all',$options);
+		//debug($Orders); exit;
+		$this->set('orders', $this->Order->find('all'));
+		$this->layout = null;
+		//$this->autoLayout = false;
+		//Configure::write('debug', '0');
+	}
 }
