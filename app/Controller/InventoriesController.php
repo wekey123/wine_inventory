@@ -75,18 +75,22 @@ class InventoriesController extends AppController {
  * @return void
  */
 	public function add() {
+		$user = $this->Auth->user();
 		if ($this->request->is('post')) {
-			$user = $this->Auth->user();
 		 	$this->request->data['Inventory']['user_id']= $user['id'];
-			echo '<pre>';print_r($this->request->data);exit;
+			$this->request->data['Inventory']['shipping_no'] = $this->request->data['Shipping']['shipping_no'];
+			$this->request->data['Inventory']['total_quantity'] = $this->request->data['Shipping']['shipping_quantity'];
+			$this->request->data['Shipping']['user_id'] = $user['id'];
+			$this->request->data['Shipping']['invoice_no'] = $this->request->data['Inventory']['invoice_no']; 
+			$this->request->data['Shipping']['po_no'] = $this->request->data['Inventory']['po_no']; 
+			$this->request->data['Shipping']['received_date'] = date("Y-m-d", strtotime($this->request->data['Shipping']['received_date']));
+			//debug($this->request->data); exit;
 			$this->Shipping->create();
 			if ($this->Shipping->save($this->request->data)) {
-			$this->request->data['Inventory']['shipping_no']= $this->request->data['Inventory']['shipping_no'];
-			$this->request->data['Inventory']['total_quantity']= $this->request->data['Inventory']['shipping_quantity'];
 				$this->Inventory->create();
 				if ($this->Inventory->save($this->request->data)) {
 					
-					if(isset($this->request->data['Vary'])){
+				if(isset($this->request->data['Vary'])){
 					$i=1;
 					$value = $this->request->data['Vary'];
 				  	foreach($value['quantity']  as  $quan){
@@ -104,27 +108,24 @@ class InventoriesController extends AppController {
 						$this->Vary->save($this->request->data);
 						$i++;
 					}
-				$this->Flash->success(__('The order has been saved.'));
-				return $this->redirect(array('action' => 'index'));
-			}
-					
-					
-					
 					$this->Flash->success(__('The inventory has been saved.'));
 					return $this->redirect(array('action' => 'index'));
+				}
+					$this->Flash->error(__('The Variant could not be saved. Please, try again.'));
+					
 				} else {
 					$this->Flash->error(__('The inventory could not be saved. Please, try again.'));
 				}
+			} else {
+					$this->Flash->error(__('The Shipping could not be saved. Please, try again.'));
 			}
+		}else{
+			$invoices = $this->Payment->Invoice->find('all',array('fields'=>array('Invoice.invoice_no'),'group'=>'Invoice.invoice_no'));
+			foreach($invoices as $invoice){
+				$invoicelist[]=$invoice['Invoice']['invoice_no'];
+			}
+			$this->set(compact('invoicelist'));
 		}
-		/*$users = $this->Inventory->User->find('list');
-		$orders = $this->Inventory->Order->find('list');
-		$this->set(compact('users', 'orders'));*/
-		$invoices = $this->Payment->Invoice->find('all',array('fields'=>array('Invoice.invoice_no'),'group'=>'Invoice.invoice_no'));
-		foreach($invoices as $invoice){
-			$invoicelist[]=$invoice['Invoice']['invoice_no'];
-		}
-		$this->set(compact('invoicelist'));
 	}
 
 /**
