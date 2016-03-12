@@ -108,7 +108,8 @@ class OrdersController extends AppController {
 								$this->request->data['Vary']['variant'] = $value['variant'][$i];
 								$this->request->data['Vary']['sku'] = $value['sku'][$i];
 								$this->request->data['Vary']['barcode'] = $value['barcode'][$i];
-								$this->request->data['Vary']['price'] = $value['price'][$i] * $quan;
+								$this->request->data['Vary']['price'] = $value['price'][$i];
+								$this->request->data['Vary']['price_total'] = $value['price'][$i] * $quan;
 								$this->request->data['Vary']['type'] = 'order';		
 								$this->Vary->create();
 								$this->Vary->save($this->request->data);

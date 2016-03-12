@@ -8,7 +8,7 @@
                         </div>
                         <div class="panel-body">
                             <div class="table-responsive" style="overflow-x:hidden;"><span class="error_msg_var"></span>
-                                <table id="invoice_tab" class="table table-striped table-bordered" cellspacing="0" width="100%">
+                                <table id="invoice_tab1" class="table table-striped table-bordered" cellspacing="0" width="100%">
                                     <thead>
                                         <tr>
                                             <th>#</th>

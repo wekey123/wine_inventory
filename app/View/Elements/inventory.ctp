@@ -9,7 +9,7 @@
                         <div class="panel-body">
                         <input type="hidden" name="Inventory[po_no]" value="<?php echo $order['Invoice']['po_no'];?>"   id="itemVariant" />
                             <div class="table-responsive" style="overflow-x:hidden;">
-                                <table id="inventory_tab" class="table table-striped table-bordered" cellspacing="0" width="100%">
+                                <table id="inventory_tab1" class="table table-striped table-bordered" cellspacing="0" width="100%">
                                     <thead>
                                         <tr>
                                             <th>#</th>

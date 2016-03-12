@@ -81,9 +81,10 @@ class InventoriesController extends AppController {
 			$this->request->data['Inventory']['shipping_no'] = $this->request->data['Shipping']['shipping_no'];
 			$this->request->data['Inventory']['total_quantity'] = $this->request->data['Shipping']['shipping_quantity'];
 			$this->request->data['Shipping']['user_id'] = $user['id'];
-			$this->request->data['Shipping']['invoice_no'] = $this->request->data['Inventory']['invoice_no']; 
-			$this->request->data['Inventory']['po_no'] = $this->request->data['Shipping']['po_no']; 
+			$this->request->data['Inventory']['invoice_no'] = $this->request->data['Shipping']['invoice_no']; 
+			$this->request->data['Shipping']['po_no'] = $this->request->data['Inventory']['po_no']; 
 			$this->request->data['Shipping']['received_date'] = date("Y-m-d", strtotime($this->request->data['Shipping']['received_date']));
+			//echo '<pre>';print_r($this->request->data);exit;
 			$this->Shipping->create();
 			if ($this->Shipping->save($this->request->data)) {
 				$this->Inventory->create();
@@ -100,6 +101,7 @@ class InventoriesController extends AppController {
 						$this->request->data['Vary']['sku'] = $value['sku'][$i];
 						$this->request->data['Vary']['barcode'] = $value['barcode'][$i];
 						$this->request->data['Vary']['price'] = $value['price'][$i];
+						$this->request->data['Vary']['price_total'] = $value['price'][$i] * $quan;
 						$this->request->data['Vary']['defect'] = $value['defect_quantity'][$i];
 						$this->request->data['Vary']['missing'] = $value['missing_quantity'][$i];
 						$this->request->data['Vary']['type'] = 'inventory';		

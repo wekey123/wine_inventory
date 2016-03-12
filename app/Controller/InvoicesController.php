@@ -90,6 +90,7 @@ class InvoicesController extends AppController {
 						$this->request->data['Vary']['sku'] = $value['sku'][$i];
 						$this->request->data['Vary']['barcode'] = $value['barcode'][$i];
 						$this->request->data['Vary']['price'] = $value['price'][$i];
+						$this->request->data['Vary']['price_total'] = $value['price'][$i] * $quan;
 						$this->request->data['Vary']['type'] = 'invoice';		
 						$this->Vary->create();
 						$this->Vary->save($this->request->data);
@@ -98,7 +99,7 @@ class InvoicesController extends AppController {
 					
 				$this->Order->updateAll(array('Order.status' => 1),array('Order.po_no' => $this->request->data['Invoice']['po_no']));
 					
-				$this->Flash->success(__('The order has been saved.'));
+				$this->Flash->success(__('The invoice has been saved.'));
 				return $this->redirect(array('action' => 'index'));
 			}
 			} else {
