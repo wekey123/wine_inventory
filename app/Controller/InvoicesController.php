@@ -68,6 +68,7 @@ class InvoicesController extends AppController {
 		if ($this->request->is('post')) {
 			//$po='INV'.rand();
 			$this->request->data['Invoice']['user_id']=$user['id'];
+			$this->request->data['Invoice']['status']=0;
 			//$this->request->data['Invoice']['invoice_no']=$po;
 			$this->request->data['Invoice']['invoice_date'] = date("Y-m-d", strtotime($this->request->data['Invoice']['invoice_date']));
 			$this->request->data['Invoice']['estimated_shipping_date'] = date("Y-m-d", strtotime($this->request->data['Invoice']['estimated_shipping_date']));

@@ -328,8 +328,9 @@ footer {
 	margin-left: 30%;
     color: red;
 }
-label.mandatory:after {
-    content: ' *';
-    color: red;
-    display: inline;
+.mandatory{
+    color: #F0677C;
+}
+.addmore{
+	float:right;
 }

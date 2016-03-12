@@ -25,6 +25,12 @@ class Product extends AppModel {
 		'brand' => array(
            'rule' => 'notBlank',
         ),
+		'vendor' => array(
+            'rule' => 'notBlank',
+        ),
+		'country' => array(
+           'rule' => 'notBlank',
+        ),
 		'image' => array(
 			'rule' => array(
 				'extension',

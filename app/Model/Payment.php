@@ -15,6 +15,26 @@ class Payment extends AppModel {
  *
  * @var array
  */
+ 	public $validate = array(
+	
+		'invoice_no' => array(
+            'rule' => 'notBlank',
+        ),
+        'payment_no' => array(
+            'rule' => array('minLength', '6'),
+            'message' => 'Minimum 6 characters long'
+        ),
+		'payment_amount' => array(
+           'rule' => 'numeric',
+        ),
+		'payment_method' => array(
+           'rule' => 'notBlank',
+        ),
+		'payment_date' => array(
+           'rule' => 'date',
+        )
+
+    );
 	public $belongsTo = array(
 		'Invoice' => array(
 			'className' => 'Invoice',

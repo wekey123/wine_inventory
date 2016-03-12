@@ -15,6 +15,20 @@ class Shipping extends AppModel {
  *
  * @var array
  */
+ 	public $validate = array(
+		'invoice_no' => array(
+            'rule' => 'notBlank',
+        ),
+		'shipping_no' => array(
+            'rule' => 'notBlank',
+        ),
+		'shipping_quantity' => array(
+           'rule' => 'notBlank',
+        ),
+		'received_date' => array(
+			'rule' => 'date',
+		)
+    );
 	public $belongsTo = array(
 		'Invoice' => array(
 			'className' => 'Invoice',

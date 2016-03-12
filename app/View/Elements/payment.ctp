@@ -1,4 +1,4 @@
-					<?php  
+					<?php  $totalAmountPayed=array('');
 				          $this->Util->setInvoiceTotalPrice($invoice['Invoice']['total_price']);
 				   		  foreach ($invoice['Payment'] as $Payment):
 					      $totalAmountPayed[] = $Payment['payment_amount'];
@@ -18,7 +18,8 @@
                                <strong><?php echo __('Invoice Date'); ?></strong> <span> : </span> <span><?php echo $this->Util->DateOnlyFormat($invoice['Invoice']['invoice_date']); ?></span> <br /> 
                                <strong><?php echo __('Total Product'); ?></strong> <span> : </span> <span><?php echo h($invoice['Invoice']['total_quantity']); ?></span> <br />
                                 <strong><?php echo __('Total Amount'); ?></strong> <span> : </span> <span><?php echo $this->Util->currencyFormat($invoice['Invoice']['total_price']); ?></span> <br />
-                                <strong><?php echo __('Amount Due'); ?></strong> <span> : </span> <span><?php  echo $this->Util->currencyFormat($this->Util->getAmountDue());  ?></span> <br />
+                                <?php $due= $this->Util->getAmountDue();?>
+                                <strong><?php echo __('Amount Due'); ?></strong> <span> : </span> <span><?php  echo $this->Util->currencyFormat($due);  ?></span> <br />
                                <strong><?php echo __('Vendor Name'); ?></strong> <span> : </span> <span><?php echo h($invoice['Invoice']['vendor_name']); ?></span> <br />
                                <strong><?php echo __('Shipping By'); ?></strong> <span> : </span> <span><?php echo h($invoice['Invoice']['shipping_method']); ?></span> <br />
                               <strong><?php echo __('Created Date'); ?></strong> <span> : </span> <span><?php echo $this->Util->DateFormat($invoice['Invoice']['created']); ?></span> <br />
@@ -28,7 +29,10 @@
                         </div>
                     </div>
                     
-                    
+                    <input type="hidden" name="dueAmount" value="<?php echo $due;?>" id="myDueamt"  />
+                    <input type="hidden" name="totalAmount" value="<?php echo $invoice['Invoice']['total_price'];?>"  />
+                    <input type="hidden" name="po_no" value="<?php echo $invoice['Invoice']['po_no'];?>"  />
+                    <?php if(!empty($invoice['Payment'])){ ?>
                     <div class="panel panel-default">
                         <div class="panel-heading">
                             Invoice Releases
@@ -49,3 +53,4 @@
                             </div>
                         </div>
                     </div>
+                    <?php } ?>

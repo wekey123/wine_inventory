@@ -36,10 +36,10 @@
 <div class="row">
         <div class="col-md-12">
             <div class="panel panel-default">
-            	<div class="panel-heading">Varients <!--<span class="varient-enable glyphicon glyphicon-plus"></span>--></div>              
+            	<div class="panel-heading">Varients <span class="error_msg_var"></span> <a id="test" class="btn btn-primary addmore">Add More Varients</a><!--<span class="varient-enable glyphicon glyphicon-plus"></span>--></div>              
                 <div class="panel-body" id="varient_body">           
-                <a id="test">Add More Varients</a>
-               <span class="error_msg_var"></span>
+                
+               
                 
                  <div class="form-group varHead"><label>Varient Name</label><label>SKU</label><label>BarCode</label><label>Price</label></div><div class="form-group varHead">
                 <!-- <input type="text" id="vname" value="" class="form-control" name=""  ><input type="text" id="sku" value="" class="form-control" name="data[Vary][val][0][sku]" ><input type="text" id="barcode" value="" class="form-control" name="data[Vary][val][0][barcode]" ><input type="text" id="Price" value="" class="form-control" name="data[Vary][val][0][price]" >-->
