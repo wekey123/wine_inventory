@@ -72,15 +72,24 @@ class PaymentsController extends AppController {
 		if ($this->request->is('post')) {
 			$this->request->data['Payment']['user_id'] = $user['id'];
 			$this->request->data['Payment']['payment_date'] = date("Y-m-d", strtotime($this->request->data['Payment']['payment_date']));
+			$this->request->data['Payment']['payment_amount'] = str_replace(array( ',','$'), '', $this->request->data['Payment']['payment_amount']);
 			$this->Payment->create();
 			if ($this->Payment->save($this->request->data)) {
+				if(($this->request->data['dueAmount']-str_replace(array( ',','$'), '', $this->request->data['Payment']['payment_amount'])) <= 0){
+					$this->Invoice->updateAll(array('Invoice.status' => 2),array('Invoice.invoice_no' => $this->request->data['Payment']['invoice_no']));
+					$this->Order->updateAll(array('Order.status' => 2),array('Order.po_no' => $this->request->data['po_no']));
+				}
+				else
+					$this->Invoice->updateAll(array('Invoice.status' => 1),array('Invoice.invoice_no' => $this->request->data['Payment']['invoice_no']));
+				
 				$this->Flash->success(__('The payment has been saved.'));
 				return $this->redirect(array('action' => 'index'));
 			} else {
 				$this->Flash->error(__('The payment could not be saved. Please, try again.'));
+				return $this->redirect(array('action' => 'index'));
 			}
 		}
-		$invoices = $this->Payment->Invoice->find('all',array('fields'=>array('Invoice.invoice_no'),'group'=>'Invoice.invoice_no'));
+		$invoices = $this->Payment->Invoice->find('all',array('conditions'=>array('Invoice.status'=>array(0,1)),'fields'=>array('Invoice.invoice_no'),'group'=>'Invoice.invoice_no'));
 		foreach($invoices as $invoice){
 			$invoicelist[]=$invoice['Invoice']['invoice_no'];
 		}

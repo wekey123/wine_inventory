@@ -55,9 +55,9 @@
 <div class="row">
         <div class="col-md-12">
             <div class="panel panel-default">
-            	<div class="panel-heading">Varients <!--<span class="varient-enable glyphicon glyphicon-plus"></span>--></div>              
+            	<div class="panel-heading">Varients <span class="error_msg_var"></span> <a id="test" class="btn btn-primary addmore">Add More Varients</a><!--<span class="varient-enable glyphicon glyphicon-plus"></span>--></div>              
                 <div class="panel-body" id="varient_body">           
-                <a id="test">Add More Varients</a><span class="error_msg_var"></span>
+               
                 <?php $varys= $this->request->data['Vary'];
 				$i=0;
 				foreach($varys as $vary){
