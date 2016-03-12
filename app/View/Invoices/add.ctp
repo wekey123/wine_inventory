@@ -39,7 +39,7 @@
 </style>
 <div class="content-wrapper">
     <div class="container">
-    <?php echo $this->Form->create('Invoice',array('id'=>'invoiceAdd','type' => 'file','role'=>'form')); ?>
+    <?php echo $this->Form->create('Invoice',array('id'=>'invoiceAdd','role'=>'form')); ?>
       <div class="row">
             <div class="col-md-12">
                 <h1 class="page-head-line"><?php echo __('Add Invoice'); ?> </h1>
@@ -50,8 +50,8 @@
         <div class="col-md-5" style="margin-right:10%;">               
 
 	<?php
-		echo $this->Form->input('po_no',array('div'=>false,'error'=>false,'type'=>'text', 'before' => '<div class="form-group">', 'after' => '</div>', 'class'=>'validate[required] form-control','id'=>'tags'));
-		//echo $this->Form->input('invoice_no');
+		echo $this->Form->input('po_no',array('div'=>false,'error'=>false,'type'=>'text', 'before' => '<div class="form-group">', 'after' => '</div>', 'class'=>'validate[required] form-control poVal','id'=>'tags'));
+		echo $this->Form->input('invoice_no',array('div'=>false,'error'=>false,'type'=>'text', 'before' => '<div class="form-group">', 'after' => '</div>', 'class'=>'validate[required] form-control'));
 		echo $this->Form->input('invoice_date',array('div'=>false,'error'=>false,'type'=>'text', 'before' => '<div class="form-group">', 'after' => '</div>', 'class'=>'validate[required] form-control datepicker'));
 		echo $this->Form->input('vendor_name',array('div'=>false,'error'=>false,'type'=>'text', 'before' => '<div class="form-group">', 'after' => '</div>', 'class'=>'validate[required] form-control'));
 		echo $this->Form->input('vendor_address',array('div'=>false,'error'=>false,'type'=>'textarea', 'before' => '<div class="form-group">', 'after' => '</div>', 'class'=>'validate[required] form-control'));
@@ -84,13 +84,19 @@
 <script> 
   var total_price=0;var total_quantity=0;
   $('#submitButton1').click( function() {
-	  $('#invoiceSaveID').find("input[type='text']").each(function() {
-		total_price += $(this).val() * parseFloat($(this).next().val());
-		total_quantity += parseFloat($(this).val());
-	});
-	  $('#total_price').val(total_price);
-	$('#total_quantity').val(total_quantity);
-	$('#invoiceAdd').submit();
+	  if($('.invoiceQuantitychk').val() != '' && $('.poVal').val() != '' ){
+		  $('#invoiceSaveID').find("input[type='text']").each(function() {
+			total_price += $(this).val() * parseFloat($(this).next().val());
+			total_quantity += parseFloat($(this).val());
+			});
+			$('#total_price').val(total_price);
+			$('#total_quantity').val(total_quantity);
+			$('#invoiceAdd').submit();
+	  }
+	  else{
+	  $('.error_msg_var').html('Quantity field cannot be empty');
+	  return false;
+	  }
 });
   
   </script>

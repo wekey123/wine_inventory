@@ -98,6 +98,7 @@ class OrdersController extends AppController {
 						$this->request->data['Order']['user_id']=$user['id'];
 						$this->request->data['Order']['product_id']=$value['product_id'];
 						$this->request->data['Order']['po_no']=$po;
+						$this->request->data['Order']['status']=0;
 						if ($this->Order->save($this->request->data)) {
 							$i=1;
 						  foreach ($value['quantity'] as $quan){

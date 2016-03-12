@@ -66,12 +66,16 @@ class InvoicesController extends AppController {
 	public function add() {
 		$user = $this->Auth->user();
 		if ($this->request->is('post')) {
-			$po='INV'.rand();
+			//$po='INV'.rand();
 			$this->request->data['Invoice']['user_id']=$user['id'];
-			$this->request->data['Invoice']['invoice_no']=$po;
+			//$this->request->data['Invoice']['invoice_no']=$po;
 			$this->request->data['Invoice']['invoice_date'] = date("Y-m-d", strtotime($this->request->data['Invoice']['invoice_date']));
 			$this->request->data['Invoice']['estimated_shipping_date'] = date("Y-m-d", strtotime($this->request->data['Invoice']['estimated_shipping_date']));
 			//echo '<pre>';print_r($this->request->data);exit;
+			$options = array('conditions' => array('Invoice.invoice_no'=> $this->request->data['Invoice']['invoice_no']));
+			$invoiceExist=$this->Invoice->find('first', $options);
+			//echo '<pre>';print_r($invoiceExist);exit;
+			if(empty($invoiceExist)){
 			$this->Invoice->create();
 			if ($this->Invoice->save($this->request->data)) {
 				if(isset($this->request->data['Vary'])){
@@ -79,7 +83,7 @@ class InvoicesController extends AppController {
 				$value = $this->request->data['Vary'];
 				  foreach($value['quantity']  as  $quan){
 						$this->request->data['Vary']['product_id'] = $value['product_id'][$i];
-						$this->request->data['Vary']['po_no'] = $po;   
+						$this->request->data['Vary']['po_no'] = $this->request->data['Invoice']['invoice_no'];   
 						$this->request->data['Vary']['quantity'] = $quan;
 						$this->request->data['Vary']['variant'] = $value['variant'][$i];
 						$this->request->data['Vary']['sku'] = $value['sku'][$i];
@@ -90,20 +94,35 @@ class InvoicesController extends AppController {
 						$this->Vary->save($this->request->data);
 						$i++;
 					}
+					
+				$this->Order->updateAll(array('Order.status' => 1),array('Order.po_no' => $this->request->data['Invoice']['po_no']));
+					
 				$this->Flash->success(__('The order has been saved.'));
 				return $this->redirect(array('action' => 'index'));
 			}
 			} else {
 				$this->Flash->error(__('The invoice could not be saved. Please, try again.'));
+				return $this->redirect(array('action' => 'index'));
+			}
+		  }
+		  else {
+				$this->Flash->error(__('The invoice number exist already.'));
+				return $this->redirect(array('action' => 'index'));
 			}
 		}
-		$orders = $this->Invoice->Order->find('all',array('fields'=>array('Order.po_no'),'group'=>'Order.po_no'));
+		$orders = $this->Invoice->Order->find('all',array('conditions'=>array('Order.status'=>0),'fields'=>array('Order.po_no'),'group'=>'Order.po_no'));
+		
+		if(empty($orders)){
+			$this->Flash->success(__('Currently No order has been added. Please make the order.'));
+			return $this->redirect(array('action' => 'index'));
+		}else{
 		foreach($orders as $order){
 			$orderlist[]=$order['Order']['po_no'];
 		}
 		$this->set(compact('orderlist'));
 		//echo '<pre>';print_r($orders);
 		$this->set(compact('orders'));
+		}
 	}
 
 /**

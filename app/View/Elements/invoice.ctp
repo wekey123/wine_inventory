@@ -7,7 +7,7 @@
                             Products List
                         </div>
                         <div class="panel-body">
-                            <div class="table-responsive" style="overflow-x:hidden;">
+                            <div class="table-responsive" style="overflow-x:hidden;"><span class="error_msg_var"></span>
                                 <table id="invoice_tab" class="table table-striped table-bordered" cellspacing="0" width="100%">
                                     <thead>
                                         <tr>
@@ -29,7 +29,8 @@
                                             <td><?php echo h($product['Product']['title']); ?>&nbsp;</td>
                                             <td><?php echo h($product['variant']); ?>&nbsp;</td>
                                             <td><?php echo h($product['quantity']); ?>&nbsp;</td>
-                                            <td><input type="text" value="" name="Vary[quantity][<?php echo $i; ?>]"  />
+                                            <td>
+                                            <input type="text" value="" name="Vary[quantity][<?php echo $i; ?>]" class="invoiceQuantitychk"  />
                                       <input type="hidden" name="Vary[price][<?php echo $i; ?>]" value="<?php echo h($product['price']); ?>" id="itemPrice" />
                                        <input type="hidden" name="Vary[variant][<?php echo $i; ?>]" value="<?php echo h($product['variant']); ?>"  />
                                        <input type="hidden" name="Vary[sku][<?php echo $i; ?>]" value="<?php echo h($product['sku']); ?>"   id="itemSKU" />

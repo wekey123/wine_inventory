@@ -8,8 +8,25 @@ App::uses('AppModel', 'Model');
  * @property Payment $Payment
  */
 class Invoice extends AppModel {
-
-
+	
+	
+	public $validate = array(
+        'po_no' => array(
+           'rule' => 'notBlank',
+        ),
+		'invoice_no' => array(
+            'rule' => 'notBlank',
+        ),
+		'invoice_date' => array(
+           'rule' => 'notBlank',
+        ),
+		'shipping_method' => array(
+           'rule' => 'notBlank',
+        ),
+		'estimated_shipping_date' => array(
+           'rule' => 'notBlank',
+        ),
+    );
 	// The Associations below have been created with all possible keys, those that are not needed can be removed
 
 /**
