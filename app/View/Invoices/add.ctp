@@ -82,12 +82,13 @@
 </div>
 
 <script> 
-  var total_price=0;var total_quantity=0;
-  $('#submitButton1').click( function() {
+  
+  $( "#invoiceAdd" ).submit(function( event ) {
+	  var total_price=0;var total_quantity=0;
 	  if($('.invoiceQuantitychk').val() != '' && $('.poVal').val() != '' ){
 		  $('#invoiceSaveID').find("input[type='text']").each(function() {
 			total_price += $(this).val() * parseFloat($(this).next().val());
-			total_quantity += parseFloat($(this).val());
+			total_quantity += parseInt($(this).val());
 			});
 			$('#total_price').val(total_price);
 			$('#total_quantity').val(total_quantity);

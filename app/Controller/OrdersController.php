@@ -89,9 +89,10 @@ class OrdersController extends AppController {
 		$user = $this->Auth->user();
 		if ($this->request->is('post')) {
 			$po='ORD'.rand('111111','999999');
+			//echo '<pre>';print_r($this->request->data);exit;
 			if(isset($this->request->data['Vary'])){
 				  foreach($this->request->data['Vary']  as  $value){
-					 if($value['total_quantity']==true){
+					 if($value['store_data']==true){
 						$this->Order->create();
 						$this->request->data['Order']['total_quantity']=$value['total_quantity'];
 						$this->request->data['Order']['total_price']=$value['total_price'];

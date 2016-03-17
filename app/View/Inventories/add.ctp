@@ -79,5 +79,20 @@
      <?php echo $this->Form->submit(__('Submit'),array('div'=>false, 'class'=>'btn btn-lg btn-success btn-block' ,'id' => 'submitButton1')); echo $this->Form->end();	?>
 </div>
 </div>
+<script> 
+  
+  $( "#inventoryAdd" ).submit(function() {
+	  $('input[type="submit"]').prop('disabled', true);
+	  if($('.inventoryQuantitychk').val() != ''){
+			$('#inventoryAdd').submit();
+	  }
+	  else{
+	  $('.error_msg_var').html('Quantity field cannot be empty');
+	  return false;
+	  }
+	  $('input[type="submit"]').prop('disabled', false);
+});
+  
+  </script>
 
 
