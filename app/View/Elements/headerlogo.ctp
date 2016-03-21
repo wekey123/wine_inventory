@@ -1,3 +1,13 @@
+ <style>
+  .navbar-header .navbar-brand{
+     color: #fff;
+	text-decoration: none;
+ }
+ a .navbar-brand :hover {
+    color: #fff;
+	text-decoration: none;
+}
+ </style>
  <!-- HEADER END-->
     <div class="navbar navbar-inverse set-radius-zero">
         <div class="container">
@@ -7,7 +17,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="index.html" style="color:#fff">Wine Inventory</a>
+				<?php echo $this->Html->link('Wine Inventory',array('controller'=>'dashboard','action' => 'index'),array('class'=>'navbar-brand')); ?>
             </div>
 
             <div class="left-div">
