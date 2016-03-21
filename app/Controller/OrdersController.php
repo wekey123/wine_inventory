@@ -29,6 +29,15 @@ class OrdersController extends AppController {
     }
 	
 	public function index() {
+		if ($this->request->is('post')) {
+			$start_date_timestamp = strtotime($this->request->data['dateFrom']);
+			$end_date_timestamp = strtotime($this->request->data['dateTo']);
+			$sdate = date('Y-m-d', $start_date_timestamp);
+			$edate = date('Y-m-d', $end_date_timestamp);
+			$cond= array('Order.created  BETWEEN ? and ?'  => array($sdate.' 00:00:00', $edate.' 23:59:59'));
+		}else
+		$cond= array('');
+		
 		$this->Paginator->settings = array('fields' => array(
         'SUM(total_quantity) as total_quantity',
 		'SUM(total_price) as total_price',
@@ -40,9 +49,19 @@ class OrdersController extends AppController {
 		'Product.id',
 		'User.username',
 		'User.id'
-    ),'group' => 'po_no');
-		$this->Order->recursive = 0;
-		$this->set('orders', $this->Paginator->paginate());//echo '<pre>';print_r($this->Paginator->paginate());
+    ),'conditions'=>$cond,'group' => 'po_no','order' => array('created' => 'DESC'));
+		$this->Order->recursive = 1;
+		$this->Order->bindModel(array(
+            'hasMany' => array(
+                'Vary' => array('foreignKey' => false,
+                                    'conditions' => array('Vary.type' => 'order')
+                                ),
+                            )
+                ),
+            false
+        );
+		$this->set('orders', $this->Paginator->paginate());
+		//echo '<pre>';print_r($this->Paginator->paginate());exit;
 	}
 
 /**

@@ -36,7 +36,14 @@
                             <li> <?php echo $this->Html->link('Dashboard',array('controller'=>'dashboard','action' => 'index'),array('class'=>trim($menuActive)=='Dashboard'  ? 'menu-top-active' : '')); ?> </li>
                             <li> <?php echo $this->Html->link('User',array('controller'=>'users','action' => 'index'),array('class'=>trim($menuActive)=='User'  ? 'menu-top-active' : '')); ?> </li>
                              <li> <?php echo $this->Html->link('Product',array('controller'=>'products','action' => 'index'),array('class'=>trim($menuActive)=='Product'  ? 'menu-top-active' : '')); ?> </li>
-                             <li> <?php echo $this->Html->link('Orders',array('controller'=>'orders','action' => 'index'),array('class'=>trim($menuActive)=='Order'  ? 'menu-top-active' : '')); ?> </li>
+                             <li> <?php echo $this->Html->link('Orders',array('controller'=>'orders','action' => 'index'),array('class'=>trim($menuActive)=='Order'  ? 'menu-top-active dropdown-toggle' : 'dropdown-toggle','data-toggle'=>'dropdown','href'=>'#')); ?>
+                              <ul class="dropdown-menu">
+									<li><a href="/orders" style="color:#222;">Order List</a></li>
+									<li><a href="/orders/add" style="color:#222;">Create PO</a></li>
+							  </ul>
+                              </li>
+                              
+                                   
                              <li> <?php echo $this->Html->link('Invoice',array('controller'=>'invoices','action' => 'index'),array('class'=>trim($menuActive)=='Invoice'  ? 'menu-top-active' : '')); ?> </li>
                              <li> <?php echo $this->Html->link('Payment',array('controller'=>'payments','action' => 'index'),array('class'=>trim($menuActive)=='Payment'  ? 'menu-top-active' : '')); ?> </li>
                              <?php /*?><li> <?php echo $this->Html->link('Shipping',array('controller'=>'shipping','action' => 'index'),array('class'=>trim($menuActive)=='Shipping'  ? 'menu-top-active' : '')); ?> </li><?php */?>
