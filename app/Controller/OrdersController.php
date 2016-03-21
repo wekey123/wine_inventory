@@ -222,4 +222,46 @@ class OrdersController extends AppController {
 		$this->autoLayout = false;
 		Configure::write('debug', '0');
 	}
+	public function report($orderId = null)
+	{
+		$this->layout = null;
+		$this->Order->bindModel(array('hasMany' => array('Vary' => array('foreignKey' => false,'conditions' => array('Vary.type' => 'order','Vary.po_no'=>$orderId)))),false);
+		$options = array('conditions' => array('Order.po_no' => $orderId),'group' => 'Order.po_no');
+		$Orders = $this->Order->find('first',$options);
+		$i =0;
+		$total[1] = '';
+		$total[2] = '';
+		$total[3] = '';
+		$total[4] = '';
+		$total[5] = '';
+		$total[6] = '';
+		$total[7] = '';
+		$total[8] = 0;
+		$total[9] = '';
+		$total[10] = 0.00;
+			foreach($Orders['Vary'] as $vary){
+				$result[$vary['po_no']][$i]['SNO'] = $i+1;
+				$result[$vary['po_no']][$i]['PO NUMBER'] = $vary['po_no'];
+				$result[$vary['po_no']][$i]['PRODUCT NAME'] = $Orders['Product']['title'];
+				$result[$vary['po_no']][$i]['CATEGORY NAME'] = $Orders['Product']['category_name'];
+				$result[$vary['po_no']][$i]['SIZE'] = $vary['variant'];
+				$result[$vary['po_no']][$i]['SKU'] = $vary['sku'];
+				$result[$vary['po_no']][$i]['BARCODE'] = $vary['barcode'];
+				$result[$vary['po_no']][$i]['QTY'] = $vary['quantity'];
+				$price = number_format($vary['price'], 2, '.', '');
+				$result[$vary['po_no']][$i]['PRICE'] = '$'.$price;
+				$extended_price = number_format(($vary['quantity']*$price), 2, '.', '');
+				$result[$vary['po_no']][$i]['EXTENDED PRICE'] = '$'.$extended_price;
+				$total[8] += $vary['quantity'];
+				$total[10] += number_format($extended_price, 2, '.', '');
+				$i++;
+			}
+			
+		$total[10] = '$'.number_format($total[10], 2, '.', '');
+		//debug($result); exit;
+		$this->set('data', $result);
+		$this->set('totals', $total);
+		$this->autoLayout = false;
+		Configure::write('debug', '0');
+	}
 }
