@@ -24,7 +24,7 @@
      <div class="row">	
       <div class="col-md-12">
       <form method="post" name="searchSort">
-           <p>From: <input class="datepicker" id="dateFrom" name="dateFrom" type="text"> To: <input class="datepicker" name="dateTo" id="dateTo" type="text"><button class="buttApply" style="margin-left:20px;">APPLY</button></p>
+           <p>From: <input class="datepicker" id="dateFrom" name="dateFrom" type="text" value="<?php echo isset($data) ? $data['dateFrom'] : ''?>"> To: <input class="datepicker" name="dateTo" id="dateTo" type="text" value="<?php echo isset($data) ? $data['dateTo'] : ''?>"><button class="buttApply" style="margin-left:20px;">APPLY</button></p>
            </form>
       </div>
      </div>
@@ -90,8 +90,8 @@
                                         <td><?php  echo $this->Util->dateFormat($order['Order']['modified']); ?>&nbsp;</td>
                                         <td class="actions">
                                             <?php echo $this->Html->link(__('CSV'), array('action' => 'download',$order['Order']['po_no'])); ?>
-                                            <?php /*?><?php echo $this->Html->link(__('Edit'), array('action' => 'edit', $order['Order']['id'])); ?>
-                                            <?php echo $this->Form->postLink(__('Delete'), array('action' => 'delete', $order['Order']['id']), array('confirm' => __('Are you sure you want to delete # %s?', $order['Order']['id']))); ?><?php */?>
+                                            <?php echo $this->Html->link(__('Edit'), array('action' => 'edit', $order['Order']['po_no'])); ?>
+                                            <?php /*?><?php echo $this->Form->postLink(__('Delete'), array('action' => 'delete', $order['Order']['id']), array('confirm' => __('Are you sure you want to delete # %s?', $order['Order']['id']))); ?><?php */?>
                                         </td>
                                     </tr>
                                 <?php $i++; endforeach; ?>

@@ -1,3 +1,4 @@
+<?php echo $this->element('tableScript'); ?>
 <div class="content-wrapper">
    <div class="container">
      <div class="row">
@@ -16,11 +17,11 @@
                 <button class="btn btn-primary btn-lg" style="margin-left:57%;padding:7px 16px;" id="submitButton"> Click to Make an Order   </button>
             </div>
             <div class="panel-body">
-                <div class="table-responsive">
+                <div class="table-responsive" style="overflow-x:hidden;"><span class="error_msg_var"></span>
                 
-                 <input id="filter" type="text" class="form-control" placeholder="Type here...">
+               <!--  <input id="filter" type="text" class="form-control" placeholder="Type here...">-->
                 
-                    <table class="table table-hover">
+                    <table id="order_tab" class="table table-striped table-bordered" cellspacing="0" width="100%">
                         <thead>
                             <tr>
                                 <th>#</th>
@@ -31,7 +32,7 @@
                                 <th><?php echo $this->Paginator->sort('action'); ?></th>
                             </tr>
                         </thead>
-                        <tbody class="searchable">
+                        <tbody>
                          <?php $i=1; foreach ($products as $product): ?>
                             <tr id="NoncollapseExample<?php echo $i;?>">
                                 <td><?php echo h($product['Product']['id']); ?>&nbsp;</td>
@@ -39,50 +40,17 @@
                                 <td><?php echo h($product['Product']['title']); ?>&nbsp;</td>
                                 <td><?php echo $this->Html->image('product/small/'.$product['Product']['image']);?>&nbsp;</td>
                                 <td><?php echo h($product['Product']['brand']); ?>&nbsp;</td>
-                                <td><?php echo $this->Form->button('Order',array('class'=>'btn btn-default order','data-toggle'=>"collapse",'aria-expanded'=>false,'aria-controls'=>'collapseExample','href'=>'#collapseExample'.$i));  ?>
-                                &nbsp;</td>
-                                	
+                                <td><?php echo $this->Form->button('Order',array('class'=>'btn btn-default order','data-toggle'=>"collapse",'aria-expanded'=>false,'aria-controls'=>'collapseExample','href'=>'#collapseExample'.$i,'key'=>$i,'rel'=> htmlspecialchars(json_encode(($product['Vary'])))));  ?>
+                                &nbsp;
+                                <div id="wrapper<?php echo $i;?>" rel="0"></div>
+                         		<input type="hidden" name="Vary[<?php echo $i;?>][total_quantity]" id="total_quantity<?php echo $i;?>" value="0"  />
+                                <input type="hidden" name="Vary[<?php echo $i;?>][total_price]" id="total_price<?php echo $i;?>" value="0"  />
+                                <input type="hidden" name="Vary[<?php echo $i;?>][store_data]" id="store_data<?php echo $i;?>" value="0"  />
+                                
+                                </td>
                             </tr>
-                            <tr class="collapse" id="collapseExample<?php echo $i;?>">
-                            <td colspan="6">
-                             <table class="table table-hover">
-                                <thead>
-                                    <tr>
-                                        <th>#</th>
-                                        <th>Varient</th>
-                                        <th>SKU</th>
-                                        <th>Price</th>
-                                        <th>Quantity</th>
-                                    </tr>
-                                </thead>
-                        		<tbody id="orderSaveID<?php echo $i;?>">
-                                 <?php $j=1; foreach ($product['Vary'] as $productVary):
-								 if($productVary['type']=='product'){ ?>
-                            		<tr>
-                                        <td><?php echo h($j); ?>&nbsp;</td>
-                                        <td><?php echo h($productVary['variant']); ?>&nbsp;</td>
-                                        <td><?php echo h($productVary['sku']); ?>&nbsp;</td>
-                                        <td><?php echo h($productVary['price']); ?>&nbsp;</td>
-                                        <td><input type="text" name="Vary[<?php echo $i;?>][quantity][<?php echo $j; ?>]" id="itemQuantity" placeholder="Quantity"  />&nbsp;
-                                        <input type="hidden" name="Vary[<?php echo $i;?>][price][<?php echo $j; ?>]" value="<?php echo h($productVary['price']); ?>"   id="itemPrice" />
-                                        <input type="hidden" name="Vary[<?php echo $i;?>][variant][<?php echo $j; ?>]" value="<?php echo h($productVary['variant']); ?>"   id="itemVariant" />
-                                        <input type="hidden" name="Vary[<?php echo $i;?>][sku][<?php echo $j; ?>]" value="<?php echo h($productVary['sku']); ?>"   id="itemSKU" />
-                                        <input type="hidden" name="Vary[<?php echo $i;?>][barcode][<?php echo $j; ?>]" value="<?php echo h($productVary['barcode']); ?>"   id="itemBarcode" />
-                                      
-                                        </td>
-                            		</tr>
-                                 <?php $j++;} ?>
-                                   
-                                  <?php  endforeach; ?>
-                                 <tr><td colspan="6" align="right">
-                                 <?php echo $this->Form->button('Save',array('class'=>'btn btn-default saveOrder','data-toggle'=>"collapse",'aria-expanded'=>false,'aria-controls'=>'collapseExample','href'=>'#collapseExample'.$i,'id'=>$i));  ?>
-                                 </td></tr>
-                            	</tbody>
-                            </table></td></tr>
-                            <input type="hidden" name="Vary[<?php echo $i;?>][product_id]" id="projectID<?php echo $i;?>" value="<?php echo h($productVary['product_id']); ?>"  />
-                                        <input type="hidden" name="Vary[<?php echo $i;?>][total_quantity]" id="total_quantity<?php echo $i;?>" value="0"  />
-                                        <input type="hidden" name="Vary[<?php echo $i;?>][total_price]" id="total_price<?php echo $i;?>" value="0"  />
-                                        <input type="hidden" name="Vary[<?php echo $i;?>][store_data]" id="store_data<?php echo $i;?>" value="0"  />
+                            
+                                
                         <?php $i++;  endforeach; ?>
                         </tbody>
                     </table>
@@ -96,42 +64,81 @@
 </div>
 </div>
 <script>
-var orderData = []; 
-var projectID;
-$('.saveOrder').click(function(){
-	var fields = {};var total_price=0;var total_quantity=0;
-	$('#orderSaveID'+$(this).attr('id')).find("input[type='text']").each(function() {
-		fields[this.name] = $(this).val();
-		total_price += $(this).val() * parseFloat($(this).parent().find("#itemPrice").val());
-		total_quantity += parseFloat($(this).val());
-	});
-	$('#total_price'+$(this).attr('id')).val(total_price);
-	$('#total_quantity'+$(this).attr('id')).val(total_quantity);
-	$('#store_data'+$(this).attr('id')).val(true);
-	projectID = $('#projectID'+$(this).attr('id')).val();
-	var obj = {fields: fields, projectID: projectID}; 
-	orderData.push(obj);
-	$('#NoncollapseExample'+$(this).attr('id')).addClass('success');
- });
+
 $('#submitButton').click( function() {
 	$('#orderAdd').submit();
 });
-$(document).ready(function () {
 
-    (function ($) {
+function format ( d,key ) {
+ var toReturn; 
+			
+     toReturn =  '<table class="table table-hover"><thead><tr><th>#</th><th>Varient</th><th>SKU</th><th>Price</th><th>Quantity</th></tr></thead><tbody id="orderSaveID'+key+'">';
+		$(jQuery.parseJSON(d)).each(function(i) {
+			var itemQuantityVal = '';   
+			var $myDiv = $('#wrapper'+key).attr('rel');
+			console.log($myDiv);
+			if ($myDiv == true)
+			itemQuantityVal = $('#wrapper'+key).find('#itemQuantity'+i).val();
+			else{
+			 $('#wrapper'+key).append('<input type="hidden" name="Vary['+key+'][quantity]['+i+']" id="itemQuantity'+i+'" placeholder="Quantity" /> <input type="hidden" name="Vary['+key+'][price]['+i+']" value='+this.price+'   id="itemPrice'+i+'" /><input type="hidden" name="Vary['+key+'][variant]['+i+']" value='+this.variant+'   id="itemVariant" /><input type="hidden" name="Vary['+key+'][sku]['+i+']" value='+this.sku+' id="itemSKU" /><input type="hidden" name="Vary['+key+'][barcode]['+i+']" value='+this.barcode+'   id="itemBarcode" /><input type="hidden" name="Vary['+key+'][product_id]" id="projectID'+key+'" value='+this.product_id+'  />');
+			}
+	 		toReturn += '<tr><td>'+this.id+'</td><td>'+this.variant+'</td><td>'+this.sku+'</td><td>'+this.price+'</td><td><input type="text" name="Vary['+key+'][quantity]['+i+']" id="itemQuantity" placeholder="Quantity" value="'+itemQuantityVal+'"/></td></tr>';
+			
+		});
+		toReturn += ' <tr></tr></tbody></table>';
+		return toReturn;
+}
 
-        $('#filter').keyup(function () {
 
-            var rex = new RegExp($(this).val(), 'i');
-            $('.searchable tr').hide();
-            $('.searchable tr').filter(function () {
-                return rex.test($(this).text());
-            }).show();
-
-        })
-
-    }(jQuery));
-
-});
-
+    $(document).ready(function() {
+		var arr=[];
+		var table = $('#order_tab').DataTable();
+			$('.order').on('click', function () {
+				var tr = $(this).closest('tr');
+				var row = table.row( tr );
+		 		var d= $(this).attr('rel');
+				var key= $(this).attr('key');
+				var total_price=0;
+				var total_quantity=0;
+				
+				if ( row.child.isShown() ) {
+				
+				// Save the quantity of each box on purchase Order
+				$('#orderSaveID'+key).find("input[type='text']").each(function(i) {
+					total_price += $(this).val() * parseFloat($('#wrapper'+key).find("#itemPrice"+i).val());
+					total_quantity += isNaN(parseInt($(this).val())) ? 0 :  parseInt($(this).val());
+					$('#wrapper'+key).find('#itemQuantity'+i).val($(this).val());
+				});
+				
+				// if no quantity mentioned below shows the error
+				if(total_quantity==0){
+					 $('.error_msg_var').html('Quantity field cannot be empty');
+					 return false;
+				}
+				else
+			 	$('.error_msg_var').html('');
+				
+				// calculate te total price and quantity for each product for order
+				$('#total_price'+key).val(total_price);
+				$('#total_quantity'+key).val(total_quantity);
+				$('#store_data'+key).val(true);
+				
+				// Updated the attribute to retain the text box value, we saved earlier
+				$('#wrapper'+key).attr('rel',1);
+				
+				// Add green background to convey the success of order.
+				$('#NoncollapseExample'+key).addClass('success');
+				
+				// Hide the child row once it in open status.
+				row.child.hide();
+				tr.removeClass('shown');
+				}
+				else {
+					// Show the child row once it in close status. send the child row content to format function above
+					row.child( format ( d,key ) ).show();
+					tr.addClass('shown');
+				}
+		
+			});
+	});
 </script>
