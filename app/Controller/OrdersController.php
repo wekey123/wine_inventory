@@ -286,20 +286,16 @@ class OrdersController extends AppController {
 	}
 	
 	public function emailCheck(){
-		$subject = "Please validate your email";
-		$message   = "Validation info, blah blah. 2nd msg";
-		$Header = 'Content-type: text/html; charset=iso-8859-1' . "\r\n";
-		$Header .= 'From: INVENTORY<donotreply@gmail.com >' . "\r\n";
-		
-		if(mail('mail2rmvignesh@gmail.com', $subject, $message, $Header))
-		
-		echo "email sent";
-		
-		else 
-		
-		echo "email sending fail";
-
-
-		exit;
+			$Email = new CakeEmail('gmail');
+		    $Email->to('mail2rmvignesh@gmail.com');
+		    $Email->subject('About');
+			$filename = 'logo.png';
+			$path = WWW_ROOT.'img'.DS.$filename;
+			$Email->attachments(array('attachment_PO_image.png' => array('file' => $path)));
+			if($Email->send('My message'))
+			echo 'success';
+			else
+			echo 'failed';
+			exit;
 	}
 }

@@ -36,21 +36,21 @@
  */
 class EmailConfig {
 
-	public $mail = array(
+	public $default = array(
 		'transport' => 'Mail',
-		'from' => 'donotreply@gmail.com',
-		'charset' => 'utf-8',
-		'headerCharset' => 'utf-8',
+		'from' => 'you@localhost',
+		//'charset' => 'utf-8',
+		//'headerCharset' => 'utf-8',
 	);
 
-	public $smtp = array(
+	public $gmail = array(
 		'transport' => 'Smtp',
-		'from' => array('site@localhost' => 'My Site'),
-		'host' => 'localhost',
-		'port' => 25,
+		'from' => array('dummyuser765@gmail.com' => 'Inventory'),
+		'host' => 'ssl://smtp.gmail.com',
+		'port' => 465,
 		'timeout' => 30,
-		'username' => 'user',
-		'password' => 'secret',
+		'username' => 'dummyuser765@gmail.com',
+		'password' => 'dummy12345',
 		'client' => null,
 		'log' => false,
 		//'charset' => 'utf-8',
