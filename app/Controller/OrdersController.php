@@ -1,5 +1,6 @@
 <?php
 App::uses('AppController', 'Controller');
+App::uses('CakeEmail', 'Network/Email');
 /**
  * Orders Controller
  *
@@ -298,8 +299,10 @@ public function in_array_r($needle, $haystack, $strict = false) {
 			foreach($Orders['Vary'] as $vary){
 				$result[$vary['po_no']][$i]['SNO'] = $i+1;
 				$result[$vary['po_no']][$i]['PO NUMBER'] = $vary['po_no'];
-				$result[$vary['po_no']][$i]['PRODUCT NAME'] = $Orders['Product']['title'];
-				$result[$vary['po_no']][$i]['CATEGORY NAME'] = $Orders['Product']['category_name'];
+				$options = array('conditions' => array('Product.id' => $vary['product_id']));
+				$product_array = $this->Product->find('first',$options);
+				$result[$vary['po_no']][$i]['PRODUCT NAME'] = $product_array['Product']['title'];
+				$result[$vary['po_no']][$i]['CATEGORY NAME'] = $product_array['Product']['category_name'];
 				$result[$vary['po_no']][$i]['SIZE'] = $vary['variant'];
 				$result[$vary['po_no']][$i]['SKU'] = $vary['sku'];
 				$result[$vary['po_no']][$i]['BARCODE'] = $vary['barcode'];
@@ -336,11 +339,15 @@ public function in_array_r($needle, $haystack, $strict = false) {
 		$total[8] = 0;
 		$total[9] = '';
 		$total[10] = 0.00;
+			debug($Orders['Vary']); exit;
 			foreach($Orders['Vary'] as $vary){
+			
 				$result[$vary['po_no']][$i]['SNO'] = $i+1;
 				$result[$vary['po_no']][$i]['PO NUMBER'] = $vary['po_no'];
-				$result[$vary['po_no']][$i]['PRODUCT NAME'] = $Orders['Product']['title'];
-				$result[$vary['po_no']][$i]['CATEGORY NAME'] = $Orders['Product']['category_name'];
+				$options = array('conditions' => array('Product.id' => $vary['product_id']));
+				$product_array = $this->Product->find('first',$options);
+				$result[$vary['po_no']][$i]['PRODUCT NAME'] = $product_array['Product']['title'];
+				$result[$vary['po_no']][$i]['CATEGORY NAME'] = $product_array['Product']['category_name'];
 				$result[$vary['po_no']][$i]['SIZE'] = $vary['variant'];
 				$result[$vary['po_no']][$i]['SKU'] = $vary['sku'];
 				$result[$vary['po_no']][$i]['BARCODE'] = $vary['barcode'];
@@ -360,5 +367,19 @@ public function in_array_r($needle, $haystack, $strict = false) {
 		$this->set('totals', $total);
 		$this->autoLayout = false;
 		Configure::write('debug', '0');
+	}
+	
+	public function emailCheck(){
+			$Email = new CakeEmail('gmail');
+		    $Email->to('mail2rmvignesh@gmail.com');
+		    $Email->subject('About');
+			$filename = 'logo.png';
+			$path = WWW_ROOT.'img'.DS.$filename;
+			$Email->attachments(array('attachment_PO_image.png' => array('file' => $path)));
+			if($Email->send('My message'))
+			echo 'success';
+			else
+			echo 'failed';
+			exit;
 	}
 }
