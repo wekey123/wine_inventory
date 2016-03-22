@@ -221,8 +221,10 @@ class OrdersController extends AppController {
 			foreach($Orders['Vary'] as $vary){
 				$result[$vary['po_no']][$i]['SNO'] = $i+1;
 				$result[$vary['po_no']][$i]['PO NUMBER'] = $vary['po_no'];
-				$result[$vary['po_no']][$i]['PRODUCT NAME'] = $Orders['Product']['title'];
-				$result[$vary['po_no']][$i]['CATEGORY NAME'] = $Orders['Product']['category_name'];
+				$options = array('conditions' => array('Product.id' => $vary['product_id']));
+				$product_array = $this->Product->find('first',$options);
+				$result[$vary['po_no']][$i]['PRODUCT NAME'] = $product_array['Product']['title'];
+				$result[$vary['po_no']][$i]['CATEGORY NAME'] = $product_array['Product']['category_name'];
 				$result[$vary['po_no']][$i]['SIZE'] = $vary['variant'];
 				$result[$vary['po_no']][$i]['SKU'] = $vary['sku'];
 				$result[$vary['po_no']][$i]['BARCODE'] = $vary['barcode'];
@@ -259,11 +261,15 @@ class OrdersController extends AppController {
 		$total[8] = 0;
 		$total[9] = '';
 		$total[10] = 0.00;
+			debug($Orders['Vary']); exit;
 			foreach($Orders['Vary'] as $vary){
+			
 				$result[$vary['po_no']][$i]['SNO'] = $i+1;
 				$result[$vary['po_no']][$i]['PO NUMBER'] = $vary['po_no'];
-				$result[$vary['po_no']][$i]['PRODUCT NAME'] = $Orders['Product']['title'];
-				$result[$vary['po_no']][$i]['CATEGORY NAME'] = $Orders['Product']['category_name'];
+				$options = array('conditions' => array('Product.id' => $vary['product_id']));
+				$product_array = $this->Product->find('first',$options);
+				$result[$vary['po_no']][$i]['PRODUCT NAME'] = $product_array['Product']['title'];
+				$result[$vary['po_no']][$i]['CATEGORY NAME'] = $product_array['Product']['category_name'];
 				$result[$vary['po_no']][$i]['SIZE'] = $vary['variant'];
 				$result[$vary['po_no']][$i]['SKU'] = $vary['sku'];
 				$result[$vary['po_no']][$i]['BARCODE'] = $vary['barcode'];
