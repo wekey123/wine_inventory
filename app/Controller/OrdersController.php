@@ -286,19 +286,6 @@ class OrdersController extends AppController {
 	}
 	
 	public function emailCheck(){
-		$Email = new CakeEmail('mail');
-		//$Email->config(array('from' => 'donotreply@gmail.com', 'transport' => 'Mail'));
-		$Email->from(array('donotreply@gmail.com' => 'Inventory'));
-		$Email->to('mail2rmvignesh@gmail.com');
-		$Email->subject('About');
-		if($Email->send('My message'))
-		echo "Success";
-		else
-		echo "failed";
-		
-		
-		exit;
-
 		$subject = "Please validate your email";
 		$message   = "Validation info, blah blah. 2nd msg";
 		$Header = 'Content-type: text/html; charset=iso-8859-1' . "\r\n";
