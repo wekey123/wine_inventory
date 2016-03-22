@@ -110,7 +110,7 @@ class OrdersController extends AppController {
 		$user = $this->Auth->user();
 		if ($this->request->is('post')) {
 			$po='ORD'.rand('111111','999999');
-			//echo '<pre>';print_r($this->request->data);exit;
+		//echo '<pre>';print_r($this->request->data);exit;
 			if(isset($this->request->data['Vary'])){
 				  foreach($this->request->data['Vary']  as  $value){
 					 if($value['store_data']==true){
@@ -124,6 +124,7 @@ class OrdersController extends AppController {
 						if ($this->Order->save($this->request->data)) {
 							$i=0;
 						  foreach ($value['quantity'] as $quan){
+							  if(!empty($quan)){
 								$this->request->data['Vary']['product_id'] = $value['product_id'];
 								$this->request->data['Vary']['po_no'] = $po;   
 								$this->request->data['Vary']['quantity'] = $quan;
@@ -136,6 +137,7 @@ class OrdersController extends AppController {
 								$this->Vary->create();
 								$this->Vary->save($this->request->data);
 							$i++;
+							  }
 						 }
 			 			}
 						 else {
