@@ -22,6 +22,9 @@
 		return 'Dashboard';
 	}
 	$name=explode('/', $_SERVER['REQUEST_URI']);
+    if($_SERVER['HTTP_HOST'] == '52.4.188.247')
+	$name=$name[2];
+	else
 	$name=$name[1];
 	$menuActive = $_SERVER['REQUEST_URI'] != '/' ? getPageName($name, $menus) : 'Dashboard';
  ?>

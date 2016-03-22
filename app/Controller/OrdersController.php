@@ -1,5 +1,6 @@
 <?php
 App::uses('AppController', 'Controller');
+App::uses('CakeEmail', 'Network/Email');
 /**
  * Orders Controller
  *
@@ -282,5 +283,17 @@ class OrdersController extends AppController {
 		$this->set('totals', $total);
 		$this->autoLayout = false;
 		Configure::write('debug', '0');
+	}
+	
+	public function emailCheck(){
+		$Email = new CakeEmail();
+		$Email->from(array('donotreply@gmail.com' => 'Inventory'));
+		$Email->to('mail2rmvignesh@gmail.com');
+		$Email->subject('About');
+		if($Email->send('My message'))
+		echo "Success";
+		else
+		echo "failed";
+		exit;
 	}
 }
