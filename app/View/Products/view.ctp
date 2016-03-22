@@ -73,10 +73,10 @@
             <div class="col-md-8"><?php echo $this->Html->image('product/small/'.$product['Product']['image']);?></div>
         </div>
 		
-         <div class="row">
+        <?php /*?> <div class="row">
             <div class="col-md-2 heading"><?php echo __('Status'); ?></div>
             <div class="col-md-8"><?php echo h($product['Product']['status']); ?></div>
-        </div>
+        </div><?php */?>
 		
         <div class="row">
             <div class="col-md-2 heading"><?php echo __('Created'); ?></div>
@@ -123,7 +123,7 @@
 			<td><?php echo $vary['variant']; ?></td>
 			<td><?php echo $vary['sku']; ?></td>
 			<td><?php echo $vary['barcode']; ?></td>
-			<td><?php echo $vary['price']; ?></td>
+			<td><?php echo $this->Util->currencyFormat($vary['price']);  ?></td>
 			<td><?php echo $vary['type']; ?></td>
 			<td><?php echo $this->Util->dateFormat($vary['created']); ?></td>
 			<td><?php echo $this->Util->dateFormat($vary['modified']); ?></td>
