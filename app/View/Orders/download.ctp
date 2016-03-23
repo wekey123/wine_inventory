@@ -23,8 +23,14 @@
 	 $csv_handler = fopen ($writefile,'w');
 	 fwrite ($csv_handler,$csv);
 	 fclose ($csv_handler);
+	 if($_SERVER['HTTP_HOST'] == '52.4.188.247'){
+		header('Location: /inventory/orders/emailCheck/'.$key); 
+		exit;
+	 }else{
+		header('Location: /orders/emailCheck/'.$key); 
+		exit;
+	 }
 	 
-	 header('Location: /orders/emailCheck/'.$key); exit;
  }
 
 ?>
