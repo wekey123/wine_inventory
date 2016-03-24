@@ -36,9 +36,9 @@
                                         </tr>
                                     </thead>
                                     <tbody class="searchable">
-                                     <?php foreach ($products as $product): ?>
+                                     <?php $i =1; foreach ($products as $product): ?>
                                         <tr>
-                                            <td><?php echo h($product['Product']['id']); ?>&nbsp;</td>
+                                            <td><?php echo h($i); ?>&nbsp;</td>
                                             <td><?php echo h($product['Product']['category_name']); ?>&nbsp;</td>
                                             <td><?php echo h($product['Product']['title']); ?>&nbsp;</td>
                                             <td><?php echo $this->Html->image('product/small/'.$product['Product']['image']);?>&nbsp;</td>
@@ -54,7 +54,7 @@
                                                 <?php /*?><?php echo $this->Form->postLink(__('Delete'), array('action' => 'delete', $product['Product']['id']), array('confirm' => __('Are you sure you want to delete # %s?', $product['Product']['id']))); ?><?php */?>
                                             </td>
                                         </tr>
-                                    <?php endforeach; ?>
+                                    <?php $i++; endforeach; ?>
                                     </tbody>
                                 </table>
                             </div>

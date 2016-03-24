@@ -74,7 +74,8 @@ function format ( d,key ) {
 		/*<th><a class="trClose">X</a></th>	*/
      toReturn =  '<table class="table table-hover"><thead><tr><th>#</th><th>Varient</th><th>SKU</th><th>Price</th><th>Quantity</th></tr></thead><tbody id="orderSaveID'+key+'">';
 		$(jQuery.parseJSON(d)).each(function(i) {
-			var itemQuantityVal = '';   
+			var itemQuantityVal = '';
+			var itemQuantityPri = this.price;   
 			var $myDiv = $('#wrapper'+key).attr('rel');
 			//console.log($myDiv);
 			if ($myDiv == true){
@@ -82,9 +83,9 @@ function format ( d,key ) {
 			itemQuantityPri = $('#wrapper'+key).find('#itemPrice'+i).val();
 			}
 			else{
-			 $('#wrapper'+key).append('<input type="hidden" name="Vary['+key+'][quantity]['+i+']" id="itemQuantity'+i+'" placeholder="Quantity" /> <input type="hidden" name="Vary['+key+'][price]['+i+']"  id="itemPrice'+i+'" /><input type="hidden" name="Vary['+key+'][variant]['+i+']" value='+this.variant+'   id="itemVariant" /><input type="hidden" name="Vary['+key+'][sku]['+i+']" value='+this.sku+' id="itemSKU" /><input type="hidden" name="Vary['+key+'][barcode]['+i+']" value='+this.barcode+'   id="itemBarcode" /><input type="hidden" name="Vary['+key+'][product_id]" id="projectID'+key+'" value='+this.product_id+'  /><input type="hidden" name="Vary['+key+'][var_id]['+i+']" id="varID'+key+'" value='+this.id+'  />');
+			 $('#wrapper'+key).append('<input type="hidden" name="Vary['+key+'][quantity]['+i+']" id="itemQuantity'+i+'" placeholder="Quantity" /> <input type="hidden" name="Vary['+key+'][price]['+i+']"  value='+this.price+' id="itemPrice'+i+'" /><input type="hidden" name="Vary['+key+'][variant]['+i+']" value='+this.variant+'   id="itemVariant" /><input type="hidden" name="Vary['+key+'][sku]['+i+']" value='+this.sku+' id="itemSKU" /><input type="hidden" name="Vary['+key+'][barcode]['+i+']" value='+this.barcode+'   id="itemBarcode" /><input type="hidden" name="Vary['+key+'][product_id]" id="projectID'+key+'" value='+this.product_id+'  /><input type="hidden" name="Vary['+key+'][var_id]['+i+']" id="varID'+key+'" value='+this.id+'  />');
 			}
-	 		toReturn += '<tr><td>'+this.id+'</td><td>'+this.variant+'</td><td>'+this.sku+'</td><td><input type="text" name="Vary['+key+'][price]['+i+']" id="itemPrice" placeholder="Price"/></td><td><input type="text" name="Vary['+key+'][quantity]['+i+']" id="itemQuantity" placeholder="Quantity" value="'+itemQuantityVal+'" class="ItemQuan"/></td></tr>';
+	 		toReturn += '<tr><td>'+this.id+'</td><td>'+this.variant+'</td><td>'+this.sku+'</td><td><input type="text" name="Vary['+key+'][price]['+i+']" id="itemPrice" placeholder="Price"  value="'+itemQuantityPri+'" /></td><td><input type="text" name="Vary['+key+'][quantity]['+i+']" id="itemQuantity" placeholder="Quantity" value="'+itemQuantityVal+'" class="ItemQuan"/></td></tr>';
 			
 		});
 		toReturn += ' <tr></tr></tbody></table>';
