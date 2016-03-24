@@ -89,7 +89,8 @@
                                         <td><?php  echo $this->Util->dateFormat($order['Order']['created']); ?>&nbsp;</td>
                                         <td><?php  echo $this->Util->dateFormat($order['Order']['modified']); ?>&nbsp;</td>
                                         <td class="actions">
-                                            <?php echo $this->Html->link(__('CSV'), array('action' => 'download',$order['Order']['po_no'])); ?>
+                                            <?php echo $this->Html->link(__('CSV'), array('action' => 'download',$order['Order']['po_no'])); ?> |
+                                            <?php echo $this->Html->link(__('Mail'), array('action' => 'download',$order['Order']['po_no'],'email')); ?> |
                                             <?php echo $this->Html->link(__('Edit'), array('action' => 'edit', $order['Order']['po_no'])); ?>
                                             <?php /*?><?php echo $this->Form->postLink(__('Delete'), array('action' => 'delete', $order['Order']['id']), array('confirm' => __('Are you sure you want to delete # %s?', $order['Order']['id']))); ?><?php */?>
                                         </td>

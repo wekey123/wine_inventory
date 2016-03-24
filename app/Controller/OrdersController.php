@@ -302,7 +302,7 @@ public function in_array_r($needle, $haystack, $strict = false) {
 		return $this->redirect(array('action' => 'index'));
 	}
 	
-	public function download($orderId = null)
+	public function download($orderId = null,$page = null)
 	{
 		$this->layout = null;
 		$this->Order->bindModel(array('hasMany' => array('Vary' => array('foreignKey' => false,'conditions' => array('Vary.type' => 'order','Vary.po_no'=>$orderId)))),false);
@@ -342,6 +342,7 @@ public function in_array_r($needle, $haystack, $strict = false) {
 		$total[10] = '$'.number_format($total[10], 2, '.', '');
 		$this->set('orders', $result);
 		$this->set('totals', $total);
+		$this->set('frompage',$page);
 		$this->autoLayout = false;
 		Configure::write('debug', '0');
 	}
@@ -392,17 +393,29 @@ public function in_array_r($needle, $haystack, $strict = false) {
 		Configure::write('debug', '0');
 	}
 	
-	public function emailCheck(){
+	public function emailCheck($pono = null){
+		$user = $this->Auth->user();
+		if ($this->request->is('post')) {
+			//debug($this->request->data); exit;
 			$Email = new CakeEmail('gmail');
-		    $Email->to('mail2rmvignesh@gmail.com');
-		    $Email->subject('About');
-			$filename = 'logo.png';
-			$path = WWW_ROOT.'img'.DS.$filename;
-			$Email->attachments(array('attachment_PO_image.png' => array('file' => $path)));
-			if($Email->send('My message'))
-			echo 'success';
+		    $Email->to($this->request->data['Order']['to']);
+		    $Email->subject($this->request->data['Order']['subject']);
+			$filename = 'PO_'.$pono.'.csv';
+			$pathwithfilename = WWW_ROOT.'mailpo'.DS.$filename;
+			$Email->attachments(array($filename => array('file' => $pathwithfilename)));
+			if($Email->send($this->request->data['Order']['message']))
+			$this->Flash->success(__('Your message has been sent.'));
 			else
-			echo 'failed';
+			$this->Flash->error(__('Message Sent failed.'));
+			return $this->redirect(array('action' => 'index'));
+		}else{
+			$this->set('po_no', $pono);
+		}
+	}
+	
+	public function emailForm(){
+	
 			exit;
 	}
+	
 }
