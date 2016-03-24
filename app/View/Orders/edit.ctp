@@ -44,13 +44,17 @@
                                 &nbsp;
                                 <div id="wrapper<?php echo $i;?>" rel="<?php echo empty($product['Order']) ? 0 : 1 ;?>">
                                 <?php 
-								if(isset($product['Vary'])){
+								//echo '<pre>';print_r($product['VaryOrder']);
+								if(!empty($product['VaryOrder'])){
 								$j =0; foreach ($product['Vary'] as $vary) { ?>
-                                <input type="hidden" name="Vary[<?php echo $i; ?>][quantity][<?php echo $j; ?>]" id="itemQuantity<?php echo $j; ?>" placeholder="Quantity" value="<?php echo $vary['quantity'];?>" /> <input type="hidden" name="Vary[<?php echo $i; ?>][price][<?php echo $j; ?>]" value="<?php echo $vary['price']; ?>"   id="itemPrice<?php echo $j; ?>" /><input type="hidden" name="Vary[<?php echo $i; ?>][variant][<?php echo $j; ?>]" value="<?php echo $vary['variant']; ?>"  id="itemVariant" /><input type="hidden" name="Vary[<?php echo $i; ?>][sku][<?php echo $j; ?>]" value="<?php echo $vary['sku']; ?>" id="itemSKU" /><input type="hidden" name="Vary[<?php echo $i; ?>][barcode][<?php echo $j; ?>]" value="<?php echo $vary['barcode']; ?>"   id="itemBarcode" /><input type="hidden" name="Vary[<?php echo $i; ?>][product_id]" id="projectID<?php echo $i; ?>" value="<?php echo $vary['product_id']; ?>"  /> <input type="hidden" name="Vary[<?php echo $i; ?>][e_id]" id="EID<?php echo $i; ?>" value="<?php echo $vary['e_id']; ?>"  /><?php $j++;} } ?>
+                                <input type="hidden" name="Vary[<?php echo $i; ?>][quantity][<?php echo $j; ?>]" id="itemQuantity<?php echo $j; ?>" placeholder="Quantity" value="<?php echo $vary['quantity'];?>" /> <input type="hidden" name="Vary[<?php echo $i; ?>][price][<?php echo $j; ?>]" value="<?php echo $vary['price']; ?>"   id="itemPrice<?php echo $j; ?>" /><input type="hidden" name="Vary[<?php echo $i; ?>][variant][<?php echo $j; ?>]" value="<?php echo $vary['variant']; ?>"  id="itemVariant" /><input type="hidden" name="Vary[<?php echo $i; ?>][sku][<?php echo $j; ?>]" value="<?php echo $vary['sku']; ?>" id="itemSKU" /><input type="hidden" name="Vary[<?php echo $i; ?>][barcode][<?php echo $j; ?>]" value="<?php echo $vary['barcode']; ?>"   id="itemBarcode" /><input type="hidden" name="Vary[<?php echo $i; ?>][product_id]" id="projectID<?php echo $i; ?>" value="<?php echo $vary['product_id']; ?>"  /> <input type="hidden" name="Vary[<?php echo $i; ?>][e_id][<?php echo $j; ?>]" id="EID<?php echo $i; ?>" value="<?php echo $vary['e_id']; ?>"  />
+								<?php $j++;} } ?>
                                 </div>
                          		<input type="hidden" name="Vary[<?php echo $i;?>][total_quantity]" id="total_quantity<?php echo $i;?>" value="0"  />
                                 <input type="hidden" name="Vary[<?php echo $i;?>][total_price]" id="total_price<?php echo $i;?>" value="0"  />
                                 <input type="hidden" name="Vary[<?php echo $i;?>][store_data]" id="store_data<?php echo $i;?>" value="0"  />
+                                <?php if(isset($product['Order'][0])) { ?>
+                                 <input type="hidden" name="Vary[<?php echo $i;?>][order_id]" id="order_id" value="<?php echo $product['Order'][0]['id'];?>"  /><?php } ?>
                                 
                                 </td>
                             </tr>
@@ -80,14 +84,17 @@ function format ( d,key ) {
      toReturn =  '<table class="table table-hover"><thead><tr><th>#</th><th>Varient</th><th>SKU</th><th>Price</th><th>Quantity</th></tr></thead><tbody id="orderSaveID'+key+'">';
 		$(jQuery.parseJSON(d)).each(function(i) {
 			var itemQuantityVal = '';   
+			var itemQuantityPri = this.price;
 			var $myDiv = $('#wrapper'+key).attr('rel');
 			console.log($myDiv);
-			if ($myDiv == true)
+			if ($myDiv == true){
 			itemQuantityVal = $('#wrapper'+key).find('#itemQuantity'+i).val();
-			else{
-			 $('#wrapper'+key).append('<input type="hidden" name="Vary['+key+'][quantity]['+i+']" id="itemQuantity'+i+'" placeholder="Quantity" /> <input type="hidden" name="Vary['+key+'][price]['+i+']" value='+this.price+'   id="itemPrice'+i+'" /><input type="hidden" name="Vary['+key+'][variant]['+i+']" value='+this.variant+'   id="itemVariant" /><input type="hidden" name="Vary['+key+'][sku]['+i+']" value='+this.sku+' id="itemSKU" /><input type="hidden" name="Vary['+key+'][barcode]['+i+']" value='+this.barcode+'   id="itemBarcode" /><input type="hidden" name="Vary['+key+'][product_id]" id="projectID'+key+'" value='+this.product_id+'  />');
+			itemQuantityPri = $('#wrapper'+key).find('#itemPrice'+i).val();
 			}
-	 		toReturn += '<tr><td>'+this.id+'</td><td>'+this.variant+'</td><td>'+this.sku+'</td><td>'+this.price+'</td><td><input type="text" name="Vary['+key+'][quantity]['+i+']" id="itemQuantity" placeholder="Quantity" value="'+itemQuantityVal+'"/></td></tr>';
+			else{
+			 $('#wrapper'+key).append('<input type="hidden" name="Vary['+key+'][quantity]['+i+']" id="itemQuantity'+i+'" placeholder="Quantity" /> <input type="hidden" name="Vary['+key+'][price]['+i+']" value='+this.price+'   id="itemPrice'+i+'" /><input type="hidden" name="Vary['+key+'][variant]['+i+']" value='+this.variant+'   id="itemVariant" /><input type="hidden" name="Vary['+key+'][sku]['+i+']" value='+this.sku+' id="itemSKU" /><input type="hidden" name="Vary['+key+'][barcode]['+i+']" value='+this.barcode+'   id="itemBarcode" /><input type="hidden" name="Vary['+key+'][product_id]" id="projectID'+key+'" value='+this.product_id+'  /><input type="hidden" name="Vary['+key+'][var_id]['+i+']" id="varID'+key+'" value='+this.id+'  />');
+			}
+	 		toReturn += '<tr><td>'+this.id+'</td><td>'+this.variant+'</td><td>'+this.sku+'</td><td><input type="text" name="Vary['+key+'][price]['+i+']" id="itemPrice" placeholder="Price" value="'+itemQuantityPri+'"/></td><td><input type="text" name="Vary['+key+'][quantity]['+i+']" id="itemQuantity" placeholder="Quantity" value="'+itemQuantityVal+'" class="ItemQuan"/></td></tr>';
 			
 		});
 		toReturn += ' <tr></tr></tbody></table>';
@@ -109,11 +116,20 @@ function format ( d,key ) {
 				if ( row.child.isShown() ) {
 				
 				// Save the quantity of each box on purchase Order
-				$('#orderSaveID'+key).find("input[type='text']").each(function(i) {
+				/*$('#orderSaveID'+key).find("input[type='text']").each(function(i) {
 					total_price += $(this).val() * parseFloat($('#wrapper'+key).find("#itemPrice"+i).val());
 					total_quantity += isNaN(parseInt($(this).val())) ? 0 :  parseInt($(this).val());
 					$('#wrapper'+key).find('#itemQuantity'+i).val($(this).val());
+				});*/
+				
+				
+				$('#orderSaveID'+key).find(".ItemQuan").each(function(i) {
+					total_price += $(this).val() * parseFloat($(this).parent().prev().find('input[type="text"]').val());
+					total_quantity += isNaN(parseInt($(this).val())) ? 0 :  parseInt($(this).val());
+					$('#wrapper'+key).find('#itemQuantity'+i).val($(this).val());
+					$('#wrapper'+key).find('#itemPrice'+i).val($(this).parent().prev().find('input[type="text"]').val());
 				});
+				
 				
 				// if no quantity mentioned below shows the error
 				if(total_quantity==0){

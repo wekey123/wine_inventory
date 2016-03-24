@@ -133,7 +133,8 @@ class OrdersController extends AppController {
 								$this->request->data['Vary']['barcode'] = $value['barcode'][$i];
 								$this->request->data['Vary']['price'] = $value['price'][$i];
 								$this->request->data['Vary']['price_total'] = $value['price'][$i] * $quan;
-								$this->request->data['Vary']['type'] = 'order';		
+								$this->request->data['Vary']['type'] = 'order';	
+								$this->request->data['Vary']['var_id'] =$value['var_id'][$i];
 								$this->Vary->create();
 								$this->Vary->save($this->request->data);
 							$i++;
@@ -167,52 +168,71 @@ class OrdersController extends AppController {
 	public function edit($id = null) {
 		$user = $this->Auth->user();
 		if ($this->request->is('post')) {
-			$po='ORD'.rand('111111','999999');
 			//echo '<pre>';print_r($this->request->data);exit;
 			if(isset($this->request->data['Vary'])){
 				  foreach($this->request->data['Vary']  as  $value){
 					 if($value['store_data']==true){
+						
+						if(isset($value['order_id'])){
+						$this->request->data['Order']['id'] = $value['order_id'];	
+						}else{
+						$this->request->data['Order']['id'] = '';
 						$this->Order->create();
+						}
+						
 						$this->request->data['Order']['total_quantity']=$value['total_quantity'];
 						$this->request->data['Order']['total_price']=$value['total_price'];
 						$this->request->data['Order']['user_id']=$user['id'];
 						$this->request->data['Order']['product_id']=$value['product_id'];
-						$this->request->data['Order']['po_no']=$po;
+						$this->request->data['Order']['po_no']=$id;
 						$this->request->data['Order']['status']=0;
-						if ($this->Order->save($this->request->data)) {
-							$i=1;
+						$this->Order->save($this->request->data);
+							$i=0;
 						  foreach ($value['quantity'] as $quan){
+							  if(!empty($quan)){
+							  	if(!empty($value['e_id'][$i])){
+								$this->request->data['Vary']['id'] = $value['e_id'][$i];	
+								}else{
+								$this->request->data['Vary']['id'] = '';
+								$this->Vary->create();
+								}
 								$this->request->data['Vary']['product_id'] = $value['product_id'];
-								$this->request->data['Vary']['po_no'] = $po;   
+								$this->request->data['Vary']['po_no'] = $id;   
 								$this->request->data['Vary']['quantity'] = $quan;
 								$this->request->data['Vary']['variant'] = $value['variant'][$i];
 								$this->request->data['Vary']['sku'] = $value['sku'][$i];
 								$this->request->data['Vary']['barcode'] = $value['barcode'][$i];
 								$this->request->data['Vary']['price'] = $value['price'][$i];
 								$this->request->data['Vary']['price_total'] = $value['price'][$i] * $quan;
-								$this->request->data['Vary']['type'] = 'order';		
-								$this->Vary->create();
+								$this->request->data['Vary']['type'] = 'order';
+								if(isset($value['var_id'][$i]))
+								$this->request->data['Vary']['var_id'] = $value['var_id'][$i];
 								$this->Vary->save($this->request->data);
+							  }
+							  else{
+								  if($quan == 0 && isset($value['e_id'])){
+									  //$this->Vary->id = $value['e_id'][$i];
+									  //$this->Vary->delete(array('Vary.id'=>$value['e_id'][$i]), false);
+									  
+									  	$this->Vary->read(null, $value['e_id'][$i]);
+										$this->Vary->set('quantity', 0);
+										$this->Vary->save();
+									  
+									  
+									//echo $value['e_id'][$i];
+								}
+							  }
 							$i++;
 						 }
-			 			}
-						 else {
-							$this->Flash->error(__('The order could not be saved. Please, try again.'));
-						}
-				  	 }
-				}
+			 			
+				  	 }}
+					 //exit;
 				$this->Flash->success(__('The order has been saved.'));
 				return $this->redirect(array('action' => 'index'));
 			}
 		}else{
 		
 		$Products= $this->Product->find('all');
-		//$this->set('products', $Products);
-		//echo '<pre>';print_r($Products);exit;
-		
-		
-		
-		//$Products = $this->Product->find('list', array('fields' => array('Product.id')));
 		$productsall=array();
 		foreach ($Products as $Producteach)	{
 			$this->Product->bindModel(array(
@@ -234,7 +254,7 @@ class OrdersController extends AppController {
 			$oneProduct['Vary']=$Producteach['Vary'];
 			$k=0;
 			foreach ($oneProduct['Vary'] as $vary){
-				$pall= self::in_array_r($vary['sku'], $oneProduct['VaryOrder']);
+				$pall= self::in_array_r($vary['id'], $oneProduct['VaryOrder']);
 				$oneProduct['Vary'][$k]['price']=isset($pall['price']) ? $pall['price'] : $oneProduct['Vary'][$k]['price'];
 				$oneProduct['Vary'][$k]['quantity']=isset($pall['quantity']) ? $pall['quantity'] : $oneProduct['Vary'][$k]['quantity'];
 				$oneProduct['Vary'][$k]['po_no']=isset($pall['po_no']) ? $pall['po_no'] : $oneProduct['Vary'][$k]['po_no'];
@@ -251,11 +271,12 @@ class OrdersController extends AppController {
 	}
 
 public function in_array_r($needle, $haystack, $strict = false) {
-    foreach ($haystack as $item) {
-        if (($strict ? $item === $needle : $item == $needle) || (is_array($item) && self::in_array_r($needle, $item, $strict))) {
+   foreach ($haystack as $item) {
+        if ((is_array($item) && $item['var_id'] == $needle) || (is_array($item) && self::in_array_r($needle, $item))) {
             return $item;
         }
     }
+
     return false;
 }
 

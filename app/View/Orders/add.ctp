@@ -3,7 +3,7 @@
    <div class="container">
      <div class="row">
         <div class="col-md-12">
-            <h4 class="page-head-line">Orders</h4>
+            <h4 class="page-head-line">Purchase Orders</h4>
         </div>
      </div>
      <?php echo $this->Form->create('Product',array('id'=>'orderAdd','type' => 'file','role'=>'form')); ?>
@@ -71,18 +71,20 @@ $('#submitButton').click( function() {
 
 function format ( d,key ) {
  var toReturn; 
-			
+		/*<th><a class="trClose">X</a></th>	*/
      toReturn =  '<table class="table table-hover"><thead><tr><th>#</th><th>Varient</th><th>SKU</th><th>Price</th><th>Quantity</th></tr></thead><tbody id="orderSaveID'+key+'">';
 		$(jQuery.parseJSON(d)).each(function(i) {
 			var itemQuantityVal = '';   
 			var $myDiv = $('#wrapper'+key).attr('rel');
-			console.log($myDiv);
-			if ($myDiv == true)
+			//console.log($myDiv);
+			if ($myDiv == true){
 			itemQuantityVal = $('#wrapper'+key).find('#itemQuantity'+i).val();
-			else{
-			 $('#wrapper'+key).append('<input type="hidden" name="Vary['+key+'][quantity]['+i+']" id="itemQuantity'+i+'" placeholder="Quantity" /> <input type="hidden" name="Vary['+key+'][price]['+i+']" value='+this.price+'   id="itemPrice'+i+'" /><input type="hidden" name="Vary['+key+'][variant]['+i+']" value='+this.variant+'   id="itemVariant" /><input type="hidden" name="Vary['+key+'][sku]['+i+']" value='+this.sku+' id="itemSKU" /><input type="hidden" name="Vary['+key+'][barcode]['+i+']" value='+this.barcode+'   id="itemBarcode" /><input type="hidden" name="Vary['+key+'][product_id]" id="projectID'+key+'" value='+this.product_id+'  />');
+			itemQuantityPri = $('#wrapper'+key).find('#itemPrice'+i).val();
 			}
-	 		toReturn += '<tr><td>'+this.id+'</td><td>'+this.variant+'</td><td>'+this.sku+'</td><td>'+this.price+'</td><td><input type="text" name="Vary['+key+'][quantity]['+i+']" id="itemQuantity" placeholder="Quantity" value="'+itemQuantityVal+'"/></td></tr>';
+			else{
+			 $('#wrapper'+key).append('<input type="hidden" name="Vary['+key+'][quantity]['+i+']" id="itemQuantity'+i+'" placeholder="Quantity" /> <input type="hidden" name="Vary['+key+'][price]['+i+']"  id="itemPrice'+i+'" /><input type="hidden" name="Vary['+key+'][variant]['+i+']" value='+this.variant+'   id="itemVariant" /><input type="hidden" name="Vary['+key+'][sku]['+i+']" value='+this.sku+' id="itemSKU" /><input type="hidden" name="Vary['+key+'][barcode]['+i+']" value='+this.barcode+'   id="itemBarcode" /><input type="hidden" name="Vary['+key+'][product_id]" id="projectID'+key+'" value='+this.product_id+'  /><input type="hidden" name="Vary['+key+'][var_id]['+i+']" id="varID'+key+'" value='+this.id+'  />');
+			}
+	 		toReturn += '<tr><td>'+this.id+'</td><td>'+this.variant+'</td><td>'+this.sku+'</td><td><input type="text" name="Vary['+key+'][price]['+i+']" id="itemPrice" placeholder="Price"/></td><td><input type="text" name="Vary['+key+'][quantity]['+i+']" id="itemQuantity" placeholder="Quantity" value="'+itemQuantityVal+'" class="ItemQuan"/></td></tr>';
 			
 		});
 		toReturn += ' <tr></tr></tbody></table>';
@@ -100,14 +102,13 @@ function format ( d,key ) {
 				var key= $(this).attr('key');
 				var total_price=0;
 				var total_quantity=0;
-				
 				if ( row.child.isShown() ) {
-				
 				// Save the quantity of each box on purchase Order
-				$('#orderSaveID'+key).find("input[type='text']").each(function(i) {
-					total_price += $(this).val() * parseFloat($('#wrapper'+key).find("#itemPrice"+i).val());
+				$('#orderSaveID'+key).find(".ItemQuan").each(function(i) {
+					total_price += $(this).val() * parseFloat($(this).parent().prev().find('input[type="text"]').val());
 					total_quantity += isNaN(parseInt($(this).val())) ? 0 :  parseInt($(this).val());
 					$('#wrapper'+key).find('#itemQuantity'+i).val($(this).val());
+					$('#wrapper'+key).find('#itemPrice'+i).val($(this).parent().prev().find('input[type="text"]').val());
 				});
 				
 				// if no quantity mentioned below shows the error
@@ -117,7 +118,7 @@ function format ( d,key ) {
 				}
 				else
 			 	$('.error_msg_var').html('');
-				
+				$(this).html('Order');
 				// calculate te total price and quantity for each product for order
 				$('#total_price'+key).val(total_price);
 				$('#total_quantity'+key).val(total_quantity);
@@ -134,11 +135,18 @@ function format ( d,key ) {
 				tr.removeClass('shown');
 				}
 				else {
+					$(this).html('Save');
 					// Show the child row once it in close status. send the child row content to format function above
 					row.child( format ( d,key ) ).show();
 					tr.addClass('shown');
+					/*$('.trClose').on('click', function () {
+						row.child().hide();
+						tr.removeClass('shown');
+					});*/
 				}
 		
 			});
+			
+			
 	});
 </script>
