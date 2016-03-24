@@ -1,5 +1,6 @@
 <?php
 App::uses('AppController', 'Controller');
+App::uses('CakeEmail', 'Network/Email');
 /**
  * Orders Controller
  *
@@ -35,6 +36,7 @@ class OrdersController extends AppController {
 			$sdate = date('Y-m-d', $start_date_timestamp);
 			$edate = date('Y-m-d', $end_date_timestamp);
 			$cond= array('Order.created  BETWEEN ? and ?'  => array($sdate.' 00:00:00', $edate.' 23:59:59'));
+			$this->set('data',$this->request->data);
 		}else
 		$cond= array('');
 		
@@ -108,7 +110,7 @@ class OrdersController extends AppController {
 		$user = $this->Auth->user();
 		if ($this->request->is('post')) {
 			$po='ORD'.rand('111111','999999');
-			//echo '<pre>';print_r($this->request->data);exit;
+		//echo '<pre>';print_r($this->request->data);exit;
 			if(isset($this->request->data['Vary'])){
 				  foreach($this->request->data['Vary']  as  $value){
 					 if($value['store_data']==true){
@@ -120,8 +122,9 @@ class OrdersController extends AppController {
 						$this->request->data['Order']['po_no']=$po;
 						$this->request->data['Order']['status']=0;
 						if ($this->Order->save($this->request->data)) {
-							$i=1;
+							$i=0;
 						  foreach ($value['quantity'] as $quan){
+							  if(!empty($quan)){
 								$this->request->data['Vary']['product_id'] = $value['product_id'];
 								$this->request->data['Vary']['po_no'] = $po;   
 								$this->request->data['Vary']['quantity'] = $quan;
@@ -130,10 +133,12 @@ class OrdersController extends AppController {
 								$this->request->data['Vary']['barcode'] = $value['barcode'][$i];
 								$this->request->data['Vary']['price'] = $value['price'][$i];
 								$this->request->data['Vary']['price_total'] = $value['price'][$i] * $quan;
-								$this->request->data['Vary']['type'] = 'order';		
+								$this->request->data['Vary']['type'] = 'order';	
+								$this->request->data['Vary']['var_id'] =$value['var_id'][$i];
 								$this->Vary->create();
 								$this->Vary->save($this->request->data);
 							$i++;
+							  }
 						 }
 			 			}
 						 else {
@@ -161,23 +166,120 @@ class OrdersController extends AppController {
  * @return void
  */
 	public function edit($id = null) {
-		if (!$this->Order->exists($id)) {
-			throw new NotFoundException(__('Invalid order'));
-		}
-		if ($this->request->is(array('post', 'put'))) {
-			if ($this->Order->save($this->request->data)) {
+		$user = $this->Auth->user();
+		if ($this->request->is('post')) {
+			//echo '<pre>';print_r($this->request->data);exit;
+			if(isset($this->request->data['Vary'])){
+				  foreach($this->request->data['Vary']  as  $value){
+					 if($value['store_data']==true){
+						
+						if(isset($value['order_id'])){
+						$this->request->data['Order']['id'] = $value['order_id'];	
+						}else{
+						$this->request->data['Order']['id'] = '';
+						$this->Order->create();
+						}
+						
+						$this->request->data['Order']['total_quantity']=$value['total_quantity'];
+						$this->request->data['Order']['total_price']=$value['total_price'];
+						$this->request->data['Order']['user_id']=$user['id'];
+						$this->request->data['Order']['product_id']=$value['product_id'];
+						$this->request->data['Order']['po_no']=$id;
+						$this->request->data['Order']['status']=0;
+						$this->Order->save($this->request->data);
+							$i=0;
+						  foreach ($value['quantity'] as $quan){
+							  if(!empty($quan)){
+							  	if(!empty($value['e_id'][$i])){
+								$this->request->data['Vary']['id'] = $value['e_id'][$i];	
+								}else{
+								$this->request->data['Vary']['id'] = '';
+								$this->Vary->create();
+								}
+								$this->request->data['Vary']['product_id'] = $value['product_id'];
+								$this->request->data['Vary']['po_no'] = $id;   
+								$this->request->data['Vary']['quantity'] = $quan;
+								$this->request->data['Vary']['variant'] = $value['variant'][$i];
+								$this->request->data['Vary']['sku'] = $value['sku'][$i];
+								$this->request->data['Vary']['barcode'] = $value['barcode'][$i];
+								$this->request->data['Vary']['price'] = $value['price'][$i];
+								$this->request->data['Vary']['price_total'] = $value['price'][$i] * $quan;
+								$this->request->data['Vary']['type'] = 'order';
+								if(isset($value['var_id'][$i]))
+								$this->request->data['Vary']['var_id'] = $value['var_id'][$i];
+								$this->Vary->save($this->request->data);
+							  }
+							  else{
+								  if($quan == 0 && isset($value['e_id'])){
+									  //$this->Vary->id = $value['e_id'][$i];
+									  //$this->Vary->delete(array('Vary.id'=>$value['e_id'][$i]), false);
+									  
+									  	$this->Vary->read(null, $value['e_id'][$i]);
+										$this->Vary->set('quantity', 0);
+										$this->Vary->save();
+									  
+									  
+									//echo $value['e_id'][$i];
+								}
+							  }
+							$i++;
+						 }
+			 			
+				  	 }}
+					 //exit;
 				$this->Flash->success(__('The order has been saved.'));
 				return $this->redirect(array('action' => 'index'));
-			} else {
-				$this->Flash->error(__('The order could not be saved. Please, try again.'));
 			}
-		} else {
-			$options = array('conditions' => array('Order.' . $this->Order->primaryKey => $id));
-			$this->request->data = $this->Order->find('first', $options);
+		}else{
+		
+		$Products= $this->Product->find('all');
+		$productsall=array();
+		foreach ($Products as $Producteach)	{
+			$this->Product->bindModel(array(
+            'hasMany' => array(
+                'Vary' => array('foreignKey' => false,
+                                    'conditions' => array('Vary.po_no'=>$id,'Vary.product_id'=>$Producteach['Product']['id'])
+                                ),
+				'Order' => array('foreignKey' => false,
+                                    'conditions' => array('Order.status' => 0,'Order.po_no'=>$id,'Order.product_id'=>$Producteach['Product']['id'])
+                                ),
+                            ),
+					),
+					
+				false
+			);
+			$options = array('conditions' => array('Product.' . $this->Product->primaryKey => $Producteach['Product']['id']));
+			$oneProduct=$this->Product->find('first', $options);
+			$oneProduct['VaryOrder']=$oneProduct['Vary'];
+			$oneProduct['Vary']=$Producteach['Vary'];
+			$k=0;
+			foreach ($oneProduct['Vary'] as $vary){
+				$pall= self::in_array_r($vary['id'], $oneProduct['VaryOrder']);
+				$oneProduct['Vary'][$k]['price']=isset($pall['price']) ? $pall['price'] : $oneProduct['Vary'][$k]['price'];
+				$oneProduct['Vary'][$k]['quantity']=isset($pall['quantity']) ? $pall['quantity'] : $oneProduct['Vary'][$k]['quantity'];
+				$oneProduct['Vary'][$k]['po_no']=isset($pall['po_no']) ? $pall['po_no'] : $oneProduct['Vary'][$k]['po_no'];
+				$oneProduct['Vary'][$k]['e_id']=$pall['id'];
+			$k++;
+			}
+			
+			$productsall[]= $oneProduct;
 		}
-		$products = $this->Order->Product->find('list');
-		$this->set(compact('products'));
+		$this->set('products', $productsall);
+		//echo '<pre>';print_r($productsall);
+		//exit;
+		}
 	}
+
+public function in_array_r($needle, $haystack, $strict = false) {
+   foreach ($haystack as $item) {
+        if ((is_array($item) && $item['var_id'] == $needle) || (is_array($item) && self::in_array_r($needle, $item))) {
+            return $item;
+        }
+    }
+
+    return false;
+}
+
 
 /**
  * delete method
@@ -200,7 +302,7 @@ class OrdersController extends AppController {
 		return $this->redirect(array('action' => 'index'));
 	}
 	
-	public function download($orderId = null)
+	public function download($orderId = null,$page = null)
 	{
 		$this->layout = null;
 		$this->Order->bindModel(array('hasMany' => array('Vary' => array('foreignKey' => false,'conditions' => array('Vary.type' => 'order','Vary.po_no'=>$orderId)))),false);
@@ -220,8 +322,10 @@ class OrdersController extends AppController {
 			foreach($Orders['Vary'] as $vary){
 				$result[$vary['po_no']][$i]['SNO'] = $i+1;
 				$result[$vary['po_no']][$i]['PO NUMBER'] = $vary['po_no'];
-				$result[$vary['po_no']][$i]['PRODUCT NAME'] = $Orders['Product']['title'];
-				$result[$vary['po_no']][$i]['CATEGORY NAME'] = $Orders['Product']['category_name'];
+				$options = array('conditions' => array('Product.id' => $vary['product_id']));
+				$product_array = $this->Product->find('first',$options);
+				$result[$vary['po_no']][$i]['PRODUCT NAME'] = $product_array['Product']['title'];
+				$result[$vary['po_no']][$i]['CATEGORY NAME'] = $product_array['Product']['category_name'];
 				$result[$vary['po_no']][$i]['SIZE'] = $vary['variant'];
 				$result[$vary['po_no']][$i]['SKU'] = $vary['sku'];
 				$result[$vary['po_no']][$i]['BARCODE'] = $vary['barcode'];
@@ -238,6 +342,7 @@ class OrdersController extends AppController {
 		$total[10] = '$'.number_format($total[10], 2, '.', '');
 		$this->set('orders', $result);
 		$this->set('totals', $total);
+		$this->set('frompage',$page);
 		$this->autoLayout = false;
 		Configure::write('debug', '0');
 	}
@@ -258,11 +363,15 @@ class OrdersController extends AppController {
 		$total[8] = 0;
 		$total[9] = '';
 		$total[10] = 0.00;
+			debug($Orders['Vary']); exit;
 			foreach($Orders['Vary'] as $vary){
+			
 				$result[$vary['po_no']][$i]['SNO'] = $i+1;
 				$result[$vary['po_no']][$i]['PO NUMBER'] = $vary['po_no'];
-				$result[$vary['po_no']][$i]['PRODUCT NAME'] = $Orders['Product']['title'];
-				$result[$vary['po_no']][$i]['CATEGORY NAME'] = $Orders['Product']['category_name'];
+				$options = array('conditions' => array('Product.id' => $vary['product_id']));
+				$product_array = $this->Product->find('first',$options);
+				$result[$vary['po_no']][$i]['PRODUCT NAME'] = $product_array['Product']['title'];
+				$result[$vary['po_no']][$i]['CATEGORY NAME'] = $product_array['Product']['category_name'];
 				$result[$vary['po_no']][$i]['SIZE'] = $vary['variant'];
 				$result[$vary['po_no']][$i]['SKU'] = $vary['sku'];
 				$result[$vary['po_no']][$i]['BARCODE'] = $vary['barcode'];
@@ -283,4 +392,30 @@ class OrdersController extends AppController {
 		$this->autoLayout = false;
 		Configure::write('debug', '0');
 	}
+	
+	public function emailCheck($pono = null){
+		$user = $this->Auth->user();
+		if ($this->request->is('post')) {
+			//debug($this->request->data); exit;
+			$Email = new CakeEmail('gmail');
+		    $Email->to($this->request->data['Order']['to']);
+		    $Email->subject($this->request->data['Order']['subject']);
+			$filename = 'PO_'.$pono.'.csv';
+			$pathwithfilename = WWW_ROOT.'mailpo'.DS.$filename;
+			$Email->attachments(array($filename => array('file' => $pathwithfilename)));
+			if($Email->send($this->request->data['Order']['message']))
+			$this->Flash->success(__('Your message has been sent.'));
+			else
+			$this->Flash->error(__('Message Sent failed.'));
+			return $this->redirect(array('action' => 'index'));
+		}else{
+			$this->set('po_no', $pono);
+		}
+	}
+	
+	public function emailForm(){
+	
+			exit;
+	}
+	
 }

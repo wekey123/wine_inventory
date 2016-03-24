@@ -14,8 +14,8 @@
    <div class="container">
      <div class="row">
         <div class="col-md-12">
-           <?php echo $this->Html->link('Order Products', array('action' => 'add'),array('class'=>'btn btn-primary','style'=>'margin-bottom:20px; float:right')); ?>
-            <h4 class="page-head-line">Order Lists</h4>
+           <?php echo $this->Html->link('Create PO', array('action' => 'add'),array('class'=>'btn btn-primary','style'=>'margin-bottom:20px; float:right')); ?>
+            <h4 class="page-head-line">Purchase Order Lists</h4>
         </div>
         <div class="col-md-12">
          <h5 style="color:#F0677C; float: left;"><?php echo $this->Flash->render(); ?></h5>
@@ -24,7 +24,7 @@
      <div class="row">	
       <div class="col-md-12">
       <form method="post" name="searchSort">
-           <p>From: <input class="datepicker" id="dateFrom" name="dateFrom" type="text"> To: <input class="datepicker" name="dateTo" id="dateTo" type="text"><button class="buttApply" style="margin-left:20px;">APPLY</button></p>
+           <p>From: <input class="datepicker" id="dateFrom" name="dateFrom" type="text" value="<?php echo isset($data) ? $data['dateFrom'] : ''?>"> To: <input class="datepicker" name="dateTo" id="dateTo" type="text" value="<?php echo isset($data) ? $data['dateTo'] : ''?>"><button class="buttApply" style="margin-left:20px;">APPLY</button></p>
            </form>
       </div>
      </div>
@@ -33,7 +33,7 @@
                      <!--    Hover Rows  -->
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                           <?php echo __('Orders'); ?>
+                           <?php echo __('Purchase Orders'); ?>
                         </div>
                         <div class="panel-body">
                            <div class="table-responsive" style="overflow-x:hidden;">
@@ -56,6 +56,7 @@
                                     <?php $i=1;foreach ($orders as $order): ?>
                                     <tr>
                                           <td class="details-control"><?php 
+										  $pos=array();
 										foreach($order['Vary'] as $vary){
 											if($vary['po_no']==$order['Order']['po_no']){
 												$products = $this->Util->getProductdetails($vary['product_id']);
@@ -88,9 +89,10 @@
                                         <td><?php  echo $this->Util->dateFormat($order['Order']['created']); ?>&nbsp;</td>
                                         <td><?php  echo $this->Util->dateFormat($order['Order']['modified']); ?>&nbsp;</td>
                                         <td class="actions">
-                                            <?php echo $this->Html->link(__('CSV'), array('action' => 'download',$order['Order']['po_no'])); ?>
-                                            <?php /*?><?php echo $this->Html->link(__('Edit'), array('action' => 'edit', $order['Order']['id'])); ?>
-                                            <?php echo $this->Form->postLink(__('Delete'), array('action' => 'delete', $order['Order']['id']), array('confirm' => __('Are you sure you want to delete # %s?', $order['Order']['id']))); ?><?php */?>
+                                            <?php echo $this->Html->link(__('CSV'), array('action' => 'download',$order['Order']['po_no'])); ?> |
+                                            <?php echo $this->Html->link(__('Mail'), array('action' => 'download',$order['Order']['po_no'],'email')); ?> |
+                                            <?php echo $this->Html->link(__('Edit'), array('action' => 'edit', $order['Order']['po_no'])); ?>
+                                            <?php /*?><?php echo $this->Form->postLink(__('Delete'), array('action' => 'delete', $order['Order']['id']), array('confirm' => __('Are you sure you want to delete # %s?', $order['Order']['id']))); ?><?php */?>
                                         </td>
                                     </tr>
                                 <?php $i++; endforeach; ?>
@@ -116,7 +118,7 @@ function format ( d) {
      toReturn =  '<table class="table table-hover"><thead><tr><th>#</th><th>Product Name</th><th>Variant</th><th>Quantity</th><th>Price</th><th>SKU</th><th>Bar Code</th></tr></thead><tbody>';
 		$(jQuery.parseJSON(d)).each(function(i) {
 			var itemQuantityVal;   
-	 		toReturn += '<tr><td>'+i+'</td><td>'+this.product_title+'</td><td>'+this.variant+'</td><td>'+this.quantity+'</td><td>'+this.price+'</td><td>'+this.sku+'</td><td>'+this.barcode+'</td></tr>';
+	 		toReturn += '<tr><td>'+parseInt(i+1)+'</td><td>'+this.product_title+'</td><td>'+this.variant+'</td><td>'+this.quantity+'</td><td>'+this.price+'</td><td>'+this.sku+'</td><td>'+this.barcode+'</td></tr>';
 		});
 		toReturn += ' <tr></tr></tbody></table>';
 		return toReturn;
