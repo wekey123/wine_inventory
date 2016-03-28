@@ -157,7 +157,7 @@ class InvoicesController extends AppController {
 			throw new NotFoundException(__('Invalid invoice'));
 		}
 		if ($this->request->is(array('post', 'put'))) {
-			echo '<pre>';print_r($this->request->data);exit;
+			//echo '<pre>';print_r($this->request->data);exit;
 			if ($this->Invoice->save($this->request->data)) {
 				if(isset($this->request->data['col'])){
 				foreach($this->request->data['col'] as $col){
