@@ -25,7 +25,23 @@ class PaymentsController extends AppController {
  * @return void
  */
 	public function index() {
-		$this->Payment->recursive = 0;
+		$this->Payment->recursive = 0;		
+		$this->Paginator->settings = array('fields' => array(
+		'SUM(Payment.payment_amount) as total_amount',
+		'SUM(Payment.payment_qty) as total_quantity',
+        'Payment.id',
+		'Payment.po_no',
+		'Payment.invoice_no',
+		'Payment.payment_no',
+		'Payment.payment_amount',
+		'Payment.payment_qty',
+		'Payment.payment_date',
+		'Payment.payment_method',
+		'Payment.created',
+		'Payment.modified',
+		'User.username',
+		'User.id'),'group' => 'Payment.invoice_no', 'order' => array('Payment.created' => 'desc'));
+		//debug($this->Paginator->paginate()); exit;
 		$this->set('payments', $this->Paginator->paginate());
 	}
 
@@ -50,15 +66,14 @@ class PaymentsController extends AppController {
                 ),
             false
         );
-		
-		if (!$this->Invoice->find('count', array('conditions' => array('Invoice.invoice_no'=>$no)))) {
-			throw new NotFoundException(__('Invalid invoice'));
-		}
-		
 		 $options = array('conditions' => array('Invoice.invoice_no' => $no));
 		 $paymentView = $this->Invoice->find('first', $options);
-		// debug($paymentView); exit;
+	     if(!empty($paymentView)){
 		 $this->set('invoice', $paymentView);
+		 }else{
+		 $this->Flash->success(__('Invalid invoice Number.'));
+		 return $this->redirect(array('action' => 'index'));
+		 }
 
 	}
 
@@ -70,6 +85,7 @@ class PaymentsController extends AppController {
 	public function add() {
 		$user = $this->Auth->user();
 		if ($this->request->is('post')) {
+			//debug($this->request->data); exit;
 			$this->request->data['Payment']['user_id'] = $user['id'];
 			$this->request->data['Payment']['payment_date'] = date("Y-m-d", strtotime($this->request->data['Payment']['payment_date']));
 			$this->request->data['Payment']['payment_amount'] = str_replace(array( ',','$'), '', $this->request->data['Payment']['payment_amount']);

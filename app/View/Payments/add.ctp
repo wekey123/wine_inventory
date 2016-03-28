@@ -20,7 +20,7 @@
 	$('.datepicker').datepicker({
     format: 'mm/dd/yyyy',
     startDate: '-3d'
-});
+   });
 });
 
   </script>
@@ -38,14 +38,14 @@
     <div class="row">
         <div class="col-md-5" style="margin-right:5%;">    
 	<?php
-		//echo $this->Form->input('user_id');
-		//echo $this->Form->input('po_no',array('div'=>false,'error'=>false,'type'=>'text', 'before' => '<div class="form-group">', 'after' => '</div>', 'class'=>'validate[required] form-control','id'=>'tags'));
 		echo $this->Form->input('invoice_no',array('div'=>false,'error'=>false,'type'=>'text', 'before' => '<div class="form-group">', 'after' => '</div>', 'class'=>'validate[required] form-control','id'=>'tags','between'=>'<label><span class="mandatory">*</span> Invoice Number</label>','label'=>false));
 		echo $this->Form->input('payment_no',array('div'=>false,'error'=>false,'type'=>'text', 'before' => '<div class="form-group">', 'after' => '</div>', 'class'=>'validate[required] form-control','between'=>'<label><span class="mandatory">*</span> Payment Number</label>','label'=>false));
+		echo $this->Form->input('payment_qty',array('div'=>false,'error'=>false,'type'=>'text', 'before' => '<div class="form-group">', 'after' => '</div>', 'class'=>'validate[required] form-control Paymentqty','between'=>'<label><span class="mandatory">*</span> Payment Quantity</label>','label'=>false));
 		echo $this->Form->input('payment_amount',array('div'=>false,'error'=>false,'type'=>'text', 'before' => '<div class="form-group">', 'after' => '</div>', 'class'=>'validate[required] form-control PaymentValue','between'=>'<label><span class="mandatory">*</span> Payment Amount</label>','label'=>false));
 		echo $this->Form->input('payment_date',array('div'=>false,'error'=>false,'type'=>'text', 'before' => '<div class="form-group">', 'after' => '</div>', 'class'=>'validate[required] form-control datepicker','between'=>'<label><span class="mandatory">*</span> Payment Date</label>','label'=>false));
 		echo $this->Form->input('payment_method',array('div'=>false,'error'=>false,'type'=>'text', 'before' => '<div class="form-group">', 'after' => '</div>', 'class'=>'validate[required] form-control','between'=>'<label><span class="mandatory">*</span> Payment Method</label>','label'=>false));
-	?></div>
+	?>
+    </div>
     <div class="col-md-6">
     	<div id="invoiceForm"></div>
 	</div>
@@ -55,8 +55,11 @@
 </div>
 </div>
 <script>
- $( ".PaymentValue" ).change(function() {console.log($(this).val());console.log($('#myDueamt').val());
-  if(parseInt($(this).val()) > parseInt($('#myDueamt').val())){console.log('s');
+ $( ".PaymentValue" ).change(function() {
+	 console.log($(this).val());
+	 console.log($('#myDueamt').val());
+  if(parseFloat($(this).val()) > parseFloat($('#myDueamt').val()) && parseFloat($(this).val()) > 0.99){
+	  console.log('s');
 	  $('.error_msg_var').html('Please enter the amount less than due amount.');
 	  $('.btn-block').prop('disabled', true);
   }
@@ -65,4 +68,26 @@
   	  $('.btn-block').prop('disabled', false);
   }
 });
+
+
+  $( "#PaymentPaymentQty" ).change(function() {	
+  		var invoiceqty = $("#totalqtyhistory").val();
+		console.log(invoiceqty);
+		var paymentqty = $(this).val();
+		console.log(paymentqty);
+		if (typeof invoiceqty !== 'undefined') {
+			var invoiceqty = parseInt(invoiceqty);
+			if(paymentqty <= invoiceqty && paymentqty >0){
+				 $('.error_msg_var').html('');
+  	 			 $('.btn-block').prop('disabled', false);
+			}else{
+				  $('.error_msg_var').html('Please enter the quantity less than or equal to Invoice quantity.');
+				  $('.btn-block').prop('disabled', true);
+			}
+		}else{
+			$('.error_msg_var').html('Enter Your Invoice No first');
+			$('.btn-block').prop('disabled', true);
+		}
+    });
+	
 </script>
