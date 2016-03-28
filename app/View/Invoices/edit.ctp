@@ -1,37 +1,64 @@
-<div class="invoices form">
+<?php echo $this->Html->css('jquery-ui.css');echo $this->Html->script('jquery-1.10.2');echo $this->Html->script('jquery-ui'); ?>
+<div class="content-wrapper">
+    <div class="container">
 <?php echo $this->Form->create('Invoice'); ?>
-	<fieldset>
-		<legend><?php echo __('Edit Invoice'); ?></legend>
+	<div class="row">
+            <div class="col-md-12">
+                <h1 class="page-head-line"><?php echo __('Edit Invoice'); ?> </h1>
+            </div>
+        </div>
+                
+    <div class="row">
+        <div class="col-md-5" style="margin-right:10%;">         
 	<?php
-		echo $this->Form->input('id');
-		echo $this->Form->input('user_id');
-		echo $this->Form->input('product_id');
-		echo $this->Form->input('po_no');
-		echo $this->Form->input('invoice_no');
-		echo $this->Form->input('invoice_date');
-		echo $this->Form->input('vendor_name');
-		echo $this->Form->input('vendor_address');
-		echo $this->Form->input('customer_id');
-		echo $this->Form->input('shipping_method');
-		echo $this->Form->input('payment_terms');
-		echo $this->Form->input('estimated_shipping_date');
-		echo $this->Form->input('total_quantity');
-		echo $this->Form->input('total_price');
+		echo  $this->Form->input('id');
+		echo $this->Form->input('po_no',array('div'=>false,'error'=>false,'type'=>'text', 'before' => '<div class="form-group">', 'after' => '</div>', 'class'=>'validate[required] form-control poVal','id'=>'tags','between'=>'<label><span class="mandatory">*</span> Order Number</label>','label'=>false));
+		echo $this->Form->input('invoice_no',array('div'=>false,'error'=>false,'type'=>'text', 'before' => '<div class="form-group">', 'after' => '</div>', 'class'=>'validate[required] form-control','between'=>'<label><span class="mandatory">*</span> Invoice Number</label>','label'=>false));
+		echo $this->Form->input('invoice_date',array('div'=>false,'error'=>false,'type'=>'text', 'before' => '<div class="form-group">', 'after' => '</div>', 'class'=>'validate[required] form-control datepicker','between'=>'<label><span class="mandatory">*</span> Invoice Date</label>','label'=>false));
+		echo $this->Form->input('vendor_name',array('div'=>false,'error'=>false,'type'=>'text', 'before' => '<div class="form-group">', 'after' => '</div>', 'class'=>'validate[required] form-control'));
+		echo $this->Form->input('vendor_address',array('div'=>false,'error'=>false,'type'=>'textarea', 'before' => '<div class="form-group">', 'after' => '</div>', 'class'=>'validate[required] form-control'));
+		echo $this->Form->input('user_id',array('div'=>false,'error'=>false,'type'=>'hidden'));
+		echo $this->Form->input('total_price',array('div'=>false,'error'=>false,'type'=>'hidden','id'=>'total_price'));
+		echo $this->Form->input('total_quantity',array('div'=>false,'error'=>false,'type'=>'hidden','id'=>'total_quantity'));
+		
 	?>
-	</fieldset>
-<?php echo $this->Form->end(__('Submit')); ?>
+	</div>
+    <div class="col-md-5"> 
+   		<?php 
+			echo $this->Form->input('customer_id',array('div'=>false,'error'=>false,'type'=>'text', 'before' => '<div class="form-group">', 'after' => '</div>', 'class'=>'validate[required] form-control','between'=>'<label> Customer Number</label>','label'=>false));
+		echo $this->Form->input('shipping_method',array('div'=>false,'error'=>false,'type'=>'text', 'before' => '<div class="form-group">', 'after' => '</div>', 'class'=>'validate[required] form-control','between'=>'<label><span class="mandatory">*</span> Shipping Method</label>','label'=>false));
+		echo $this->Form->input('estimated_shipping_date',array('div'=>false,'error'=>false,'type'=>'text', 'before' => '<div class="form-group">', 'after' => '</div>', 'class'=>'validate[required] form-control datepicker','between'=>'<label><span class="mandatory">*</span> Estimated Shipping Date</label>','label'=>false));
+		echo $this->Form->input('payment_terms',array('div'=>false,'error'=>false,'type'=>'textarea', 'before' => '<div class="form-group">', 'after' => '</div>', 'class'=>'validate[required] form-control'));
+		
+		?>
+    </div>
 </div>
-<div class="actions">
-	<h3><?php echo __('Actions'); ?></h3>
-	<ul>
-
-		<li><?php echo $this->Form->postLink(__('Delete'), array('action' => 'delete', $this->Form->value('Invoice.id')), array('confirm' => __('Are you sure you want to delete # %s?', $this->Form->value('Invoice.id')))); ?></li>
-		<li><?php echo $this->Html->link(__('List Invoices'), array('action' => 'index')); ?></li>
-		<li><?php echo $this->Html->link(__('List Orders'), array('controller' => 'orders', 'action' => 'index')); ?> </li>
-		<li><?php echo $this->Html->link(__('New Order'), array('controller' => 'orders', 'action' => 'add')); ?> </li>
-		<li><?php echo $this->Html->link(__('List Varies'), array('controller' => 'varies', 'action' => 'index')); ?> </li>
-		<li><?php echo $this->Html->link(__('New Vary'), array('controller' => 'varies', 'action' => 'add')); ?> </li>
-		<li><?php echo $this->Html->link(__('List Payments'), array('controller' => 'payments', 'action' => 'index')); ?> </li>
-		<li><?php echo $this->Html->link(__('New Payment'), array('controller' => 'payments', 'action' => 'add')); ?> </li>
-	</ul>
+<div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-default">
+            	<div class="panel-heading">Invoice Coloumns <span class="error_msg_var"></span> <a id="invoiceAddColoumn" class="btn btn-primary addmore">Add More Coloumns</a><!--<span class="varient-enable glyphicon glyphicon-plus"></span>--></div>              
+                <div class="panel-body" id="varient_body">           
+               <?php $varys= $this->request->data['InvoiceColumn'];
+				$i=0;
+				foreach($varys as $vary){
+				?>
+                <div class="form-group varHead"><label>Coloumn Name</label><label>Value</label></div>
+                <div class="form-group varHead"><input type="text" id="coloumn<?php echo $i;?>" value="<?php echo $vary['heading'];?>" name="col[<?php echo $i;?>][coloumn]" class="form-control varientVal"  ><input type="text" id="value<?php echo $i;?>" value="<?php echo $vary['value'];?>" name="col[<?php echo $i;?>][value]" class="form-control priceVal" style="margin-right:1%" ><input type="hidden" value="<?php echo $vary['id'];?>" name="col[<?php echo $i;?>][id]"  /> <a  onClick="boxRemove(<?php echo $i;?>)" rel="<?php echo $i;?>">remove</a></div>
+                <?php $i++;} ?>
+                
+                
+                 <div id='TextBoxesGroup'>	</div>
+                </div>
+            </div>
+        </div>
+    </div>
+        <div class="row">
+            <div class="col-md-12">
+                <?php echo $this->element('invoice'); ?>
+            </div>
+        </div>
+     <?php echo $this->Form->submit(__('Submit'),array('div'=>false, 'class'=>'btn btn-lg btn-success btn-block' ,'id' => 'submitButton1')); echo $this->Form->end();	?>
 </div>
+</div>
+<input type="hidden" name="" id="countValues" value="<?php echo $i;?>" />
+<?php echo $this->Html->script('inventory'); ?>

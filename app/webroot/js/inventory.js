@@ -1,4 +1,6 @@
- var counter =$('#countValues').val();
+	/*******   Order Section  ***************/
+	
+	 var counter =$('#countValues').val();
 	 $('#test').on('click',function(e){
 			if(counter>10){
 					alert("Only 10 textboxes allow");
@@ -13,6 +15,7 @@
 			counter++;
 		  }
 	 });
+	 
 	  $("#getVarientValue").click(function () {
 		  if($('.varientVal').val()=='' || $('.skuVal').val()=='' || $('.barcodeVal').val()=='' || $('.priceVal').val()==''){
 			  $('.error_msg_var').focus();
@@ -36,5 +39,46 @@
 				//return false;
 		});
 		function boxRemove(id){
-		 $("#TextBoxDiv" + id).remove();
-	 }
+			 $("#TextBoxDiv" + id).remove();
+		 }
+	 
+	 /****************   Invoice Section ****************/
+	
+	 $( "#invoiceAdd" ).submit(function( event ) {
+		  var total_price=0;var total_quantity=0;
+		  if($('.invoiceQuantitychk').val() != '' && $('.poVal').val() != '' ){
+			  $('#invoiceSaveID').find("input[type='text']").each(function() {
+				total_price += $(this).val() * parseFloat($(this).next().val());
+				total_quantity += parseInt($(this).val());
+				});
+				$('#total_price').val(total_price);
+				$('#total_quantity').val(total_quantity);
+				$('#invoiceAdd').submit();
+		  }
+		  else{
+		  $('.error_msg_var').html('Quantity field cannot be empty');
+		  return false;
+		  }
+	});	
+	
+	$('#invoiceAddColoumn').on('click',function(e){
+		if(counter>10){
+				alert("Only 10 textboxes allow");
+				return false;
+		}else{
+		var newTextBoxDiv = $(document.createElement('div'))
+			 .attr("id", 'TextBoxDiv' + counter);
+					
+		newTextBoxDiv.after().html('<div class="col-md-12"> <div class="form-group varHead"><label>Coloumn Name</label><label>Value</label></div><div class="form-group varHead"><input type="text" id="coloumn' + counter + '" value="" name="col['+ counter +'][coloumn]" class="form-control varientVal"  ><input type="text" id="value' + counter + '" value="" name="col['+ counter +'][value]" class="form-control priceVal" style="margin-right:1%" > <a  onClick="boxRemove('+counter+')" rel="' + counter + '">remove</a></div>');
+				
+		newTextBoxDiv.appendTo("#TextBoxesGroup");
+		counter++;
+	  }
+	});
+	$('.datepicker').datepicker({
+		format: 'yyyy/mm/dd',
+		startDate: '-3d'
+	});
+	 
+	 
+	 

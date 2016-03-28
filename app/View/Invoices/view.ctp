@@ -42,6 +42,27 @@
             		</div>
                     
                     <div class="row">	
+                     	<div class="col-md-12">
+                             <!--    Hover Rows  -->
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    Additional Column List
+                                </div>
+                                <div class="panel-body">
+                                    <div class="table-responsive">
+                                    <?php $i =1;foreach ($invoice['InvoiceColumn'] as $InvoiceColumn): ?>
+                                                                   <strong><?php echo h($InvoiceColumn['heading']); ?></strong> <span> : </span> <span><?php echo h($InvoiceColumn['value']); ?></span> <br />
+                                    <?php $i++;endforeach; ?>
+                                        
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- End  Hover Rows  -->
+                        </div>
+                    </div>
+                    
+                    
+                    <div class="row">	
  	 <div class="col-md-12">
                      <!--    Hover Rows  -->
                     <div class="panel panel-default">

@@ -70,6 +70,19 @@ class Invoice extends AppModel {
 			'finderQuery' => '',
 			'counterQuery' => ''
 		),
+		'InvoiceColumn' => array(
+			'className' => 'InvoiceColumn',
+			'foreignKey' => 'invoice_id',
+			'dependent' => false,
+			'conditions' => '',
+			'fields' => '',
+			'order' => '',
+			'limit' => '',
+			'offset' => '',
+			'exclusive' => '',
+			'finderQuery' => '',
+			'counterQuery' => ''
+		),
 		'Payment' => array(
 			'className' => 'Payment',
 			'foreignKey' => 'invoice_no',
