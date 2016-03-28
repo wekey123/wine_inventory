@@ -23,27 +23,32 @@
                                         </tr>
                                     </thead>
                                     <tbody id="invoiceSaveID">
-                                     <?php $i =1;foreach ($order['Vary'] as $product): ?>
+                                     <?php $i =1;foreach ($order['Vary'] as $product):
+									 if($product['type'] =='order'){ ?>
                                         <tr>
                                             <td><?php echo $i; ?>&nbsp;</td>
                                             <td><?php echo h($product['Product']['title']); ?>&nbsp;</td>
                                             <td><?php echo h($product['variant']); ?>&nbsp;</td>
                                             <td><?php echo h($product['quantity']); ?>&nbsp;</td>
                                             <td>
-                                            <input type="text" value="" name="Vary[quantity][<?php echo $i; ?>]" class="invoiceQuantitychk"  />
+                                            <input type="text" value="<?php echo isset($product['inv_count']) ? $product['inv_count'] : '';?>" name="Vary[quantity][<?php echo $i; ?>]" class="invoiceQuantitychk"  />
                                       <input type="hidden" name="Vary[price][<?php echo $i; ?>]" value="<?php echo h($product['price']); ?>" id="itemPrice" />
                                        <input type="hidden" name="Vary[variant][<?php echo $i; ?>]" value="<?php echo h($product['variant']); ?>"  />
                                        <input type="hidden" name="Vary[sku][<?php echo $i; ?>]" value="<?php echo h($product['sku']); ?>"   id="itemSKU" />
                                        <input type="hidden" name="Vary[barcode][<?php echo $i; ?>]" value="<?php echo h($product['barcode']); ?>" />
+                                        <input type="hidden" name="Vary[var_id][<?php echo $i; ?>]" value="<?php echo h($product['id']); ?>" />
                                       
                                         <input type="hidden" name="Vary[product_id][<?php echo $i; ?>]" value="<?php echo h($product['product_id']); ?>"  />
+                                        <?php if(isset($product['inv_id'])) { ?>
+                                        <input type="hidden" name="Vary[inv_id][<?php echo $i; ?>]" value="<?php echo h($product['inv_id']); ?>"  />
+                                        <?php } ?>
                                             </td>
                                             <td><?php echo $this->Util->currencyFormat($product['price']); ?>&nbsp;</td>
                                             <td><?php echo h($product['sku']); ?>&nbsp;</td>
                                             <td><?php echo h($product['barcode']); ?>&nbsp;</td>
                                             <td><?php echo h($product['po_no']); ?>&nbsp;</td>
                                         </tr>
-                                    <?php $i++;endforeach; ?>
+                                    <?php $i++; }endforeach; ?>
                                      <input type="hidden" name="Vary[type]" value="invoice"   id="itemVariant" />
                                     </tbody>
                                 </table>

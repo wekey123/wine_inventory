@@ -8,13 +8,13 @@
      </div>
      <?php echo $this->Form->create('Product',array('id'=>'orderAdd','type' => 'file','role'=>'form')); ?>
  	<div class="row">	
- 	 <div class="col-md-8">
+ 	 <div class="col-md-12">
          <!--    Hover Rows  -->
         <div class="panel panel-default">
             <div class="panel-heading">
                 Products List
                 <?php //echo '<pre>';print_r($products);?>
-                <button class="btn btn-primary btn-lg" style="margin-left:57%;padding:7px 16px;" id="submitButton"> Click to update Order   </button>
+                <button class="btn btn-primary btn-lg" style="margin-left:73%;padding:7px 16px;" id="submitButton"> Click to update Order   </button>
             </div>
             <div class="panel-body">
                 <div class="table-responsive" style="overflow-x:hidden;"><span class="error_msg_var"></span>
@@ -132,12 +132,12 @@ function format ( d,key ) {
 				
 				
 				// if no quantity mentioned below shows the error
-				if(total_quantity==0){
+				/*if(total_quantity==0){
 					 $('.error_msg_var').html('Quantity field cannot be empty');
 					 return false;
 				}
 				else
-			 	$('.error_msg_var').html('');
+			 	$('.error_msg_var').html('');*/
 				
 				// calculate te total price and quantity for each product for order
 				$('#total_price'+key).val(total_price);
@@ -148,6 +148,7 @@ function format ( d,key ) {
 				$('#wrapper'+key).attr('rel',1);
 				
 				// Add green background to convey the success of order.
+				if(total_quantity > 0)
 				$('#NoncollapseExample'+key).addClass('success');
 				
 				// Hide the child row once it in open status.

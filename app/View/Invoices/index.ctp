@@ -61,9 +61,9 @@
                                         <?php /*?><td><?php echo h($invoice['Invoice']['created']); ?>&nbsp;</td>
                                         <td><?php echo h($invoice['Invoice']['modified']); ?>&nbsp;</td><?php */?>
                                         <td class="actions">
-                                            <?php echo $this->Html->link(__('View'), array('action' => 'view', $invoice['Invoice']['invoice_no'])); ?>
-                                            <?php /*?><?php echo $this->Html->link(__('Edit'), array('action' => 'edit', $invoice['Invoice']['id'])); ?>
-                                            <?php echo $this->Form->postLink(__('Delete'), array('action' => 'delete', $invoice['Invoice']['id']), array('confirm' => __('Are you sure you want to delete # %s?', $invoice['Invoice']['id']))); ?><?php */?>
+                                            <?php echo $this->Html->link(__('View'), array('action' => 'view', $invoice['Invoice']['invoice_no'])); ?> | 
+                                            <?php echo $this->Html->link(__('Edit'), array('action' => 'edit', $invoice['Invoice']['id'])); ?>
+                                           <?php /*?> <?php echo $this->Form->postLink(__('Delete'), array('action' => 'delete', $invoice['Invoice']['id']), array('confirm' => __('Are you sure you want to delete # %s?', $invoice['Invoice']['id']))); ?><?php */?>
                                         </td>
                                     </tr>
                                 <?php endforeach; ?>

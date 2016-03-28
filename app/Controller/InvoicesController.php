@@ -15,7 +15,7 @@ class InvoicesController extends AppController {
  *
  * @var array
  */
-	public $uses = array('Invoice','Product','Vary','Category','Order');
+	public $uses = array('Invoice','Product','Vary','Category','Order','InvoiceColumn');
 	public $components = array('Paginator', 'Flash', 'Session' ,'Image','Auth');
 	public $layout = 'admin';
 /**
@@ -44,6 +44,9 @@ class InvoicesController extends AppController {
                 'Vary' => array('foreignKey' => false,
                                     'conditions' => array('Vary.type' => 'invoice','Vary.po_no'=>$no)
                                 ),
+				 'InvoiceColumn' => array('foreignKey' => false,
+                                    'conditions' => array('InvoiceColumn.invoice_no' => $no)
+                                ),
                             )
                 ),
             false
@@ -54,6 +57,7 @@ class InvoicesController extends AppController {
 			throw new NotFoundException(__('Invalid invoice'));
 		}
 		$options = array('conditions' => array('Invoice.invoice_no'=> $no));
+		//echo '<pre>';print_r($this->Invoice->find('first', $options));exit;
 		//debug($this->Invoice->find('first', $options)); exit;
 		$this->set('invoice', $this->Invoice->find('first', $options));
 	}
@@ -75,12 +79,25 @@ class InvoicesController extends AppController {
 			//echo '<pre>';print_r($this->request->data);exit;
 			$options = array('conditions' => array('Invoice.invoice_no'=> $this->request->data['Invoice']['invoice_no']));
 			$invoiceExist=$this->Invoice->find('first', $options);
-			//echo '<pre>';print_r($invoiceExist);exit;
+			//echo '<pre>';print_r($this->request->data);exit;
 			if(empty($invoiceExist)){
 			$this->Invoice->create();
 			if ($this->Invoice->save($this->request->data)) {
+				
+				if(isset($this->request->data['col'])){
+				foreach($this->request->data['col'] as $col){
+					$this->request->data['InvoiceColumn']['invoice_id'] = $this->Invoice->getLastInsertId();
+					$this->request->data['InvoiceColumn']['invoice_no'] = $this->request->data['Invoice']['invoice_no'];  
+					$this->request->data['InvoiceColumn']['po_no'] =  $this->request->data['Invoice']['po_no'];  
+					$this->request->data['InvoiceColumn']['heading'] = $col['coloumn'];
+					$this->request->data['InvoiceColumn']['value'] =$col['value'];
+					$this->InvoiceColumn->create();
+				    $this->InvoiceColumn->save($this->request->data);
+				 }
+				}
+				
 				if(isset($this->request->data['Vary'])){
-					$i=1;
+				$i=1;
 				$value = $this->request->data['Vary'];
 				  foreach($value['quantity']  as  $quan){
 						$this->request->data['Vary']['product_id'] = $value['product_id'][$i];
@@ -91,12 +108,13 @@ class InvoicesController extends AppController {
 						$this->request->data['Vary']['barcode'] = $value['barcode'][$i];
 						$this->request->data['Vary']['price'] = $value['price'][$i];
 						$this->request->data['Vary']['price_total'] = $value['price'][$i] * $quan;
-						$this->request->data['Vary']['type'] = 'invoice';		
+						$this->request->data['Vary']['type'] = 'invoice';
+						$this->request->data['Vary']['var_id'] = $value['var_id'][$i];
 						$this->Vary->create();
 						$this->Vary->save($this->request->data);
 						$i++;
 					}
-					
+				 
 				$this->Order->updateAll(array('Order.status' => 1),array('Order.po_no' => $this->request->data['Invoice']['po_no']));
 					
 				$this->Flash->success(__('The invoice has been saved.'));
@@ -139,19 +157,104 @@ class InvoicesController extends AppController {
 			throw new NotFoundException(__('Invalid invoice'));
 		}
 		if ($this->request->is(array('post', 'put'))) {
+			echo '<pre>';print_r($this->request->data);exit;
 			if ($this->Invoice->save($this->request->data)) {
+				if(isset($this->request->data['col'])){
+				foreach($this->request->data['col'] as $col){
+					$this->request->data['InvoiceColumn']['invoice_id'] = $this->request->data['Invoice']['id']; 
+					$this->request->data['InvoiceColumn']['invoice_no'] = $this->request->data['Invoice']['invoice_no'];  
+					$this->request->data['InvoiceColumn']['po_no'] =  $this->request->data['Invoice']['po_no'];  
+					$this->request->data['InvoiceColumn']['heading'] = $col['coloumn'];
+					$this->request->data['InvoiceColumn']['value'] =$col['value'];
+					$this->request->data['InvoiceColumn']['id']= isset($col['id']) ? $col['id'] : '';
+					$this->InvoiceColumn->create();
+				    $this->InvoiceColumn->save($this->request->data);
+				 }
+				}
+				
+			  if(isset($this->request->data['Vary'])){
+				$i=1;
+				$value = $this->request->data['Vary'];
+				  foreach($value['quantity']  as  $quan){
+						$this->request->data['Vary']['product_id'] = $value['product_id'][$i];
+						$this->request->data['Vary']['po_no'] = $this->request->data['Invoice']['invoice_no'];   
+						$this->request->data['Vary']['quantity'] = $quan;
+						$this->request->data['Vary']['variant'] = $value['variant'][$i];
+						$this->request->data['Vary']['sku'] = $value['sku'][$i];
+						$this->request->data['Vary']['barcode'] = $value['barcode'][$i];
+						$this->request->data['Vary']['price'] = $value['price'][$i];
+						$this->request->data['Vary']['price_total'] = $value['price'][$i] * $quan;
+						$this->request->data['Vary']['type'] = 'invoice';
+						$this->request->data['Vary']['var_id'] = $value['var_id'][$i];
+						$this->request->data['Vary']['id'] = isset($value['inv_id']) ? $value['inv_id'][$i] : '';
+						$this->Vary->create();
+						$this->Vary->save($this->request->data);
+						$i++;
+					}
+				 
+				$this->Order->updateAll(array('Order.status' => 1),array('Order.po_no' => $this->request->data['Invoice']['po_no']));
+					
+				$this->Flash->success(__('The invoice has been saved.'));
+				return $this->redirect(array('action' => 'index'));
+			}
+			
+				
 				$this->Flash->success(__('The invoice has been saved.'));
 				return $this->redirect(array('action' => 'index'));
 			} else {
 				$this->Flash->error(__('The invoice could not be saved. Please, try again.'));
 			}
 		} else {
+			 $this->Invoice->UnbindModel(array('hasMany'=>'Vary'));
 			$options = array('conditions' => array('Invoice.' . $this->Invoice->primaryKey => $id));
 			$this->request->data = $this->Invoice->find('first', $options);
+			// Varient table List
+			$po_no=$this->request->data['Invoice']['po_no'];
+			$invoice_no=$this->request->data['Invoice']['invoice_no'];
+			 $this->Order->recursive = 2;
+			 $this->Order->bindModel(array(
+				'hasMany' => array(
+					'Vary' => array('foreignKey' => false,
+										'conditions' => array('Vary.po_no'=>array($invoice_no, $po_no))))),
+				false
+			);
+			$this->Order->unbindModel(array('belongsTo' => 'Product'));
+			$options = array('fields' => array(
+			'SUM(total_quantity) as total_quantity',
+			'SUM(total_price) as total_price',
+			'po_no',
+			'user_id',
+			'created',
+			'modified'
+		),'conditions' => array('Order.po_no'=> $po_no));
+			$ordInv=$this->Order->find('first', $options);
+			$i=0;
+			foreach($ordInv['Vary'] as $invCount){
+				if($invCount['type']=='order'){
+					$pall= self::in_array_r($invCount['id'], $ordInv['Vary']);
+					 $ordInv['Vary'][$i]['inv_count']= $pall['quantity'];
+					 $ordInv['Vary'][$i]['inv_id']= $pall['id'];
+				}
+			$i++;
+			}
+			
+		  $this->set('order', $ordInv);
+		  //echo '<pre>';print_r($ordInv);exit;
 		}
 		$orders = $this->Invoice->Order->find('list');
 		$this->set(compact('orders'));
 	}
+
+
+  public function in_array_r($needle, $haystack, $strict = false) {
+   foreach ($haystack as $item) {
+        if($item['var_id']==$needle){
+            return $item;
+        }
+    }
+
+    return false;
+}
 
 /**
  * delete method

@@ -17,11 +17,6 @@
 
 	}
     });
-	
-	$('.datepicker').datepicker({
-		format: 'yyyy/mm/dd',
-		startDate: '-3d'
-	});
   });
  
   </script>
@@ -72,7 +67,18 @@
     </div>
 </div>
 
-    <div class="row">
+<div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-default">
+            	<div class="panel-heading">Invoice Coloumns <span class="error_msg_var"></span> <a id="invoiceAddColoumn" class="btn btn-primary addmore">Add More Coloumns</a><!--<span class="varient-enable glyphicon glyphicon-plus"></span>--></div>              
+                <div class="panel-body" id="varient_body">           
+                
+                 <div id='TextBoxesGroup'>	</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    	<div class="row">
             <div class="col-md-12">
                 <div id="invoiceForm"></div>
             </div>
@@ -80,27 +86,7 @@
      <?php echo $this->Form->submit(__('Submit'),array('div'=>false, 'class'=>'btn btn-lg btn-success btn-block' ,'id' => 'submitButton1')); echo $this->Form->end();	?>
 </div>
 </div>
-
-<script> 
-  
-  $( "#invoiceAdd" ).submit(function( event ) {
-	  var total_price=0;var total_quantity=0;
-	  if($('.invoiceQuantitychk').val() != '' && $('.poVal').val() != '' ){
-		  $('#invoiceSaveID').find("input[type='text']").each(function() {
-			total_price += $(this).val() * parseFloat($(this).next().val());
-			total_quantity += parseInt($(this).val());
-			});
-			$('#total_price').val(total_price);
-			$('#total_quantity').val(total_quantity);
-			$('#invoiceAdd').submit();
-	  }
-	  else{
-	  $('.error_msg_var').html('Quantity field cannot be empty');
-	  return false;
-	  }
-});
-  
-  </script>
-
+  <input type="hidden" name="" id="countValues" value="1" />
+<?php echo $this->Html->script('inventory'); ?>
 
 
