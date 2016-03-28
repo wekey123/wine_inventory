@@ -35,7 +35,7 @@
                         <tbody>
                          <?php $i=1; foreach ($products as $product): ?>
                             <tr id="NoncollapseExample<?php echo $i;?>">
-                                <td><?php echo h($product['Product']['id']); ?>&nbsp;</td>
+                                <td><?php echo h($i); ?></td>
                                 <td><?php echo h($product['Product']['category_name']); ?>&nbsp;</td>
                                 <td><?php echo h($product['Product']['title']); ?>&nbsp;</td>
                                 <td><?php echo $this->Html->image('product/small/'.$product['Product']['image']);?>&nbsp;</td>
