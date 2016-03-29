@@ -47,7 +47,7 @@
 			<?php echo $this->Html->link($payment['Payment']['invoice_no'], array('controller' => 'invoices', 'action' => 'view', $payment['Payment']['invoice_no'])); ?>
 		</td>
 		<?php /*?><td><?php echo h($payment['Payment']['payment_no']); ?>&nbsp;</td><?php */?>
-        <td><?php echo $payment['Payment']['payment_qty']; ?>&nbsp;</td>
+        <td><?php echo $payment[0]['total_quantity']; ?>&nbsp;</td>
 		<td><?php echo $this->Util->currencyFormat($payment[0]['total_amount']); ?>&nbsp;</td>
 		<?php /*?><td><?php echo $this->Util->DateOnlyFormat($payment['Payment']['payment_date']); ?>&nbsp;</td>
 		<td><?php echo h($payment['Payment']['payment_method']); ?>&nbsp;</td><?php */?>

@@ -3,6 +3,7 @@
         <div class="container">
             <div class="row">
                   <div class="col-md-12">
+                  <?php echo $this->Html->link('Edit Payment', array('action' => 'edit',$invoice['Invoice']['invoice_no']),array('class'=>'btn btn-primary','style'=>'margin-bottom:20px; float:right')); ?>
                     <h4 class="page-head-line"><?php echo __('Payment View'); ?></h4>
                   </div>
                   <?php if(!empty($this->Flash->render())){ ?>

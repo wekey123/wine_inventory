@@ -81,7 +81,7 @@
 				 $('.error_msg_var').html('');
   	 			 $('.btn-block').prop('disabled', false);
 			}else{
-				  $('.error_msg_var').html('Please enter the quantity less than or equal to Invoice quantity.');
+				  $('.error_msg_var').html('Please enter the quantity less than or equal to Invoice quantity left.');
 				  $('.btn-block').prop('disabled', true);
 			}
 		}else{
