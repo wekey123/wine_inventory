@@ -109,8 +109,9 @@ class InventoriesController extends AppController {
 						$this->Vary->save($this->request->data);
 						$i++;
 					}
-					$this->Invoice->updateAll(array('Invoice.status' => 3),array('Invoice.invoice_no' => $this->request->data['Inventory']['invoice_no']));
-					$this->Order->updateAll(array('Order.status' => 3),array('Order.po_no' => $this->request->data['Inventory']['po_no']));
+					$this->Invoice->updateAll(array('Invoice.status' => 4),array('Invoice.invoice_no' => $this->request->data['Inventory']['invoice_no']));
+					$this->Order->updateAll(array('Order.status' => 4),array('Order.po_no' => $this->request->data['Inventory']['po_no']));
+					$this->Shipping->updateAll(array('Shipping.status' => 4),array('Shipping.po_no' => $this->request->data['Inventory']['po_no']));
 					$this->Flash->success(__('The inventory has been saved.'));
 					return $this->redirect(array('action' => 'index'));
 				}
@@ -123,7 +124,7 @@ class InventoriesController extends AppController {
 					$this->Flash->error(__('The Shipping could not be saved. Please, try again.'));
 			}
 		}else{
-			$invoices = $this->Invoice->find('all',array('conditions'=>array('Invoice.status'=>array(1,2)),'fields'=>array('Invoice.invoice_no'),'group'=>'Invoice.invoice_no'));
+			$invoices = $this->Invoice->find('all',array('conditions'=>array('Invoice.status'=>array(2,3)),'fields'=>array('Invoice.invoice_no'),'group'=>'Invoice.invoice_no'));
 			foreach($invoices as $invoice){
 				$invoicelist[]=$invoice['Invoice']['invoice_no'];
 			}

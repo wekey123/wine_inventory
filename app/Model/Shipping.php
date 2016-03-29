@@ -26,7 +26,7 @@ class Shipping extends AppModel {
            'rule' => 'notBlank',
         ),
 		'received_date' => array(
-			'rule' => 'date',
+			'rule' => 'notBlank',
 		)
     );
 	public $belongsTo = array(
