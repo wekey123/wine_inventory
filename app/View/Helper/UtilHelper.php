@@ -39,6 +39,9 @@ class UtilHelper extends AppHelper {
 	 private $invoiceTotalPrice;
 	 private $PaymentDueAmount;
 	 
+	 private $invoiceTotalQty;
+	 private $QtyLeft;
+	 
 	 public function dateFormat($stringdate) {
 			//date_default_timezone_set('Asia/Kolkata');
             return $this->Time->format('M jS, Y h:i A',$stringdate, null,'Asia/Kolkata'); 
@@ -81,5 +84,18 @@ class UtilHelper extends AppHelper {
 	
 	public function getAmountDue(){
 		return $this->PaymentDueAmount;
+	}
+	
+	
+	public function setInvoiceTotalQty($invoiceTotalQty){
+		$this->invoiceTotalQty = $invoiceTotalQty;
+	}
+	
+	public function setPayedQty($payedQty){
+		$this->QtyLeft = $this->invoiceTotalQty - $payedQty;
+	}
+	
+	public function getQtyLeft(){
+		return $this->QtyLeft;
 	}
 }
