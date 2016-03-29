@@ -93,7 +93,7 @@ class PaymentsController extends AppController {
 			if ($this->Payment->save($this->request->data)) {
 				if(($this->request->data['dueAmount']-str_replace(array( ',','$'), '', $this->request->data['Payment']['payment_amount'])) <= 0){
 					$this->Invoice->updateAll(array('Invoice.status' => 2),array('Invoice.invoice_no' => $this->request->data['Payment']['invoice_no']));
-					$this->Order->updateAll(array('Order.status' => 2),array('Order.po_no' => $this->request->data['po_no']));
+					$this->Order->updateAll(array('Order.status' => 2),array('Order.po_no' => $this->request->data['Payment']['po_no']));
 				}
 				else
 					$this->Invoice->updateAll(array('Invoice.status' => 1),array('Invoice.invoice_no' => $this->request->data['Payment']['invoice_no']));
@@ -113,7 +113,53 @@ class PaymentsController extends AppController {
 		/*$invoices = $this->Payment->Invoice->find('list');
 		$this->set(compact('invoices'));*/
 	}
-
+	
+	
+	/**
+ * edit method
+ *
+ * @throws NotFoundException
+ * @param string $id
+ * @return void
+ */
+	public function edit($no = null) {
+		
+		if ($this->request->is(array('post', 'put'))) {
+			$payments = $this->request->data['Payment'];
+			foreach($payments as $payment){
+				$this->request->data['Payment'] = $payment;
+				$this->request->data['Payment']['payment_date'] = date("Y-m-d", strtotime($this->request->data['Payment']['payment_date']));
+				$this->request->data['Payment']['payment_amount'] = str_replace(array( ',','$'), '', $this->request->data['Payment']['payment_amount']);
+				$this->Payment->id = $this->request->data['Payment']['id'];
+				$this->Payment->save($this->request->data);
+			}
+			$this->Flash->success(__('The payment has been saved.'));
+			return $this->redirect(array('action' => 'index'));
+		} else {
+			$this->Invoice->bindModel(array(
+            'hasMany' => array(
+                'Vary' => array('foreignKey' => false,
+                                    'conditions' => array('Vary.type' => 'invoice','Vary.po_no'=>$no)
+                                ),
+				'Payment' => array('foreignKey' => false,
+                                    'conditions' => array('Payment.invoice_no' => $no)
+                                ),
+                            )
+                ),
+            false
+			);
+			 $options = array('conditions' => array('Invoice.invoice_no' => $no));
+			 $paymentView = $this->Invoice->find('first', $options);
+			 if(!empty($paymentView)){
+			 $this->set('invoice', $paymentView);
+			 $this->request->data = $paymentView;
+			 }else{
+			 $this->Flash->success(__('Invalid invoice Number.'));
+			 return $this->redirect(array('action' => 'index'));
+			 }
+		} 
+	}
+	
 /**
  * edit method
  *
@@ -121,7 +167,7 @@ class PaymentsController extends AppController {
  * @param string $id
  * @return void
  */
-	public function edit($id = null) {
+	public function edit1($id = null) {
 		if (!$this->Payment->exists($id)) {
 			throw new NotFoundException(__('Invalid payment'));
 		}
