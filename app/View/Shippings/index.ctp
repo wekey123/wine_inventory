@@ -23,28 +23,26 @@
 	<thead>
 	<tr>
 			<th>#</th>
-			<th><?php echo $this->Paginator->sort('user_id'); ?></th>
+			<th><?php echo $this->Paginator->sort('user'); ?></th>
 			<th><?php echo $this->Paginator->sort('po_no'); ?></th>
 			<th><?php echo $this->Paginator->sort('invoice_no'); ?></th>
 			<th><?php echo $this->Paginator->sort('invoice_quantity'); ?></th>
 			<th><?php echo $this->Paginator->sort('shipping_quantity'); ?></th>
 			<th><?php echo $this->Paginator->sort('unshipped_quantity'); ?></th>
-			<th><?php echo $this->Paginator->sort('shipping_method'); ?></th>
 			<th><?php echo $this->Paginator->sort('received_date'); ?></th>
 			<th class="actions"><?php echo __('Actions'); ?></th>
 	</tr>
 	</thead>
 	<tbody>
-	<?php $i =0; foreach ($shippings as $shipping): ?>
+	<?php $i =1; foreach ($shippings as $shipping): ?>
 	<tr>
-		<td><?php echo h($i); ?>&nbsp;</td>
-		<td><?php echo h($shipping['Shipping']['user_id']); ?>&nbsp;</td>
+		<td><?php echo h($i); ?>&nbsp;</td><?php  $users = $this->Util->getUserdetails($shipping['Shipping']['user_id']); $uname= isset($users['User']['username']) ? $users['User']['username'] : '';?>
+		<td><?php echo h($uname); ?>&nbsp;</td>
 		<td><?php echo h($shipping['Shipping']['po_no']); ?>&nbsp;</td>
 		<td><?php echo h($shipping['Shipping']['invoice_no']); ?>&nbsp;</td>
         <td><?php echo h($shipping['Shipping']['invoice_quantity']); ?>&nbsp;</td>
 		<td><?php echo h($shipping[0]['shipping_quantity']); ?>&nbsp;</td>
 		<td><?php echo h($shipping[0]['unshipped_quantity']); ?>&nbsp;</td>
-		<td><?php echo h($shipping['Shipping']['shipping_method']); ?>&nbsp;</td>
         <td><?php echo h($shipping['Shipping']['received_date']); ?>&nbsp;</td>
 		<td class="actions">
 			<?php echo $this->Html->link(__('View'), array('action' => 'view', $shipping['Shipping']['po_no'])); ?> | 

@@ -50,8 +50,19 @@ class ShippingsController extends AppController {
  */
 	public function view($id = null) {
 		$options = array('conditions' => array('Shipping.po_no' => $id));
-		echo '<pre>';print_r($this->Shipping->find('all', $options));exit;
-		$this->set('shipping', $this->Shipping->find('all', $options));
+		$this->set('shipping', $shipping=$this->Shipping->find('all', $options));
+		$total=array('');
+		$total['weight']=0;$total['shipping_quantity']=0;
+		foreach($shipping as $ship){
+			$total['weight']+=$ship['Shipping']['weight'];
+			$total['shipping_quantity']+=$ship['Shipping']['shipping_quantity'];
+			$total['invoice_quantity']=$ship['Shipping']['invoice_quantity'];
+			$total['po_no']=$ship['Shipping']['po_no'];
+			$total['invoice_no']=$ship['Shipping']['invoice_no'];
+		}
+		$this->set('test', $total);
+		//echo '<pre>';print_r($total);exit;
+		
 	}
 
 /**
@@ -63,6 +74,7 @@ class ShippingsController extends AppController {
 		$user = $this->Auth->user();
 		if ($this->request->is('post')) {
 			$this->request->data['Shipping']['user_id']= $user['id'];
+			$this->request->data['Shipping']['received_date'] = date("Y-m-d", strtotime($this->request->data['Shipping']['received_date']));
 			$invoices = $this->Invoice->find('first',array('conditions'=>array('Invoice.invoice_no'=>$this->request->data['Shipping']['invoice_no']),'fields'=>array('Invoice.po_no','Invoice.total_quantity')));
 			if($invoices['Invoice']['total_quantity']==$this->request->data['Shipping']['shipping_quantity']){
 			$this->Invoice->updateAll(array('Invoice.status' => 3),array('Invoice.invoice_no' => $this->request->data['Shipping']['invoice_no']));
@@ -103,19 +115,29 @@ class ShippingsController extends AppController {
  * @return void
  */
 	public function edit($id = null) {
-		if (!$this->Shipping->exists($id)) {
-			throw new NotFoundException(__('Invalid shipping'));
-		}
+		$user = $this->Auth->user();
 		if ($this->request->is(array('post', 'put'))) {
-			if ($this->Shipping->save($this->request->data)) {
-				$this->Flash->success(__('The shipping has been saved.'));
-				return $this->redirect(array('action' => 'index'));
-			} else {
-				$this->Flash->error(__('The shipping could not be saved. Please, try again.'));
+			//echo '<pre>';print_r($this->request->data['Shipping']);exit;
+			foreach($this->request->data['Shipping'] as $this->request->data['Shipping']){
+				$ship_quan+=$this->request->data['Shipping']['shipping_quantity'];
+				if($this->request->data['Shipping']['invoice_quantity']==$ship_quan){
+					$this->Invoice->updateAll(array('Invoice.status' => 3),array('Invoice.invoice_no' => $this->request->data['Shipping']['invoice_no']));
+					$this->Order->updateAll(array('Order.status' => 3),array('Order.po_no' => $this->request->data['Shipping']['po_no']));
+					$this->request->data['Shipping']['status']= 3;
+				}
+				else{
+					$this->Invoice->updateAll(array('Invoice.status' => 2),array('Invoice.invoice_no' => $this->request->data['Shipping']['invoice_no']));
+					$this->request->data['Shipping']['status']= 2;
+				}
+				$this->request->data['Shipping']['user_id']=$user['id'];
+				$this->request->data['Shipping']['received_date'] = date("Y-m-d", strtotime($this->request->data['Shipping']['received_date']));
+				$this->Shipping->save($this->request->data['Shipping']);
 			}
+			return $this->redirect(array('action' => 'index'));
 		} else {
-			$options = array('conditions' => array('Shipping.' . $this->Shipping->primaryKey => $id));
-			$this->request->data = $this->Shipping->find('first', $options);
+			$options = array('conditions' => array('Shipping.po_no'=> $id));
+			$this->request->data = $this->Shipping->find('all', $options);
+			//echo '<pre>';print_r($this->request->data);exit;
 		}
 		$invoices = $this->Shipping->Invoice->find('list');
 		$this->set(compact('invoices'));
