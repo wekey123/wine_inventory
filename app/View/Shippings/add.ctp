@@ -35,7 +35,7 @@
 		echo $this->Form->input('invoice_no',array('div'=>false,'error'=>false,'type'=>'text', 'before' => '<div class="form-group">', 'after' => '</div>', 'class'=>'validate[required] form-control','id'=>'tags','between'=>'<label><span class="mandatory">*</span> Invoice Number</label>','label'=>false));
 		echo $this->Form->input('shipping_no',array('div'=>false,'error'=>false,'type'=>'text', 'before' => '<div class="form-group">', 'after' => '</div>', 'class'=>'validate[required] form-control','between'=>'<label><span class="mandatory">*</span> Shipping Number</label>','label'=>false));
 		echo $this->Form->input('shipping_quantity',array('div'=>false,'error'=>false,'type'=>'text', 'before' => '<div class="form-group">', 'after' => '</div>', 'class'=>'validate[required] form-control','between'=>'<label><span class="mandatory">*</span> Total Shipped Quantity</label>','label'=>false));
-		echo $this->Form->input('unshipped_quantity',array('div'=>false,'error'=>false,'type'=>'text', 'before' => '<div class="form-group">', 'after' => '</div>','class'=>'validate[required] form-control','between'=>'<label><span class="mandatory">*</span> Total Shipped Quantity</label>','label'=>false));
+		//echo $this->Form->input('unshipped_quantity',array('div'=>false,'error'=>false,'type'=>'text', 'before' => '<div class="form-group">', 'after' => '</div>','class'=>'validate[required] form-control','between'=>'<label><span class="mandatory">*</span> Total Shipped Quantity</label>','label'=>false));
 		//echo $this->Form->input('Shipping.missing_quantity',array('div'=>false,'error'=>false,'type'=>'text', 'before' => '<div class="form-group">', 'after' => '</div>', 'class'=>'validate[required] form-control'));
 	?>
     </div>

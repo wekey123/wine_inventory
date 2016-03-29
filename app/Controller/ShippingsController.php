@@ -76,6 +76,7 @@ class ShippingsController extends AppController {
 			$this->request->data['Shipping']['user_id']= $user['id'];
 			$this->request->data['Shipping']['received_date'] = date("Y-m-d", strtotime($this->request->data['Shipping']['received_date']));
 			$invoices = $this->Invoice->find('first',array('conditions'=>array('Invoice.invoice_no'=>$this->request->data['Shipping']['invoice_no']),'fields'=>array('Invoice.po_no','Invoice.total_quantity')));
+			$this->request->data['Shipping']['invoice_quantity']= $invoices['Invoice']['total_quantity'];
 			if($invoices['Invoice']['total_quantity']==$this->request->data['Shipping']['shipping_quantity']){
 			$this->Invoice->updateAll(array('Invoice.status' => 3),array('Invoice.invoice_no' => $this->request->data['Shipping']['invoice_no']));
 			$this->Order->updateAll(array('Order.status' => 3),array('Order.po_no' => $invoices['Invoice']['po_no']));
@@ -85,7 +86,7 @@ class ShippingsController extends AppController {
 			$this->Invoice->updateAll(array('Invoice.status' => 2),array('Invoice.invoice_no' => $this->request->data['Shipping']['invoice_no']));
 			$this->request->data['Shipping']['status']= 2;
 			}
-			
+			$this->request->data['Shipping']['unshipped_quantity']= $invoices['Invoice']['total_quantity']-$this->request->data['Shipping']['shipping_quantity'];
 			$this->request->data['Shipping']['po_no']= $invoices['Invoice']['po_no'];
 			//echo '<pre>';print_r($this->request->data);exit;
 			$this->Shipping->create();

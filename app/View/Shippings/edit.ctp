@@ -23,7 +23,7 @@
 		'name'=>$key.'[invoice_no]'));
 		echo $this->Form->input('shipping_no',array('div'=>false,'error'=>false,'type'=>'text', 'before' => '<div class="form-group">', 'after' => '</div>', 'class'=>'validate[required] form-control','between'=>'<label><span class="mandatory">*</span> Shipping Number</label>','label'=>false,'name'=>$key.'[shipping_no]'));
 		echo $this->Form->input('shipping_quantity',array('div'=>false,'error'=>false,'type'=>'text', 'before' => '<div class="form-group">', 'after' => '</div>', 'class'=>'validate[required] form-control','between'=>'<label><span class="mandatory">*</span> Total Shipped Quantity</label>','label'=>false,'name'=>$key.'[shipping_quantity]'));
-		echo $this->Form->input('unshipped_quantity',array('div'=>false,'error'=>false,'type'=>'text', 'before' => '<div class="form-group">', 'after' => '</div>','class'=>'validate[required] form-control','between'=>'<label><span class="mandatory">*</span> Total Shipped Quantity</label>','label'=>false,'name'=>$key.'[unshipped_quantity]'));
+		//echo $this->Form->input('unshipped_quantity',array('div'=>false,'error'=>false,'type'=>'text', 'before' => '<div class="form-group">', 'after' => '</div>','class'=>'validate[required] form-control','between'=>'<label><span class="mandatory">*</span> Total Shipped Quantity</label>','label'=>false,'name'=>$key.'[unshipped_quantity]'));
 		
 	?>
     </div>
