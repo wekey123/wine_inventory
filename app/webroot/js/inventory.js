@@ -80,5 +80,22 @@
 		startDate: '-3d'
 	});
 	 
-	 
+	 $( "#InvoiceChk" ).on('change',function(e){
+			$.ajax({
+			  type: 'POST',
+			  url: '/invoices/invoiceChk',  //whatever any url
+			  data: {label: $(this).val()},
+			  success: function(message) {
+				  if(message){
+					  $('#InvoiceChk').attr('rel',1);
+					  $('#error_msg').html('Invoice Number Exist Already');
+					  $('#submitButton1').prop('disabled', true);
+				  }else{
+					  $('#InvoiceChk').attr('rel',0);
+					  $('#error_msg').html('');
+					  $('#submitButton1').prop('disabled', false);
+				  }
+			   }
+		   });
+    });
 	 

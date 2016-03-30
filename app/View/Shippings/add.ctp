@@ -5,8 +5,16 @@
     $( "#tags" ).autocomplete({
       source: availableTags,
 	  select: function (event, ui) {
-		 
-	}
+		  $('#invoiceForm').html('');
+				$.ajax({
+				  type: 'POST',
+				  url: '/shippings/ajax',  //whatever any url
+				  data: {label: ui.item.label},
+				  success: function(message) {
+					  $('#invoiceForm').append(message);
+				   }
+			   });
+		}
     });
 	
 	$('.datepicker').datepicker({
@@ -37,15 +45,15 @@
 		echo $this->Form->input('shipping_quantity',array('div'=>false,'error'=>false,'type'=>'text', 'before' => '<div class="form-group">', 'after' => '</div>', 'class'=>'validate[required] form-control','between'=>'<label><span class="mandatory">*</span> Total Shipped Quantity</label>','label'=>false));
 		//echo $this->Form->input('unshipped_quantity',array('div'=>false,'error'=>false,'type'=>'text', 'before' => '<div class="form-group">', 'after' => '</div>','class'=>'validate[required] form-control','between'=>'<label><span class="mandatory">*</span> Total Shipped Quantity</label>','label'=>false));
 		//echo $this->Form->input('Shipping.missing_quantity',array('div'=>false,'error'=>false,'type'=>'text', 'before' => '<div class="form-group">', 'after' => '</div>', 'class'=>'validate[required] form-control'));
-	?>
-    </div>
-    <div class="col-md-5"> 
-    <?php 	
+		echo $this->Form->input('received_date',array('div'=>false,'error'=>false,'type'=>'text', 'before' => '<div class="form-group">', 'after' => '</div>', 'class'=>'validate[required] form-control datepicker','between'=>'<label><span class="mandatory">*</span> Shipping Received Date</label>','label'=>false));
+	?><?php 	
 		echo $this->Form->input('shipping_method',array('div'=>false,'error'=>false,'type'=>'text', 'before' => '<div class="form-group">', 'after' => '</div>', 'class'=>'validate[required] form-control'));
 		echo $this->Form->input('tracking_no',array('div'=>false,'error'=>false,'type'=>'text', 'before' => '<div class="form-group">', 'after' => '</div>', 'class'=>'validate[required] form-control'));
 		echo $this->Form->input('weight',array('div'=>false,'error'=>false,'type'=>'text', 'before' => '<div class="form-group">', 'after' => '</div>', 'class'=>'validate[required] form-control'));
-		echo $this->Form->input('received_date',array('div'=>false,'error'=>false,'type'=>'text', 'before' => '<div class="form-group">', 'after' => '</div>', 'class'=>'validate[required] form-control datepicker','between'=>'<label><span class="mandatory">*</span> Shipping Received Date</label>','label'=>false));
 	?>
+    </div>
+    <div class="col-md-5"> 
+    	<div id="invoiceForm"></div>
 	</div>
 </div>
 

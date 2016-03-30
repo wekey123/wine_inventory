@@ -164,4 +164,27 @@ class ShippingsController extends AppController {
 		}
 		return $this->redirect(array('action' => 'index'));
 	}
+	
+	
+	public function ajax($value = null) {
+		 $this->layout = '';
+		 $this->autoRender = false ;
+		 $this->viewPath = 'Elements';
+		 $no=$_POST['label'];
+		 $this->Invoice->bindModel(array(
+            'hasMany' => array(
+                'Vary' => array('foreignKey' => false,
+                                    'conditions' => array('Vary.type' => 'invoice','Vary.po_no'=>$no)
+                                ),
+				'Payment' => array('foreignKey' => false,
+                                    'conditions' => array('Payment.invoice_no' => $no)
+                                ),
+                            )
+                ),
+            false
+        );
+		 $options = array('conditions' => array('Invoice.invoice_no' => $no));
+		 $this->set('invoice', $this->Invoice->find('first', $options));
+		 $this->render('shipping');
+	}
 }

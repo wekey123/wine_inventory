@@ -39,7 +39,13 @@
 							  </ul>
                              </li>
                              <li> <?php echo $this->Html->link('Payment',array('controller'=>'payments','action' => 'index'),array('class'=>trim($menuActive)=='Payment'  ? 'menu-top-active' : '')); ?> </li>
-                             <li> <?php echo $this->Html->link('Shipping',array('controller'=>'shippings','action' => 'index'),array('class'=>trim($menuActive)=='Shipping'  ? 'menu-top-active' : '')); ?> </li>
+                             <li> <?php echo $this->Html->link('Shipping',array('controller'=>'shippings','action' => 'index'),array('class'=>trim($menuActive)=='Shipping'  ? 'menu-top-active dropdown-toggle' : 'dropdown-toggle','data-toggle'=>'dropdown','href'=>'#')); ?>
+                              <ul class="dropdown-menu">
+                                    <li><?php echo $this->Html->link('Shipping List',array('controller'=>'shippings','action' => 'index'),array('style'=>'color:#222;','href'=>'#')); ?></li>
+                                    <li><?php echo $this->Html->link('Create Shipping',array('controller'=>'shippings','action' => 'add'),array('style'=>'color:#222;','href'=>'#')); ?></li> 
+							  </ul>
+                             
+                             </li>
                              <li> <?php echo $this->Html->link('Inventory',array('controller'=>'inventories','action' => 'index'),array('class'=>trim($menuActive)=='Inventory'  ? 'menu-top-active' : '')); ?> </li>
                              <?php /*?><li> <?php echo $this->Html->link('Settings',array('controller'=>'categories','action' => 'index'),array('class'=>trim($menuActive)=='Settings'  ? 'menu-top-active' : '')); ?> </li><?php */?>
                              <li> <?php echo $this->Html->link('Logout',array('controller'=>'users','action' => 'logout')); ?> </li>

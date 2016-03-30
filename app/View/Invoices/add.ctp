@@ -31,13 +31,18 @@
 	margin-right:10%;
 	margin-bottom:0px;
 }
+#error_msg{
+	font-size: 13px;
+    font-weight: 200;
+    margin-left: 30%;
+}
 </style>
 <div class="content-wrapper">
     <div class="container">
     <?php echo $this->Form->create('Invoice',array('id'=>'invoiceAdd','role'=>'form')); ?>
       <div class="row">
             <div class="col-md-12">
-                <h1 class="page-head-line"><?php echo __('Add Invoice'); ?> </h1>
+                <h1 class="page-head-line"><?php echo __('Add Invoice'); ?> <span id="error_msg"></span></h1> 
             </div>
         </div>
                 
@@ -46,7 +51,7 @@
 
 	<?php
 		echo $this->Form->input('po_no',array('div'=>false,'error'=>false,'type'=>'text', 'before' => '<div class="form-group">', 'after' => '</div>', 'class'=>'validate[required] form-control poVal','id'=>'tags','between'=>'<label><span class="mandatory">*</span> Order Number</label>','label'=>false));
-		echo $this->Form->input('invoice_no',array('div'=>false,'error'=>false,'type'=>'text', 'before' => '<div class="form-group">', 'after' => '</div>', 'class'=>'validate[required] form-control','between'=>'<label><span class="mandatory">*</span> Invoice Number</label>','label'=>false));
+		echo $this->Form->input('invoice_no',array('div'=>false,'error'=>false,'type'=>'text', 'before' => '<div class="form-group">', 'after' => '</div>', 'class'=>'validate[required] form-control','id'=>'InvoiceChk','rel'=>0,'between'=>'<label><span class="mandatory">*</span> Invoice Number</label>','label'=>false));
 		echo $this->Form->input('invoice_date',array('div'=>false,'error'=>false,'type'=>'text', 'before' => '<div class="form-group">', 'after' => '</div>', 'class'=>'validate[required] form-control datepicker','between'=>'<label><span class="mandatory">*</span> Invoice Date</label>','label'=>false));
 		echo $this->Form->input('vendor_name',array('div'=>false,'error'=>false,'type'=>'text', 'before' => '<div class="form-group">', 'after' => '</div>', 'class'=>'validate[required] form-control'));
 		echo $this->Form->input('vendor_address',array('div'=>false,'error'=>false,'type'=>'textarea', 'before' => '<div class="form-group">', 'after' => '</div>', 'class'=>'validate[required] form-control'));

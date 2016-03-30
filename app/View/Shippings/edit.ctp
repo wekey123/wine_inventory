@@ -6,7 +6,7 @@
     <?php $i=1;foreach($this->request->data as $this->request->data) { ?>
     <div class="row">
             <div class="col-md-12">
-                <h1 class="page-head-line"><?php echo __('Edit Shipping ('.$this->request->data['Shipping']['shipping_no'].')'); ?> </h1>
+                <h1 class="page-head-line"><?php echo __('Edit Shipping No ('.$this->request->data['Shipping']['shipping_no'].')'); ?> </h1>
             </div>
         </div>
                 
@@ -22,7 +22,9 @@
 		echo $this->Form->input('invoice_no',array('div'=>false,'error'=>false,'type'=>'text', 'before' => '<div class="form-group">', 'after' => '</div>', 'class'=>'validate[required] form-control','id'=>'tags','between'=>'<label><span class="mandatory">*</span> Invoice Number</label>','label'=>false,
 		'name'=>$key.'[invoice_no]'));
 		echo $this->Form->input('shipping_no',array('div'=>false,'error'=>false,'type'=>'text', 'before' => '<div class="form-group">', 'after' => '</div>', 'class'=>'validate[required] form-control','between'=>'<label><span class="mandatory">*</span> Shipping Number</label>','label'=>false,'name'=>$key.'[shipping_no]'));
+		echo $this->Form->input('invoice_quantity',array('div'=>false,'error'=>false,'type'=>'text', 'before' => '<div class="form-group">', 'after' => '</div>', 'class'=>'validate[required] form-control','between'=>'<label> Total Invoice Quantity</label>','label'=>false,'name'=>$key.'[shipping_quantity]', 'disabled' => 'disabled'));
 		echo $this->Form->input('shipping_quantity',array('div'=>false,'error'=>false,'type'=>'text', 'before' => '<div class="form-group">', 'after' => '</div>', 'class'=>'validate[required] form-control','between'=>'<label><span class="mandatory">*</span> Total Shipped Quantity</label>','label'=>false,'name'=>$key.'[shipping_quantity]'));
+		
 		//echo $this->Form->input('unshipped_quantity',array('div'=>false,'error'=>false,'type'=>'text', 'before' => '<div class="form-group">', 'after' => '</div>','class'=>'validate[required] form-control','between'=>'<label><span class="mandatory">*</span> Total Shipped Quantity</label>','label'=>false,'name'=>$key.'[unshipped_quantity]'));
 		
 	?>

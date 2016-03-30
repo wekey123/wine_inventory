@@ -305,4 +305,16 @@ class InvoicesController extends AppController {
 		 $this->render('invoice');
 	}
 	
+	public function invoiceChk($value = null){
+		$this->layout = '';
+		$this->autoRender = false ;
+		$value=$_POST['label'];
+		$options = array('conditions' => array('Invoice.invoice_no'=> $value));
+		$val=$this->Invoice->find('first', $options);
+		if(isset($val['Invoice']))
+		return true;
+		else
+		return false;
+	}
+	
 }
