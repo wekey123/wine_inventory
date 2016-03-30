@@ -211,7 +211,7 @@ class PaymentsController extends AppController {
 	public function ajax($value = null) {
 		 $this->layout = '';
 		 $this->autoRender = false ;
-		 $this->viewPath = 'elements';
+		 $this->viewPath = 'Elements';
 		 $no=$_POST['label'];
 		 $this->Invoice->bindModel(array(
             'hasMany' => array(

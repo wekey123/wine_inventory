@@ -228,6 +228,11 @@
  */
 	Configure::write('Security.cipherSeed', '7685930965745354249674968364504032016');
 
+	if($_SERVER['SERVER_NAME'] == '52.4.188.247')
+		Configure::write('ServerBaseURL', 'http://52.4.188.247/inventory');
+	else
+		Configure::write('ServerBaseURL', 'http://'.$_SERVER['SERVER_NAME']);
+
 /**
  * Apply timestamps with the last modified time to static assets (js, css, images).
  * Will append a query string parameter containing the time the file was modified. This is
