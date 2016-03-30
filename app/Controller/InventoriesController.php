@@ -183,7 +183,7 @@ class InventoriesController extends AppController {
 	public function ajax($value = null) {
 		  $this->layout = '';
 		 $this->autoRender = false ;
-		 $this->viewPath = 'elements';
+		 $this->viewPath = 'Elements';
 		$no=$_POST['label'];
 		//$no= 'INV25797';
 		$this->Invoice->recursive = 2;
