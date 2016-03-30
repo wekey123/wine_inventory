@@ -1,4 +1,7 @@
-   <?php echo $this->Html->css('jquery-ui.css');echo $this->Html->script('jquery-1.10.2');echo $this->Html->script('jquery-ui'); ?>
+   <?php echo $this->Html->css('jquery-ui.css');echo $this->Html->script('jquery-1.10.2');echo $this->Html->script('jquery-ui'); 
+   $ServerBaseURL = Configure::read('ServerBaseURL');
+   ?>
+   
   <script>
   $(function() {
     var availableTags = <?php echo json_encode($orderlist); ?>;
@@ -8,7 +11,7 @@
 		  $('#invoiceForm').html('');
 			$.ajax({
 			  type: 'POST',
-			  url: '/invoices/ajax',  //whatever any url
+			  url: '<?php echo $ServerBaseURL.'/invoices/ajax'; ?>',//whatever any url
 			  data: {label: ui.item.label},
 			  success: function(message) {
 				  $('#invoiceForm').append(message);
