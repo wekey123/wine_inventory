@@ -24,7 +24,7 @@
                                     </thead>
                                     <tbody id="invoiceSaveID">
                                      <?php $i =1;foreach ($order['Vary'] as $product):
-									 if($product['type'] =='order'){ ?>
+									 if($product['type'] =='order' && $product['quantity'] > 0){ ?>
                                         <tr>
                                             <td><?php echo $i; ?>&nbsp;</td>
                                             <td><?php echo h($product['Product']['title']); ?>&nbsp;</td>

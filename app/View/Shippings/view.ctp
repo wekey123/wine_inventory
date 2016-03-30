@@ -10,13 +10,13 @@
             <div class="alert alert-warning">
                <strong><?php echo __('Purchase Order Number'); ?></strong> <span> : </span> <span><?php echo h($test['po_no']); ?></span> <br />
                <strong><?php echo __('Invoice Number'); ?></strong> <span> : </span> <span><?php echo h($test['invoice_no']); ?></span> <br />
+               <strong><?php echo __('Invoice Quantity'); ?></strong> <span> : </span> <span><?php echo h($test['invoice_quantity']); ?></span> <br />
                <strong><?php echo __('Shipping Quantity'); ?></strong> <span> : </span> <span><?php echo h($test['shipping_quantity']); ?></span> <br />
-               <strong><?php echo __('Invoice Quantity'); ?></strong> <span> : </span> <span><?php echo h($test['shipping_quantity']); ?></span> <br />
                <strong><?php echo __('Weight'); ?></strong> <span> : </span> <span><?php  echo $this->Util->currencyFormat($test['weight']);  ?></span> <br />
             </div>
         </div>
     </div>
- <?php foreach($shipping as $shipping) { ?>  
+ <?php $var=0; foreach($shipping as $shipping) { ?>  
 <div class="row" style="margin-bottom:5%">
 
        <div class="col-md-12">
@@ -35,7 +35,7 @@
             </div>
             <div class="row">
             <div class="col-md-4 heading"><?php echo __('Invoice No'); ?></div>
-            <div class="col-md-8"><?php echo $this->Html->link($shipping['Invoice']['id'], array('controller' => 'invoices', 'action' => 'view', $shipping['Invoice']['id'])); ?></div>
+            <div class="col-md-8"><?php echo h($shipping['Shipping']['shipping_no']); ?></div>
             </div>
             <div class="row">
             <div class="col-md-4 heading"><?php echo __('Shipping No'); ?></div>
@@ -45,9 +45,11 @@
                 <div class="col-md-4 heading"><?php echo __('Shipping Quantity'); ?></div>
                 <div class="col-md-8"><?php echo h($shipping['Shipping']['shipping_quantity']); ?></div>
             </div>
+            <?php $var = $var > 0 ? $var+$shipping['Shipping']['shipping_quantity'] : $shipping['Shipping']['shipping_quantity']; ?>
             <div class="row">
                 <div class="col-md-4 heading"><?php echo __('UnShipping Quantity'); ?></div>
-                <div class="col-md-8"><?php echo h($shipping['Shipping']['unshipped_quantity']); ?></div>
+                <div class="col-md-8"><?php //echo $this->Util->getUnshippedQty($shipping['Shipping']['id']);
+				echo $shipping['Shipping']['invoice_quantity']-$var ?></div>
             </div>
         </div>
         <div class="col-md-5">
