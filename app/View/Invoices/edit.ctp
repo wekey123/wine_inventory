@@ -43,7 +43,7 @@
 				foreach($varys as $vary){
 				?>
                 <div class="form-group varHead"><label>Coloumn Name</label><label>Value</label></div>
-                <div class="form-group varHead"><input type="text" id="coloumn<?php echo $i;?>" value="<?php echo $vary['heading'];?>" name="col[<?php echo $i;?>][coloumn]" class="form-control varientVal"  ><input type="text" id="value<?php echo $i;?>" value="<?php echo $vary['value'];?>" name="col[<?php echo $i;?>][value]" class="form-control priceVal" style="margin-right:1%" ><input type="hidden" value="<?php echo $vary['id'];?>" name="col[<?php echo $i;?>][id]"  /> <a  onClick="boxRemove(<?php echo $i;?>)" rel="<?php echo $i;?>">remove</a></div>
+                <div class="form-group varHead" id="TextBoxesGroupEdit<?php echo $i;?>"><input type="text" id="coloumn<?php echo $i;?>" value="<?php echo $vary['heading'];?>" name="col[<?php echo $i;?>][coloumn]" class="form-control varientVal"  ><input type="text" id="value<?php echo $i;?>" value="<?php echo $vary['value'];?>" name="col[<?php echo $i;?>][value]" class="form-control priceVal" style="margin-right:1%" ><input type="hidden" value="<?php echo $vary['id'];?>" name="col[<?php echo $i;?>][id]"  /> <a  onClick="boxRemove(<?php echo $i;?>)" rel="<?php echo $i;?>">remove</a></div>
                 <?php $i++;} ?>
                 
                 

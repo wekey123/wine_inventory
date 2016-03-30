@@ -98,7 +98,7 @@ class ShippingsController extends AppController {
 				$this->Flash->error(__('The shipping could not be saved. Please, try again.'));
 			}
 		}else{
-			$invoices = $this->Invoice->find('all',array('conditions'=>array('Invoice.status'=>array(1,2)),'fields'=>array('Invoice.invoice_no'),'group'=>'Invoice.invoice_no'));
+			$invoices = $this->Invoice->find('all',array('conditions'=>array('Invoice.status'=>array(0,1,2)),'fields'=>array('Invoice.invoice_no'),'group'=>'Invoice.invoice_no'));
 			foreach($invoices as $invoice){
 				$invoicelist[]=$invoice['Invoice']['invoice_no'];
 			}
