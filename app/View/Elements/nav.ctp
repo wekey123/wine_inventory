@@ -1,5 +1,5 @@
 <?php
-	$menus=array('Dashboard'=>array('dashboard'),'Product'=>array('products'),'User'=>array('users'),'Order'=>array('orders'),'Invoice'=>array('invoices'),'Payment'=>array('payments'),'Shipping'=>array('shippings'),'Inventory'=>array('inventories'));
+	$menus=array('Dashboard'=>array('dashboard'),'Product'=>array('products'),'User'=>array('users'),'Order'=>array('orders'),'Invoice'=>array('invoices'),'Payment'=>array('payments'),'Shipping'=>array('shippings'),'Inventory'=>array('inventories'),'Vendor'=>array('vendors'));
 	function getPageName($name, $array){
 		foreach($array as $key => $value){
 			if(is_array($value) && in_array($name, $value))
@@ -24,6 +24,7 @@
                         <ul id="menu-top" class="nav navbar-nav navbar-right">
                             <li> <?php echo $this->Html->link('Dashboard',array('controller'=>'dashboard','action' => 'index'),array('class'=>trim($menuActive)=='Dashboard'  ? 'menu-top-active' : '')); ?> </li>
                             <li> <?php echo $this->Html->link('User',array('controller'=>'users','action' => 'index'),array('class'=>trim($menuActive)=='User'  ? 'menu-top-active' : '')); ?> </li>
+                            <li> <?php echo $this->Html->link('Vendor',array('controller'=>'vendors','action' => 'index'),array('class'=>trim($menuActive)=='Vendor'  ? 'menu-top-active' : '')); ?> </li>
                              <li> <?php echo $this->Html->link('Product',array('controller'=>'products','action' => 'index'),array('class'=>trim($menuActive)=='Product'  ? 'menu-top-active' : '')); ?> </li>
                              <li> <?php echo $this->Html->link('PO',array('controller'=>'orders','action' => 'index'),array('class'=>trim($menuActive)=='Order'  ? 'menu-top-active dropdown-toggle' : 'dropdown-toggle','data-toggle'=>'dropdown','href'=>'#')); ?>
                               <ul class="dropdown-menu">

@@ -1,58 +1,59 @@
-<div class="vendors index">
-	<h2><?php echo __('Vendors'); ?></h2>
-	<table cellpadding="0" cellspacing="0">
+ <?php echo $this->element('tableScript'); ?>
+ <div class="content-wrapper">
+   <div class="container">
+     <div class="row">
+        <div class="col-md-12">
+             <?php echo $this->Html->link('Add Vendors', array('action' => 'add'),array('class'=>'btn btn-primary','style'=>'margin-bottom:20px; float:right')); ?>
+            <h4 class="page-head-line">Vendors List</h4>
+        </div>
+        <div class="col-md-12">
+        <h5 style="color:#F0677C; float: left;"><?php echo $this->Flash->render(); ?></h4>
+         </div>
+     </div>
+ 	<div class="row">	
+ 	 <div class="col-md-12">
+                     <!--    Hover Rows  -->
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                           <?php echo __('Vendors List'); ?>
+                        </div>
+                        <div class="panel-body">
+                           <div class="table-responsive" style="overflow-x:hidden;">
+                                <table id="example" class="table table-striped table-bordered" cellspacing="0" width="100%">
 	<thead>
 	<tr>
-			<th><?php echo $this->Paginator->sort('id'); ?></th>
+			<th><?php echo $this->Paginator->sort('#'); ?></th>
 			<th><?php echo $this->Paginator->sort('name'); ?></th>
 			<th><?php echo $this->Paginator->sort('address'); ?></th>
 			<th><?php echo $this->Paginator->sort('email'); ?></th>
 			<th><?php echo $this->Paginator->sort('phone'); ?></th>
 			<th><?php echo $this->Paginator->sort('created'); ?></th>
 			<th><?php echo $this->Paginator->sort('modified'); ?></th>
-			<th><?php echo $this->Paginator->sort('status'); ?></th>
 			<th class="actions"><?php echo __('Actions'); ?></th>
 	</tr>
 	</thead>
 	<tbody>
-	<?php foreach ($vendors as $vendor): ?>
+	<?php $i =1; foreach ($vendors as $vendor): ?>
 	<tr>
-		<td><?php echo h($vendor['Vendor']['id']); ?>&nbsp;</td>
-		<td><?php echo h($vendor['Vendor']['name']); ?>&nbsp;</td>
+		<td><?php echo h($i); ?> </td>
+        <td><?php echo h($vendor['Vendor']['name']); ?>&nbsp;</td>
 		<td><?php echo h($vendor['Vendor']['address']); ?>&nbsp;</td>
 		<td><?php echo h($vendor['Vendor']['email']); ?>&nbsp;</td>
 		<td><?php echo h($vendor['Vendor']['phone']); ?>&nbsp;</td>
 		<td><?php echo h($vendor['Vendor']['created']); ?>&nbsp;</td>
 		<td><?php echo h($vendor['Vendor']['modified']); ?>&nbsp;</td>
-		<td><?php echo h($vendor['Vendor']['status']); ?>&nbsp;</td>
 		<td class="actions">
 			<?php echo $this->Html->link(__('View'), array('action' => 'view', $vendor['Vendor']['id'])); ?>
 			<?php echo $this->Html->link(__('Edit'), array('action' => 'edit', $vendor['Vendor']['id'])); ?>
-			<?php echo $this->Form->postLink(__('Delete'), array('action' => 'delete', $vendor['Vendor']['id']), array('confirm' => __('Are you sure you want to delete # %s?', $vendor['Vendor']['id']))); ?>
-		</td>
+			<?php /*?><?php echo $this->Form->postLink(__('Delete'), array('action' => 'delete', $vendor['Vendor']['id']), array('confirm' => __('Are you sure you want to delete # %s?', $vendor['Vendor']['id']))); ?><?php */?>
 	</tr>
-<?php endforeach; ?>
+<?php $i++; endforeach; ?>
 	</tbody>
 	</table>
-	<p>
-	<?php
-	echo $this->Paginator->counter(array(
-		'format' => __('Page {:page} of {:pages}, showing {:current} records out of {:count} total, starting on record {:start}, ending on {:end}')
-	));
-	?>	</p>
-	<div class="paging">
-	<?php
-		echo $this->Paginator->prev('< ' . __('previous'), array(), null, array('class' => 'prev disabled'));
-		echo $this->Paginator->numbers(array('separator' => ''));
-		echo $this->Paginator->next(__('next') . ' >', array(), null, array('class' => 'next disabled'));
-	?>
-	</div>
-</div>
-<div class="actions">
-	<h3><?php echo __('Actions'); ?></h3>
-	<ul>
-		<li><?php echo $this->Html->link(__('New Vendor'), array('action' => 'add')); ?></li>
-		<li><?php echo $this->Html->link(__('List Categories'), array('controller' => 'categories', 'action' => 'index')); ?> </li>
-		<li><?php echo $this->Html->link(__('New Category'), array('controller' => 'categories', 'action' => 'add')); ?> </li>
-	</ul>
-</div>
+    						</div>
+                        </div>
+                    </div>
+                    <!-- End  Hover Rows  -->
+                </div>
+    </div>
+	
