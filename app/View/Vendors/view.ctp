@@ -24,8 +24,8 @@
                                <strong><?php echo __('Address'); ?></strong> <span> : </span> <span><?php echo h($vendor['Vendor']['address']); ?></span> <br />
                                <strong><?php echo __('Phone'); ?></strong> <span> : </span> <span><?php echo h($vendor['Vendor']['phone']); ?></span> <br />
                                <strong><?php echo __('Email'); ?></strong> <span> : </span> <span><?php echo $vendor['Vendor']['email']; ?></span> <br />
-                               <strong><?php echo __('Created By'); ?></strong> <span> : </span> <span><?php  echo $vendor['Vendor']['created'];  ?></span> <br />
-                               <strong><?php echo __('Modified By'); ?></strong> <span> : </span> <span><?php  echo $vendor['Vendor']['modified']  ?></span> <br />
+                               <strong><?php echo __('Created By'); ?></strong> <span> : </span> <span><?php  echo $this->Util->dateFormat($vendor['Vendor']['created']);  ?></span> <br />
+                               <strong><?php echo __('Modified By'); ?></strong> <span> : </span> <span><?php  echo $this->Util->dateFormat($vendor['Vendor']['modified'])  ?></span> <br />
                             </div>
                    
                           
@@ -39,7 +39,7 @@
               
                <div class="panel panel-default">
                         <div class="panel-heading">
-                            Category Name
+                            Vendor Categories
                         </div>
                         <div class="panel-body">
                             <div class="table-responsive">
