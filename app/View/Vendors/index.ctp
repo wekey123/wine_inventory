@@ -40,8 +40,8 @@
 		<td><?php echo h($vendor['Vendor']['address']); ?>&nbsp;</td>
 		<td><?php echo h($vendor['Vendor']['email']); ?>&nbsp;</td>
 		<td><?php echo h($vendor['Vendor']['phone']); ?>&nbsp;</td>
-		<td><?php echo h($vendor['Vendor']['created']); ?>&nbsp;</td>
-		<td><?php echo h($vendor['Vendor']['modified']); ?>&nbsp;</td>
+		<td><?php echo $this->Util->dateFormat($vendor['Vendor']['created']); ?>&nbsp;</td>
+		<td><?php echo $this->Util->dateFormat($vendor['Vendor']['modified']); ?>&nbsp;</td>
 		<td class="actions">
 			<?php echo $this->Html->link(__('View'), array('action' => 'view', $vendor['Vendor']['id'])); ?>
 			<?php echo $this->Html->link(__('Edit'), array('action' => 'edit', $vendor['Vendor']['id'])); ?>
