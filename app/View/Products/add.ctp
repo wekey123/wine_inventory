@@ -13,6 +13,8 @@
 	<?php
 		echo $this->Form->input('user_id',array('div'=>false,'error'=>false,'type'=>'hidden'));
 		echo $this->Form->input('category_name',array('div'=>false,'error'=>false, 'type'=>'select', 'options'=>$category, 'before' => '<div class="form-group">', 'after' => '</div>' , 'class'=>'validate[required] form-control','between'=>'<label><span class="mandatory">*</span> Category Name</label>','label'=>false));
+		echo $this->Form->input('vendor_id',array('div'=>false,'error'=>false, 'type'=>'select', 'options'=>$vendor, 'id'=>'VendorType', 'before' => '<div class="form-group">', 'after' => '</div>' , 'class'=>'validate[required] form-control','between'=>'<label><span class="mandatory">*</span> Vendor Name</label>','label'=>false));
+		echo $this->Form->input('vendor_type',array('div'=>false,'error'=>false, 'type'=>'select', 'options'=>'', 'id'=>'VendorCatType', 'before' => '<div class="form-group">', 'after' => '</div>' , 'class'=>'validate[required] form-control','between'=>'<label><span class="mandatory">*</span> Vendor Type</label>','label'=>false));
 		//echo $this->Form->input('category_id',array('div'=>false,'error'=>false,'type'=>'hidden'));
 		echo $this->Form->input('status',array('div'=>false,'error'=>false,'type'=>'hidden',));
 		echo $this->Form->input('title',array('div'=>false,'error'=>false,'type'=>'text', 'before' => '<div class="form-group">', 'after' => '</div>', 'class'=>'validate[required] form-control','between'=>'<label><span class="mandatory">*</span> Title</label>','label'=>false));
@@ -62,3 +64,22 @@
 </div>
 <input type="hidden" name="" id="countValues" value="1" />
 <?php echo $this->Html->script('inventory'); ?>
+<script>
+	
+	$('#VendorType').on('change',function(e){
+		$('#VendorCatType').html('');
+		$.ajax({
+			  type: 'POST',
+			  url: '/products/ajax',  //whatever any url
+			  data: {label: $(this).val()},
+			  success: function(message) {
+				  if(message){
+					  console.log(message);
+					  $('#VendorCatType').html(message);
+				  }else{
+					 console.log(message);
+				  }
+			   }
+		   });
+	 });
+</script>

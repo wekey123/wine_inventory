@@ -15,7 +15,7 @@ class ProductsController extends AppController {
  *
  * @var array
  */
- 	public $uses = array('Product','Vary','Category');
+ 	public $uses = array('Product','Vary','Category','Vendor');
 	public $components = array('Paginator', 'Flash', 'Session' ,'Image','Auth');
 	public $layout = 'admin';
 /**
@@ -103,6 +103,15 @@ class ProductsController extends AppController {
 			$value[$values['Category']['name']]= $values['Category']['name'];
 		}
 		$this->set('category', $value);
+		
+		$vendors1= $this->Vendor->find('all');
+		$vendor[0] = 'Select Vendor';
+		foreach($vendors1 as $key => $vendors) {
+			if(isset($vendors['Category'][0]))
+			$vendor[$vendors['Vendor']['id']]= $vendors['Vendor']['name'];
+		}
+		$this->set('vendor', $vendor);
+		
 	}
 
 /**
@@ -155,6 +164,12 @@ class ProductsController extends AppController {
 		} else {
 			$options = array('conditions' => array('Product.' . $this->Product->primaryKey => $id));
 			$this->request->data = $this->Product->find('first', $options);
+			$val=array();
+		 	$cat= $this->Category->find('all',array('conditions' => array('vendor_id' => $this->request->data['Product']['vendor_id'])));
+			foreach($cat as $cate){
+			 $val[$cate['Category']['id']]=$cate['Category']['name'];
+			 }
+			$this->set('vendorCat', $val);
 			self::categoryList();
 		}
 	}
@@ -187,4 +202,19 @@ class ProductsController extends AppController {
 		}
 		return $this->redirect(array('action' => 'index'));
 	}
+	
+	
+	public function ajax($value = null) {
+		 $this->layout = '';
+		 $this->autoRender = false ;
+		 $no=$_POST['label'];
+		 $options = array('conditions' => array('Category.vendor_id' => $no),'fields'=> array('Category.id','Category.name'));
+		 $cat= $this->Category->find('all', $options);
+		 $val='';
+		 foreach($cat as $cate){
+			 $val.='<option value="'.$cate['Category']['id'].'">'.$cate['Category']['name'].'</option>';
+		 }
+		 return $val;
+	}
+	
 }
