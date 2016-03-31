@@ -1,25 +1,103 @@
-<div class="vendors form">
-<?php echo $this->Form->create('Vendor'); ?>
-	<fieldset>
-		<legend><?php echo __('Edit Vendor'); ?></legend>
-	<?php
-		echo $this->Form->input('id');
-		echo $this->Form->input('name');
-		echo $this->Form->input('address');
-		echo $this->Form->input('email');
-		echo $this->Form->input('phone');
-		echo $this->Form->input('status');
-	?>
-	</fieldset>
-<?php echo $this->Form->end(__('Submit')); ?>
-</div>
-<div class="actions">
-	<h3><?php echo __('Actions'); ?></h3>
-	<ul>
+<style>
+.varHead label{
+	width:25%;
+	margin-bottom:0px;
+}
+.varHead input[type="text"]{
+	width:15%;
+	float:left;
+	margin-right:10%;
+	margin-bottom:0px;
+}
+</style>
+    <?php echo $this->Form->create('Vendor'); ?>
+<div class="content-wrapper">
+    <div class="container">
+      <div class="row">
+            <div class="col-md-12">
+                <h1 class="page-head-line"><?php echo __('Edit Vendor'); ?> </h1>
+            </div>
+        </div>
+               
+   <div class="row">           
+    <div class="col-md-12" style="margin-right:10%;">     
+      
+            <div class="row">
+                <div class="col-md-5" style="margin-right:10%;">     
+            <?php
+				echo $this->Form->input('id');
+                echo $this->Form->input('name',array('div'=>false,'error'=>false,'type'=>'text', 'before' => '<div class="form-group">', 'after' => '</div>', 'class'=>'validate[required] form-control'));
+                echo $this->Form->input('address',array('div'=>false,'error'=>false,'type'=>'textarea', 'before' => '<div class="form-group">', 'after' => '</div>', 'class'=>'validate[required] form-control'));
+                echo $this->Form->input('email',array('div'=>false,'error'=>false,'type'=>'text', 'before' => '<div class="form-group">', 'after' => '</div>', 'class'=>'validate[required] form-control'));
+                echo $this->Form->input('phone',array('div'=>false,'error'=>false,'type'=>'text', 'before' => '<div class="form-group">', 'after' => '</div>', 'class'=>'validate[required] form-control'));
+            ?>
+                </div>
+            
+                <div class="col-md-5" style="float:right;">     
+					<?php 
+					 //echo $this->Form->input('role',array('div'=>false,'error'=>false, 'type'=>'select', 'options'=>array('admin' => 'Admin', 'staff' => 'Staff'), 'before' => '<div class="form-group">', 'after' => '</div>' , 'class'=>'validate[required] form-control'));
+          			  ?>
+                      <div class="panel panel-default">
+                            <div class="panel-heading">Add category<span class="error_msg_var"></span> <a id="addcategory" class="btn btn-primary addmore">Add More Coloumns</a><!--<span class="varient-enable glyphicon glyphicon-plus"></span>--></div>              
+                            <div class="panel-body" id="varient_body">           
+						
+                             <div id='TextBoxesGroup'>
+                               <table style="width: 100%;">
+                       		   <tr><th>Sno</th><th>Category Name</th></tr>
+							   <?php $varys= $this->request->data['Category']; $i=1;
+                                foreach($varys as $vary){
+                                ?> 
+                                <tr id='TextBoxDiv<?php echo $i;?>'><td><?php echo $i;?></td><td><input type="text" id="category<?php echo $i;?>" value="<?php echo $vary['name'];?>" name="data[Category][<?php echo $i;?>][name]" class="form-control " style="margin-right:1%" />
+                                <input type="hidden" value="<?php echo $vary['id'];?>" name="data[Category][<?php echo $i;?>][id]"  /> <a  onClick="boxRemove(<?php echo $i;?>)" rel="<?php echo $i;?>"><a  onClick="deleteBox(<?php echo $vary['id'];?>,<?php echo $i;?>)" rel="<?php echo $i;?>">remove</a></td></tr>
+                                <?php $i++;} ?> 
+              		  		  </table>
+                             </div>
+                             
+                            </div>
+                               <input type="hidden" name="" id="countValues" value="<?php echo $i;?>" />
+                               <div id="deletGroup"></div>
+                      </div>
 
-		<li><?php echo $this->Form->postLink(__('Delete'), array('action' => 'delete', $this->Form->value('Vendor.id')), array('confirm' => __('Are you sure you want to delete # %s?', $this->Form->value('Vendor.id')))); ?></li>
-		<li><?php echo $this->Html->link(__('List Vendors'), array('action' => 'index')); ?></li>
-		<li><?php echo $this->Html->link(__('List Categories'), array('controller' => 'categories', 'action' => 'index')); ?> </li>
-		<li><?php echo $this->Html->link(__('New Category'), array('controller' => 'categories', 'action' => 'add')); ?> </li>
-	</ul>
-</div>
+                </div>
+            </div>
+            
+            <div class="row">
+               <div id="varient-wrapper"></div>
+               
+           </div>
+            
+     </div>
+    </div>
+  <?php 
+				echo $this->Form->submit(__('Submit'),array('div'=>false, 'class'=>'btn btn-lg btn-success btn-block' ,'id' => 'getVarientValue')); 
+				echo $this->Form->end();	
+				?>		   
+    <script>
+		 var counter =$('#countValues').val();
+		$('#addcategory').on('click',function(e){
+			if(counter>10){
+					alert("Only 10 textboxes allow");
+					return false;
+			}else{
+			var newTextBoxDiv = $(document.createElement('div')).attr("id", 'TextBoxDiv' + counter);
+						
+			newTextBoxDiv.after().html('<table style="width: 100%;"><tr><td>' + counter + '</td> <td><input type="text" id="category' + counter + '" name="data[Vendor][Category]['+ counter +']" class="form-control " style="margin-right:1%" /> <a style="float:right;" onClick="boxRemove('+counter+')" rel="' + counter + '">remove</a></td></tr></table>');
+					
+			newTextBoxDiv.appendTo("#TextBoxesGroup");
+			counter++;
+		  }
+	    });
+		function boxRemove(id){
+				 $("#TextBoxDiv" + id).remove();
+				 counter--;
+		}
+		function deleteBox(id,rel){
+				$("#TextBoxDiv" + rel).remove();
+				var input = document.createElement("input");
+				input.setAttribute("type", "hidden");	
+				input.setAttribute("name", "data[Delete]["+ counter +"]");
+				input.setAttribute("value", id);
+				document.getElementById("deletGroup").appendChild(input);
+				counter--;
+		}
+	</script>

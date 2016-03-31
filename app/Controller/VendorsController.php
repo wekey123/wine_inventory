@@ -77,11 +77,42 @@ class VendorsController extends AppController {
  * @return void
  */
 	public function edit($id = null) {
+		Configure::write('debug', 0);
 		if (!$this->Vendor->exists($id)) {
 			throw new NotFoundException(__('Invalid vendor'));
 		}
 		if ($this->request->is(array('post', 'put'))) {
+			//debug($this->request->data); exit;
 			if ($this->Vendor->save($this->request->data)) {
+				
+				//add new category
+				if(!empty($this->request->data['Vendor']['Category'])){
+					foreach($this->request->data['Vendor']['Category'] as $categoryname){
+						$this->request->data['Category']['vendor_id'] = $id;
+						$this->request->data['Category']['name'] = ucwords(strtolower($categoryname));
+						$this->Category->create();
+						$this->Category->save($this->request->data);
+					}
+				}
+				
+				//to update Category
+				if(!empty($this->request->data['Category'])){
+					foreach($this->request->data['Category'] as  $category){
+						$this->request->data['Category']['name'] = $category['name'];
+						$this->request->data['Category']['id'] = $category['id'];
+						$this->Category->save($this->request->data);
+	
+					}
+				}
+				
+				//to delete Category
+				if(!empty($this->request->data['Delete'])){
+					foreach($this->request->data['Delete'] as  $delete){
+						$this->Category->id = $delete;
+						$this->Category->delete();
+					}
+				}
+				
 				$this->Flash->success(__('The vendor has been saved.'));
 				return $this->redirect(array('action' => 'index'));
 			} else {
