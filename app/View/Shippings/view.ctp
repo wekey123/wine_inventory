@@ -12,7 +12,7 @@
                <strong><?php echo __('Invoice Number'); ?></strong> <span> : </span> <span><?php echo h($test['invoice_no']); ?></span> <br />
                <strong><?php echo __('Invoice Quantity'); ?></strong> <span> : </span> <span><?php echo h($test['invoice_quantity']); ?></span> <br />
                <strong><?php echo __('Shipping Quantity'); ?></strong> <span> : </span> <span><?php echo h($test['shipping_quantity']); ?></span> <br />
-               <strong><?php echo __('Weight'); ?></strong> <span> : </span> <span><?php  echo $this->Util->currencyFormat($test['weight']);  ?></span> <br />
+               <strong><?php echo __('Weight'); ?></strong> <span> : </span> <span><?php  echo h($test['weight']);  ?></span> <br />
             </div>
         </div>
     </div>
@@ -74,10 +74,12 @@
                 <div class="col-md-4 heading"><?php echo __('Created Date'); ?></div>
                 <div class="col-md-8"><?php echo h($shipping['Shipping']['created']); ?></div>
             </div>
+            <?php if(isset($shipping['Shipping']['modified'])) { ?>
             <div class="row">
                 <div class="col-md-4 heading"><?php echo __('Modified Date'); ?></div>
                 <div class="col-md-8"><?php echo h($shipping['Shipping']['modified']); ?></div>
             </div>
+            <?php } ?>
         </div>
 </div>
 <?php } ?>

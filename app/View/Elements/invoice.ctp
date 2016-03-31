@@ -14,7 +14,7 @@
                                             <th>#</th>
                                             <th><?php echo $this->Paginator->sort('Product Name'); ?></th>
                                             <th><?php echo $this->Paginator->sort('Varient'); ?></th>
-                                            <th><?php echo $this->Paginator->sort('Order Quantity'); ?></th>
+                                            <th><?php echo $this->Paginator->sort('PO QTY'); ?></th>
                                             <th><?php echo $this->Paginator->sort('Invoice Quantity'); ?></th>
                                             <th><?php echo $this->Paginator->sort('Price'); ?></th>
                                             <th><?php echo $this->Paginator->sort('SKU'); ?></th>
