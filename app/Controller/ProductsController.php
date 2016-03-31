@@ -65,6 +65,7 @@ class ProductsController extends AppController {
 		if ($this->request->is('post')) {
 			$this->request->data['Product']['user_id'] = $user['id'];  
 			$this->request->data['Product']['status'] = 1;
+			$this->request->data['Product']['expiry'] = date("Y-m-d", strtotime($this->request->data['Product']['expiry']));
 			//echo '<pre>';print_r($this->request->data);exit;
 			if($this->request->data['Product']['image']['name'] != ''){
 					$this->request->data['Product']['image'] = $this->request->data['Product']['image']!='' ? $this->Image->upload_image_and_thumbnail($this->request->data['Product']['image'],573,380,180,110, "product") : '';
@@ -134,8 +135,9 @@ class ProductsController extends AppController {
 			throw new NotFoundException(__('Invalid product'));
 		}
 		if ($this->request->is(array('post', 'put'))) {
-			
+			//$this->request->data['Invoice']['expiry'] = date("Y-m-d", strtotime($this->request->data['Invoice']['expiry']));
 			$this->request->data['Product']['user_id'] = $user['id'];
+			$this->request->data['Product']['expiry'] = date("Y-m-d", strtotime($this->request->data['Product']['expiry']));
 			if($this->request->data['Product']['image']['name'] != ''){
 				$this->request->data['Product']['image'] = $this->request->data['Product']['image']!='' ? $this->Image->upload_image_and_thumbnail($this->request->data['Product']['image'],573,380,180,110, "product") : '';
 			}else{

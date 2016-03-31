@@ -27,7 +27,6 @@
                                             <th><?php echo $this->Paginator->sort('title'); ?></th>
                                             <th><?php echo $this->Paginator->sort('image'); ?></th>
                                             <th><?php echo $this->Paginator->sort('brand'); ?></th>
-                                            <th><?php echo $this->Paginator->sort('vendor'); ?></th>
                                             <th><?php echo $this->Paginator->sort('country'); ?></th>
                                             <th><?php echo $this->Paginator->sort('type'); ?></th>
                                             <th><?php echo $this->Paginator->sort('flavor'); ?></th>
@@ -43,7 +42,6 @@
                                             <td><?php echo h($product['Product']['title']); ?>&nbsp;</td>
                                             <td><?php echo $this->Html->image('product/small/'.$product['Product']['image']);?>&nbsp;</td>
                                             <td><?php echo h($product['Product']['brand']); ?>&nbsp;</td>
-                                            <td><?php echo h($product['Product']['vendor']); ?>&nbsp;</td>
                                             <td><?php echo h($product['Product']['country']); ?>&nbsp;</td>
                                             <td><?php echo h($product['Product']['type']); ?>&nbsp;</td>
                                             <td><?php echo h($product['Product']['flavor']); ?>&nbsp;</td>
