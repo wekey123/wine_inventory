@@ -1,0 +1,7 @@
+﻿<ul class="nav navbar-nav navigation">
+    <li class="list-group-item {{path == '/' ? 'active' : ''}}"  ng-click="cancel('/')"><a href="#/">Home</a></li>
+    <li class="list-group-item {{path == '/catalog' ? 'active' : ''}}"  ng-click="cancel('catalog')"><a href="#catalog">Catalog</a></li>
+    <li class=" list-group-item" ng-repeat="menuTitle in categoryMenu" {{path == '/catalog' ? 'active' : ''}}  ng-click="cancel('/catalog/{{menuTitle}}')"><a  href="#catalog/{{menuTitle}}">{{menuTitle}}</a></li>
+<!--<li class=" list-group-item {{path == '/about' ? 'active' : ''}}"><a href="#about">About</a></li>
+    <li class=" list-group-item {{path == '/contact' ? 'active' : ''}}"><a href="#contact">Contact</a></li>-->
+</ul>

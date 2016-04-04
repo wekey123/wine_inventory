@@ -1,0 +1,132 @@
+/********** aside Menu page (Main Menu)  *************/
+.modal-dialog{
+	width:55%;
+}
+.list-group-item{
+    margin-bottom: 0;
+    border: 0 none;
+    border-bottom: 1px solid #ddd;
+	padding:2px 3px;
+}
+.list-group-item a{
+	background:url('../../../../app/webroot/img/arrow1.png') no-repeat 90%;
+	cursor:pointer;
+}
+li.active a{
+	background:url('../../../../app/webroot/img/accordion-arrow.gif') no-repeat 90%;
+	color:#fff;
+}
+li.active a:hover{
+	background:#286090;
+}
+li a{
+	padding:0px;
+}
+.modal-body{
+	padding:0px 15px;
+}
+.fa {
+    display: inline-block;
+    font: 14px/1 FontAwesome;
+    font-size: inherit;
+    text-rendering: auto;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+.pull-right {
+    float: right!important;
+}
+.fa.pull-right {
+    margin-left: .3em;
+}
+
+
+/**********  My Account Page   *************/
+.userTitle{
+	float:left;
+	width:45%;
+	font-size:13px;
+}
+.userHead{
+	padding:8px 0px;
+	background:#eaeaea;
+	font-size:14px;
+	margin-top:10px;
+	font-weight:bold;
+}
+.userRow{
+	width:100%;
+	float:left;
+	margin:1%;
+}
+.update{
+	width:40%;
+	margin-top:2%;
+	margin-bottom:2%;
+}
+
+/*********  Home Page   ****************/
+
+.sectionTitleLink {
+    float: right;
+    font-size: 13px;
+    color: #e4755a;
+}
+.textBreakBottom {
+    height: 0px;
+    clear: both;
+    margin-bottom: 23px;
+    border-top: 3px solid #f0f0f0;
+}
+.sectionTitle {
+    margin-bottom: 22px;
+	font-family:'Droid Serif', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+.homeProductsWrapper {
+    padding-left: 36px;
+    box-sizing: border-box;
+}
+.homeProductWrapper {
+    margin-left: 36px;
+    width: 47%;
+    float: left;
+    margin-bottom: 27px;
+}
+.homeProductWrapper:nth-child(odd) {
+    margin-left: -36px;
+}
+.homeProductWrapper > img {
+    width: 100%;
+    height: auto;
+}
+.homeProductInfoWrapper {
+    padding-left: 12px;
+    padding-right: 12px;
+    background-color: #f9f9f9;
+    padding-bottom: 12px;
+    padding-top: 8px;
+}
+.homeProductTitle {
+    display: block;
+    margin-bottom: 7px;
+    text-align: center;
+}
+.homePurchaseButton {
+    color: #333;
+	font-size:13px;
+	font-weight:bolder;
+	margin-left:35%;
+}
+.page-header{
+	padding-bottom: 0px; margin: 2px 20px; border:none;
+}
+.page-header h1{
+	margin-bottom:20px;text-align:center
+}
+.mainCategory{
+	float:left; width:100%;
+}
+.row {
+	  margin-right: 10px;
+	  margin-left: 10px;
+}

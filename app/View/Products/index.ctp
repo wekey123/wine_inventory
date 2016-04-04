@@ -38,7 +38,7 @@
                                      <?php $i =1; foreach ($products as $product): ?>
                                         <tr>
                                             <td><?php echo $i; ?></td>
-                                            <td><?php echo h($product['Product']['category_name']); ?>&nbsp;</td>
+                                            <td><?php echo h($product['Category']['name']); ?>&nbsp;</td>
                                             <td><?php echo h($product['Product']['title']); ?>&nbsp;</td>
                                             <td><?php echo $this->Html->image('product/small/'.$product['Product']['image']);?>&nbsp;</td>
                                             <td><?php echo h($product['Product']['brand']); ?>&nbsp;</td>

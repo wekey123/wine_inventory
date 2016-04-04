@@ -56,6 +56,18 @@ class Product extends AppModel {
 			'conditions' => '',
 			'fields' => '',
 			'order' => ''
+		),'Category' => array(
+			'className' => 'Category',
+			'foreignKey' => 'vendor_type',
+			'conditions' => '',
+			'fields' => '',
+			'order' => ''
+		),'Vendor' => array(
+			'className' => 'Vendor',
+			'foreignKey' => 'vendor_id',
+			'conditions' => '',
+			'fields' => '',
+			'order' => ''
 		)
 	);
 	

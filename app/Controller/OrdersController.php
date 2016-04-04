@@ -17,7 +17,7 @@ class OrdersController extends AppController {
  * @var array
  */
  	public $uses = array('Order','Product','Vary','Category','User');
-	public $components = array('Paginator', 'Flash', 'Session');
+	public $components = array('Paginator', 'Flash', 'Session','RequestHandler');
 	public $layout = 'admin';
 
 /**
@@ -27,6 +27,7 @@ class OrdersController extends AppController {
  */
     public function beforeFilter() {
         $this->Auth->deny('index');
+		$this->Auth->allow('apiAddProducts');
     }
 	
 	public function index() {
@@ -64,6 +65,35 @@ class OrdersController extends AppController {
         );
 		$this->set('orders', $this->Paginator->paginate());
 		//echo '<pre>';print_r($this->Paginator->paginate());exit;
+	}
+	
+	public function apiAddProducts() {
+   		header("Access-Control-Allow-Origin: *");
+		header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept");
+		$products = $this->Product->find('all');
+		$i =0;
+		foreach($products as $product){
+			foreach($product['Vary'] as $key => $vary){
+				$result[$product['Vendor']['name']][$product['Category']['name']]['Product'][$i] = $product['Product'];
+				$result[$product['Vendor']['name']][$product['Category']['name']]['Product'][$i]['vid'] = $vary['id'];
+				$result[$product['Vendor']['name']][$product['Category']['name']]['Product'][$i]['variant'] = $vary['variant'];
+				$result[$product['Vendor']['name']][$product['Category']['name']]['Product'][$i]['sku'] = $vary['sku'];
+				$result[$product['Vendor']['name']][$product['Category']['name']]['Product'][$i]['barcode'] = $vary['barcode'];
+				$result[$product['Vendor']['name']][$product['Category']['name']]['Product'][$i]['price'] = $vary['price'];
+				$result[$product['Vendor']['name']][$product['Category']['name']]['Product'][$i]['vendor'] = $product['Vendor']['name'];
+				$result[$product['Vendor']['name']][$product['Category']['name']]['Product'][$i]['category'] = $product['Category']['name'];
+				$i++;
+			}
+			
+				
+		}
+		$this->set('products', $result);
+		$this->set('_serialize', array('products'));
+	}
+	
+	public function addproduct() {
+
+
 	}
 
 /**

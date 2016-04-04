@@ -1,0 +1,54 @@
+﻿<style>
+.modal-dialog{
+	width:55%;
+}
+.list-group-item{
+    margin-bottom: 0;
+    border: 0 none;
+    border-bottom: 1px solid #ddd;
+	padding:2px 3px;
+}
+.list-group-item a{
+	background:url(app/webroot/img/arrow1.png) no-repeat 90%;
+	cursor:pointer;
+}
+li.active a{
+	background:url(app/webroot/img/accordion-arrow.gif) no-repeat 90%;
+	color:#fff;
+}
+li.active a:hover{
+	background:#286090;
+}
+li a{
+	padding:0px;
+}
+.modal-body{
+	padding:0px 15px;
+}
+.fa {
+    display: inline-block;
+    font: 14px/1 FontAwesome;
+    font-size: inherit;
+    text-rendering: auto;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+.pull-right {
+    float: right!important;
+}
+.fa.pull-right {
+    margin-left: .3em;
+}
+</style>
+<div class="modal-header" style="clear:both; overflow:hidden; margin-top:60px;">
+   <h3 class="modal-title" style="float:left">Hi, {{userDetails.first_name}}</h3>
+   <a style="float:right;margin-top:8px;"  ng-click="ok($event)"><img src="app/webroot/img/close-btn.gif" height="20" width="19"  /></a>
+</div>
+<div class="modal-body">
+	<ul class="nav navbar-nav navigation">
+    <li class="list-group-item {{path == '/myaccount' ? 'active' : ''}}"  ng-click="cancel('/myaccount')"><a href="#/myaccount">My Account</a></li>
+    <li class="list-group-item {{path == '/myorders' ? 'active' : ''}}"  ng-click="cancel('/myorders')"><a href="#/myorders">My Orders</a></li>
+    <li class="list-group-item {{path == '/catalog' ? 'active' : ''}}"  ng-click="cancel('/profile')"><a href="#/profile">Change Profile</a></li>
+    <li class="list-group-item" ng-click="logout()"><a>Logout</a></li>
+</ul>
+</div>
