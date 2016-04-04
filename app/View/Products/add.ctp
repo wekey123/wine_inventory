@@ -64,14 +64,14 @@
 </div>
 </div>
 <input type="hidden" name="" id="countValues" value="1" />
-<?php echo $this->Html->script('inventory'); ?>
+<?php echo $this->Html->script('inventory'); $ServerBaseURL = Configure::read('ServerBaseURL'); ?>
 <script>
 	
 	$('#VendorType').on('change',function(e){
 		$('#VendorCatType').html('');
 		$.ajax({
 			  type: 'POST',
-			  url: '/products/ajax',  //whatever any url
+			  url: '<?php echo $ServerBaseURL.'/products/ajax'; ?>',//whatever any url
 			  data: {label: $(this).val()},
 			  success: function(message) {
 				  if(message){
