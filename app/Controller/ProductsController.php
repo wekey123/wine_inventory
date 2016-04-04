@@ -16,7 +16,7 @@ class ProductsController extends AppController {
  * @var array
  */
  	public $uses = array('Product','Vary','Category','Vendor');
-	public $components = array('Paginator', 'Flash', 'Session' ,'Image','Auth');
+	public $components = array('RequestHandler','Paginator', 'Flash', 'Session' ,'Image','Auth');
 	public $layout = 'admin';
 /**
  * index method
@@ -26,12 +26,39 @@ class ProductsController extends AppController {
 
      public function beforeFilter() {
         $this->Auth->deny('index');
+		$this->Auth->allow('lists');
     }
 	
 	public function index() {
 		$this->Product->recursive = 0;
 		$this->set('products', $this->Paginator->paginate());
 	}
+
+    public function lists2() {
+		header("Access-Control-Allow-Origin: *");
+		header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept");
+		$this->layout='';
+        $varies = $this->Vary->find('all');
+		$this->set('varies', $varies);
+        $this->set('_serialize', array('varies'));
+    }
+
+	public function lists() {
+      header("Access-Control-Allow-Origin: *");
+	  header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept");
+	  $products = $this->Product->find('all');
+	  $i =0;
+	  foreach($products as $product){
+	   $result[$product['Vendor']['name']][$product['Category']['name']][$i]['Product'] = $product['Product'];
+	   $result[$product['Vendor']['name']][$product['Category']['name']][$i]['Product']['Vary'] = $product['Vary'];
+	   $i++;
+	  }
+	  debug($product);exit;
+	  $this->set('products', $product);
+	  $this->set('_serialize', array('products'));
+   }
+
+
 
 /**
  * view method
@@ -41,7 +68,6 @@ class ProductsController extends AppController {
  * @return void
  */
 	public function view($id = null) {
-
 		if (!$this->Product->exists($id)) {
 			throw new NotFoundException(__('Invalid product'));
 		}
