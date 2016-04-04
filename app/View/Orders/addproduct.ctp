@@ -74,7 +74,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                          			 <tr ng-repeat="result in product | filter:productFilterExpression | filter:categoryProductFilterExpression | startFrom:currentPage*pageSize | limitTo:pageSize">
+                          			 <tr ng-repeat="result in (filteredItems = (product | filter:productFilterExpression | filter:categoryProductFilterExpression)) | startFrom:currentPage*pageSize | limitTo:pageSize">
                                      <td>{{$index+1}}</td>
                                      <td>{{result.vendor}}</td>
                                      <td>{{result.category}}</td>
@@ -89,9 +89,9 @@
                     <ul class="pager">
                       <li><a href="javascript:void(0)" ng-hide="currentPage == 0" ng-click="currentPage=currentPage-1">Previous</a></li>
                       <li> <span ng-cloak>{{currentPage+1}}/{{numberOfPages()}}</span></li>
-                      <li><a href="javascript:void(0)" ng-hide="currentPage >= productLength/pageSize - 1" ng-click="currentPage=currentPage+1">Next</a></li>
+                      <li><a href="javascript:void(0)" ng-hide="currentPage >= filteredItemsLen()/pageSize - 1" ng-click="currentPage=currentPage+1">Next</a></li>
                     </ul>
-                    <pre>{{ productLength | json }}</pre>
+                    <pre>{{ filteredItemsLen() }}</pre>
                 </div>
             </div>
         </div>

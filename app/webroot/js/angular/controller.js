@@ -4,6 +4,7 @@ shopping.controller("addPoController", ["$scope","$log","$timeout","$http",'$roo
 	$scope.cookieCartItems = $cookies.getObject('cart') || 0;
 	$scope.allProducts = '{}';
 	$scope.loader = true;
+	
 	$http({method: 'GET',url: '/orders/apiAddProducts.json',cache: false
 	 }).success(function (data, status, headers, config) {
 		 console.log('A');  
@@ -31,7 +32,19 @@ shopping.controller("addPoController", ["$scope","$log","$timeout","$http",'$roo
 	 }).error(function (data, status, headers, config) {
 	   $scope.loader = false;
 	});
+	
+	
+	 $scope.filteredItemsLen = function() {
+        return ($scope.filteredItems || []).length;  
+     };
+	
 	 $scope.productLength = 4;
+	 
+	/* $scope.$watch('filteredItemsLen()', function(newValue, oldValue){
+        console.log('Filtered length changed from ' +
+                    oldValue + ' to ' + newValue);
+    });*/
+	
 	 $scope.selectedCategory = [];
 
  	 $scope.categoryFilterExpression = function(categoryList) {
@@ -66,9 +79,9 @@ shopping.controller("addPoController", ["$scope","$log","$timeout","$http",'$roo
         return productList;
     }
 	$scope.currentPage = 0;
-    $scope.pageSize = 10;
+    $scope.pageSize = 2;
     $scope.numberOfPages=function(){
-        return Math.ceil($scope.productLength/$scope.pageSize);                
+        return Math.ceil($scope.filteredItemsLen()/$scope.pageSize);                
     }
 
 }]);
