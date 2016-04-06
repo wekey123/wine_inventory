@@ -49,12 +49,21 @@ class ProductsController extends AppController {
 	  $products = $this->Product->find('all');
 	  $i =0;
 	  foreach($products as $product){
-	   $result[$product['Vendor']['name']][$product['Category']['name']][$i]['Product'] = $product['Product'];
-	   $result[$product['Vendor']['name']][$product['Category']['name']][$i]['Product']['Vary'] = $product['Vary'];
-	   $i++;
+	   foreach($product['Vary'] as $vary){
+		$result[$product['Vendor']['name']][$product['Category']['name']]['Product'][$i] = $product['Product'];
+		$result[$product['Vendor']['name']][$product['Category']['name']]['Product'][$i]['vid'] = $vary['id'];
+		$result[$product['Vendor']['name']][$product['Category']['name']]['Product'][$i]['variant'] = $vary['variant'];
+		$result[$product['Vendor']['name']][$product['Category']['name']]['Product'][$i]['sku'] = $vary['sku'];
+		$result[$product['Vendor']['name']][$product['Category']['name']]['Product'][$i]['barcode'] = $vary['barcode'];
+		$result[$product['Vendor']['name']][$product['Category']['name']]['Product'][$i]['price'] = $vary['price'];
+		$result[$product['Vendor']['name']][$product['Category']['name']]['Product'][$i]['Vendor'] = $product['Vendor']['name'];
+    	$result[$product['Vendor']['name']][$product['Category']['name']]['Product'][$i]['Category'] = $product['Category']['name'];
+		$i++;
+	   }
 	  }
-	  debug($product);exit;
-	  $this->set('products', $product);
+	  //debug($result); exit;
+	  //$allproducts=array('allproducts'=>$result);
+	  $this->set('products', $result);
 	  $this->set('_serialize', array('products'));
    }
 
@@ -107,6 +116,7 @@ class ProductsController extends AppController {
 					$this->request->data['Vary']['price'] = $value['price'];
 					$this->request->data['Vary']['sku'] = $value['sku'];
 					$this->request->data['Vary']['barcode'] = $value['barcode'];					
+					$this->request->data['Vary']['size'] = $value['size'];
 					$this->Vary->create();
 					$this->Vary->save($this->request->data);
 				  }
@@ -132,7 +142,7 @@ class ProductsController extends AppController {
 		$this->set('category', $value);
 		
 		$vendors1= $this->Vendor->find('all');
-		$vendor[0] = 'Select Vendor';
+		//$vendor[0] = 'Select Vendor';
 		foreach($vendors1 as $key => $vendors) {
 			if(isset($vendors['Category'][0]))
 			$vendor[$vendors['Vendor']['id']]= $vendors['Vendor']['name'];

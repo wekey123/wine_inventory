@@ -16,76 +16,77 @@
         
         <div class="col-md-10">
         <div class="row">
-            <div class="col-md-2 heading"><?php echo __('Id'); ?></div>
-            <div class="col-md-8"><?php echo h($product['Product']['id']); ?></div>
+            <div class="col-md-4 heading"><?php echo __('Id'); ?></div>
+            <div class="col-md-6"><?php echo h($product['Product']['id']); ?></div>
+        </div>
+         <div class="row">
+            <div class="col-md-4 heading"><?php echo __('Vendor'); ?></div>
+            <div class="col-md-6"><?php  $users = $this->Util->getVendorName($product['Product']['vendor_id']); echo isset($users['Vendor']['name']) ? $users['Vendor']['name'] : '';?></div>
         </div>
         <div class="row">
-            <div class="col-md-2 heading"><?php echo __('Category Name'); ?></div>
-            <div class="col-md-6 "><?php echo h($product['Product']['category_name']); ?></div>
+            <div class="col-md-4 heading"><?php echo __('Category Name'); ?></div>
+            <div class="col-md-6 "><?php  $cat = $this->Util->getVendorType($product['Product']['vendor_type']); echo isset($cat['Category']['name']) ? $cat['Category']['name'] : '';?></div>
         </div>
         <div class="row">
-            <div class="col-md-2 heading"><?php echo __('Created By'); ?></div>
-            <div class="col-md-8"><?php echo h($product['User']['username']); ?></div>
+            <div class="col-md-4 heading"><?php echo __('Created By'); ?></div>
+            <div class="col-md-6"><?php echo h($product['User']['username']); ?></div>
         </div>
         
         <div class="row">
-            <div class="col-md-2 heading"><?php echo __('Title'); ?></div>
-            <div class="col-md-8"><?php echo h($product['Product']['title']); ?></div>
+            <div class="col-md-4 heading"><?php echo __('Title'); ?></div>
+            <div class="col-md-6"><?php echo h($product['Product']['title']); ?></div>
         </div>
 
 		<div class="row">
-            <div class="col-md-2 heading"><?php echo __('Description'); ?></div>
-            <div class="col-md-8"><?php echo h($product['Product']['description']); ?></div>
+            <div class="col-md-4 heading"><?php echo __('Description'); ?></div>
+            <div class="col-md-6"><?php echo h($product['Product']['description']); ?></div>
         </div>
 		
         <div class="row">
-            <div class="col-md-2 heading"><?php echo __('Brand'); ?></div>
-            <div class="col-md-8"><?php echo h($product['Product']['brand']); ?></div>
+            <div class="col-md-4 heading"><?php echo __('Brand'); ?></div>
+            <div class="col-md-6"><?php echo h($product['Product']['brand']); ?></div>
         </div>
 		
-        <div class="row">
-            <div class="col-md-2 heading"><?php echo __('Vendor'); ?></div>
-            <div class="col-md-8"><?php echo h($product['Product']['vendor']); ?></div>
+       
+        
+		<div class="row">
+            <div class="col-md-4 heading"><?php echo __('Country'); ?></div>
+            <div class="col-md-6"><?php echo h($product['Product']['country']); ?></div>
         </div>
         
 		<div class="row">
-            <div class="col-md-2 heading"><?php echo __('Country'); ?></div>
-            <div class="col-md-8"><?php echo h($product['Product']['country']); ?></div>
+            <div class="col-md-4 heading"><?php echo __('Location'); ?></div>
+            <div class="col-md-6"><?php echo h($product['Product']['location']); ?></div>
         </div>
         
 		<div class="row">
-            <div class="col-md-2 heading"><?php echo __('Type'); ?></div>
-            <div class="col-md-8"><?php echo h($product['Product']['type']); ?></div>
-        </div>
-        
-		<div class="row">
-            <div class="col-md-2 heading"><?php echo __('Flavor'); ?></div>
-            <div class="col-md-8"><?php echo h($product['Product']['flavor']); ?></div>
+            <div class="col-md-4 heading"><?php echo __('Flavor'); ?></div>
+            <div class="col-md-6"><?php echo h($product['Product']['flavor']); ?></div>
         </div>
 		
         <div class="row">
-            <div class="col-md-2 heading"><?php echo __('Label'); ?></div>
-            <div class="col-md-8"><?php echo h($product['Product']['label']); ?></div>
+            <div class="col-md-4 heading"><?php echo __('Label'); ?></div>
+            <div class="col-md-6"><?php echo h($product['Product']['label']); ?></div>
         </div>
 		
         <div class="row">
-            <div class="col-md-2 heading"><?php echo __('Image'); ?></div>
-            <div class="col-md-8"><?php echo $this->Html->image('product/small/'.$product['Product']['image']);?></div>
+            <div class="col-md-4 heading"><?php echo __('Image'); ?></div>
+            <div class="col-md-6"><?php echo $this->Html->image('product/small/'.$product['Product']['image']);?></div>
         </div>
 		
         <?php /*?> <div class="row">
-            <div class="col-md-2 heading"><?php echo __('Status'); ?></div>
-            <div class="col-md-8"><?php echo h($product['Product']['status']); ?></div>
+            <div class="col-md-4 heading"><?php echo __('Status'); ?></div>
+            <div class="col-md-6"><?php echo h($product['Product']['status']); ?></div>
         </div><?php */?>
 		
         <div class="row">
-            <div class="col-md-2 heading"><?php echo __('Created'); ?></div>
-            <div class="col-md-8"><?php echo $this->Util->dateFormat($product['Product']['created']); ?></div>
+            <div class="col-md-4 heading"><?php echo __('Created'); ?></div>
+            <div class="col-md-6"><?php echo $this->Util->dateFormat($product['Product']['created']); ?></div>
         </div>
         
 		<div class="row">
-            <div class="col-md-2 heading"><?php echo __('Modified'); ?></div>
-            <div class="col-md-8"><?php echo $this->Util->dateFormat($product['Product']['modified']); ?></div>
+            <div class="col-md-4 heading"><?php echo __('Modified'); ?></div>
+            <div class="col-md-6"><?php echo $this->Util->dateFormat($product['Product']['modified']); ?></div>
         </div>
       </div>
      </div>
@@ -108,7 +109,7 @@
 	 <table class="table table-hover">
 	<tr>
 		<th><?php echo __('#'); ?></th>
-		<th><?php echo __('Variant'); ?></th>
+		<th><?php echo __('Weight'); ?></th>
 		<th><?php echo __('Sku'); ?></th>
 		<th><?php echo __('Barcode'); ?></th>
 		<th><?php echo __('Price'); ?></th>
@@ -120,7 +121,7 @@
 	<?php foreach ($product['Vary'] as $vary): ?>
 		<tr>
 			<td><?php echo $vary['id']; ?></td>
-			<td><?php echo $vary['variant']; ?></td>
+            <td><?php echo $vary['variant'].$vary['size']; ?></td>
 			<td><?php echo $vary['sku']; ?></td>
 			<td><?php echo $vary['barcode']; ?></td>
 			<td><?php echo $this->Util->currencyFormat($vary['price']);  ?></td>

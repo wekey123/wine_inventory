@@ -18,6 +18,13 @@ class Vary extends AppModel {
 		'variant' => array(
             'rule' => 'notBlank',
         ),
+		'size' => array(
+            'notEmpty' => array(
+            'rule' => array('notBlank'),
+            'message' => 'Please Select the size',
+            'allowEmpty' => false
+        	),
+        ),
 		'sku' => array(
            'rule' => 'notBlank',
         ),

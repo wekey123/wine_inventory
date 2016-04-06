@@ -23,12 +23,13 @@
                                     <thead>
                                         <tr>
                                             <th>#</th>
+                                            <th><?php echo $this->Paginator->sort('vendor'); ?></th>
                                             <th><?php echo $this->Paginator->sort('category'); ?></th>
                                             <th><?php echo $this->Paginator->sort('title'); ?></th>
                                             <th><?php echo $this->Paginator->sort('image'); ?></th>
-                                            <th><?php echo $this->Paginator->sort('brand'); ?></th>
                                             <th><?php echo $this->Paginator->sort('country'); ?></th>
-                                            <th><?php echo $this->Paginator->sort('type'); ?></th>
+                                            <th><?php echo $this->Paginator->sort('brand'); ?></th>
+                                            <th><?php echo $this->Paginator->sort('Location'); ?></th>
                                             <th><?php echo $this->Paginator->sort('flavor'); ?></th>
                                             <th><?php echo $this->Paginator->sort('label'); ?></th>
                                             <th class="actions"><?php echo __('Actions'); ?></th>
@@ -38,12 +39,13 @@
                                      <?php $i =1; foreach ($products as $product): ?>
                                         <tr>
                                             <td><?php echo $i; ?></td>
-                                            <td><?php echo h($product['Product']['category_name']); ?>&nbsp;</td>
+                                            <td><?php  $users = $this->Util->getVendorName($product['Product']['vendor_id']); echo isset($users['Vendor']['name']) ? $users['Vendor']['name'] : '';?></td>
+                                            <td><?php  $cat = $this->Util->getVendorType($product['Product']['vendor_type']); echo isset($cat['Category']['name']) ? $cat['Category']['name'] : '';?>&nbsp;</td>
                                             <td><?php echo h($product['Product']['title']); ?>&nbsp;</td>
                                             <td><?php echo $this->Html->image('product/small/'.$product['Product']['image']);?>&nbsp;</td>
                                             <td><?php echo h($product['Product']['brand']); ?>&nbsp;</td>
                                             <td><?php echo h($product['Product']['country']); ?>&nbsp;</td>
-                                            <td><?php echo h($product['Product']['type']); ?>&nbsp;</td>
+                                            <td><?php echo h($product['Product']['location']); ?>&nbsp;</td>
                                             <td><?php echo h($product['Product']['flavor']); ?>&nbsp;</td>
                                             <td><?php echo h($product['Product']['label']); ?>&nbsp;</td>
                                             <td class="actions">
