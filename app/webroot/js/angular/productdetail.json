@@ -1,0 +1,72 @@
+{
+    "Product": {
+        "Product": {
+            "title": "testing",
+            "description": "sadsad",
+            "vendor": "sd",
+            "type": "sdas",
+            "tags": "asd",
+            "publish": true,
+            "price": "1",
+            "list_price": "1",
+            "sku": "eq1",
+            "barcode": "1ewqe1",
+            "quantity": "1",
+            "weight": "1",
+            "varients": true,
+            "tax": true,
+            "shipping": true,
+            "id": "2"
+        },
+        "Metafield": {
+            "title": "Vitamins",
+            "description": "test",
+            "url_handle": "test"
+        },
+        "Option": {
+            "options_name": "size",
+            "options_values": "6,7,8",
+            "img_src": ""
+        },
+        "Collect": [
+            {
+                "category_id": "1",
+                "product_id": "2",
+                "Category": {
+                    "title": "Vitamins"
+                }
+            },
+            {
+                "category_id": "3",
+                "product_id": "2",
+                "Category": {
+                    "title": "Minerals"
+                }
+            }
+        ],
+        "ProductImage": [
+            {
+                "img_src": "test.jpg",
+                "img_alt": "test",
+                "product_id": "2"
+            }
+        ],
+        "Review": [
+            {
+                "id": "1",
+                "customer_id": "1",
+                "product_id": "2",
+                "rating": "4",
+                "title": "Best product",
+                "comments": "Good product",
+                "publish": true,
+                "published_at": "2015-11-28 17:08:48",
+                "updated_at": "2015-11-28 17:08:48",
+                "User": {
+                    "first_name": "vignesh",
+                    "last_name": "kumar"
+                }
+            }
+        ]
+    }
+}

@@ -1,0 +1,68 @@
+﻿<div class="col-md-6 col-md-offset-3"  style="margin-top:20%;margin-bottom:10%">
+
+<a ng-click="showme=true" ng-hide="showme">Edit my account</a>
+<a ng-click="showme=false" ng-show="showme">Back to my account</a>
+<form name="form" ng-submit="vm.userUpdate(userDetails)" role="form">
+<div class="col-xs-12 col-lg-12">
+    <h3>Welcome Mr.{{userDetails.first_name}}</h3>
+</div>
+<div id="ViewUserDetails"  ng-hide="showme">
+<div class="col-xs-12 col-lg-12">
+    <h3 class="userHead">Personal Details</h3>
+</div>
+<div class="col-xs-12 col-lg-12">
+	<div class="userRow"><span class="userTitle">First Name</span><span class="userValue">{{userDetails.first_name}}</span></div>
+    <div class="userRow"><span class="userTitle">Last Name</span><span class="userValue">{{userDetails.last_name}}</span></div>
+    <!--<div class="userRow"><span class="userTitle">Date of Birth</span><span class="userValue">{{userDetails.address1}}</span></div>
+    <div class="userRow"><span class="userTitle">Gender</span><span class="userValue">{{userDetails.address1}}</span></div>-->
+    <div class="userRow"><span class="userTitle">Contact No</span><span class="userValue">{{userDetails.phone}}</span></div>
+    <div class="userRow"><span class="userTitle">Email</span><span class="userValue">{{userDetails.email}}</span></div>
+</div>
+
+<div class="col-xs-12 col-lg-12">
+    <h3 class="userHead">Address Details</h3>
+</div>
+<div  class="col-xs-12 col-lg-12">
+	<div class="userRow"><span class="userTitle">Address1</span><span class="userValue">{{userDetails.address1}}</span></div>
+    <div class="userRow"><span class="userTitle">Address2</span><span class="userValue">{{userDetails.address2}}</span></div>
+    <div class="userRow"><span class="userTitle">City</span><span class="userValue">{{userDetails.city}}</span></div>
+    <div class="userRow"><span class="userTitle">Province</span><span class="userValue">{{userDetails.province}}</span></div>
+    <div class="userRow"><span class="userTitle">Country</span><span class="userValue">{{userDetails.country}}</span></div>
+    <div class="userRow"><span class="userTitle">Zipcode</span><span class="userValue">{{userDetails.zipcode}}</span></div>
+</div>
+</div>
+
+<div id="EditUserDetails"  ng-show="showme">
+<input type="hidden" name="id"   ng-model="vm.user.id" value="{{userDetails.id}}" />
+<div class="col-xs-12 col-lg-12">
+    <h3 class="userHead">Personal Details</h3>
+</div>
+<div class="col-xs-12 col-lg-12">
+	<div class="userRow"><span class="userTitle">First Name</span><span class="userValue"><input type="text" name="first_name" value="{{userDetails.first_name}}"  ng-model="userDetails.first_name" /></span></div>
+    <div class="userRow"><span class="userTitle">Last Name</span><span class="userValue"><input type="text" name="last_name"  ng-model="userDetails.last_name" value="{{userDetails.last_name}}"  /></span></div>
+    <!--<div class="userRow"><span class="userTitle">Date of Birth</span><span class="userValue"><input type="text" name="address1" ng-model="userDetails.address1" value="{{userDetails.address1}}"  /></span></div>
+    <div class="userRow"><span class="userTitle">Gender</span><span class="userValue"><input type="text" name="address2" ng-model="userDetails.address2" value="{{userDetails.address2}}"  /></span></div>-->
+    <div class="userRow"><span class="userTitle">Contact No</span><span class="userValue"><input type="text" name="phone" ng-model="userDetails.phone"  /></span></div>
+    <div class="userRow"><span class="userTitle">Email</span><span class="userValue"><input type="text" name="email" ng-model="userDetails.email"  /></span></div>
+</div>
+
+<div class="col-xs-12 col-lg-12">
+    <h3 class="userHead">Address Details</h3>
+</div>
+<div  class="col-xs-12 col-lg-12">
+	<div class="userRow"><span class="userTitle">Address1</span><span class="userValue"><input type="text" name="address1" ng-model="userDetails.address1" value="{{userDetails.address1}}"  /></span></div>
+    <div class="userRow"><span class="userTitle">Address2</span><span class="userValue"><input type="text" name="address2" ng-model="userDetails.address2" value="{{userDetails.address2}}"  /></span></div>
+    <div class="userRow"><span class="userTitle">City</span><span class="userValue"><input type="text" name="city" ng-model="userDetails.city" value="{{userDetails.city}}"  /></span></div>
+    <div class="userRow"><span class="userTitle">Province</span><span class="userValue"><input type="text" name="province" ng-model="userDetails.province" value="{{userDetails.province}}"  /></span></div>
+    <div class="userRow"><span class="userTitle">Country</span><span class="userValue"><input type="text" name="country" ng-model="userDetails.country" value="{{userDetails.country}}"  /></span></div>
+    <div class="userRow"><span class="userTitle">Zipcode</span><span class="userValue"><input type="text" name="zipcode" ng-model="userDetails.zipcode" value="{{userDetails.zipcode}}"  /></span></div>
+</div>
+<div class="col-xs-12 col-lg-12">
+    <input type="submit" class="btn btn-primary update" value="Update">
+    <input class="btn btn-primary update" value="Cancel" ng-click="showme=false" ng-show="showme" style="margin-left:18%">
+</div>
+</form>
+</div>
+
+
+</div>

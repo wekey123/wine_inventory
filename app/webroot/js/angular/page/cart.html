@@ -1,0 +1,63 @@
+<style>
+.row {
+	  margin-right: 7px;
+	  margin-left: 7px;
+}
+</style>
+<div class="row" ng-show="cartItem.items.length">
+	<div class="row">
+        <div class="col-xs-12 col-lg-12">
+            <h2>Items in your cart</h2>
+        </div>
+    </div>
+    <div class="row" ng-repeat="itm in cartItem.items" style="padding-top:10px; padding-bottom:10px; background-color: #e4e4e4;  border-bottom: thin solid; border-color: #ccc;">
+        <div class="col-xs-4 col-lg-4" style="padding-left:10px; padding-right:2px;">
+            <img class="img-thumbnail" ng-src="app/webroot/img/small/{{itm.img}}" />     
+        </div>
+        <div class="col-xs-7 col-lg-7"  style="padding-left:2px; padding-right:2px;">
+      		<div class="row">
+              <div class="col-xs-12 col-lg-12"  style="padding-left:2px; padding-right:2px;">
+        		<a ng-href="#productdetail/{{itm.id}}"> {{ itm.title | limitTo:30 }}... </a>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-xs-12 col-lg-12"  style="padding-left:2px; padding-right:2px;">
+        		Quantity: <a style="text-decoration: none;" class="glyphicon glyphicon-plus" ng:click="addMoreQty(itm,$index)"></a>
+                <input type="text" ng-model="itm.qty" value="{{ itm.qty }}" disabled style="width: 30px;"/>
+                <a style="text-decoration: none;" class="glyphicon glyphicon-minus" ng:click="removeMoreQty(itm,$index)"></a>
+                <span ng-show="itm.qty <= 0" style="color:red;"> Min QTY </span> 
+                <span ng-show="itm.qty >= 10" style="color:red;"> Max QTY </span>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-xs-12 col-lg-12"  style="padding-left:2px; padding-right:2px;">
+				<!--{{itm.qty }} X ${{ itm.price }}  = ${{ itm.sum = roundOfValue(itm.qty * itm.price) }}-->
+                Sum: ${{ itm.sum = roundOfValue(itm.qty * itm.price) }}
+              </div>
+            </div>
+        </div>
+        <div class="col-xs-1 col-lg-1"  style="padding-left:1px;">
+             <span class="glyphicon glyphicon-trash" style="float:left;" ng-click="removeCart($index)"></span>
+        </div>
+        
+    </div>
+    <div class="row"  style="margin:0 0 0 25px; border-top-color:#0000FF;">
+        <!--<div class="col-xs-12 col-lg-12">Cart Quantity:  {{ cartTotalQty() }}</div>-->
+        <div class="col-xs-12 col-lg-12" style="text-align:center"><span style="font-weight:bold;">Order Total:</span> ${{ cartTotalSum() }}</div>
+        <div class="col-xs-6 col-lg-6">
+          <a href="#catalog" class="btn btn-primary btn-sm">CONTINUE SHOPPING</a> 
+        </div>
+        <div class="col-xs-6 col-lg-6">
+         <button type="button" class="btn btn-primary btn-sm" ng-click="updateCart(cartTotalQty(),cartTotalSum());">CHECKOUT CART</button>
+        </div>
+    </div>
+    <br/><br/>
+    </div>
+<div>
+
+<div class="row" ng-hide="cartItem.items.length"  style="margin:0 0 0 25px;">
+    <div class="col-xs-12 col-lg-12">
+         <h2>Items in your cart</h2>
+        <p>Cart items is not available</p>
+    </div>
+<div>

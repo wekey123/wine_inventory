@@ -1,0 +1,30 @@
+<div class="row">
+<div class="page-header">
+    <!--<h1 style=""><img src="/app/webroot/img/logo.png" width=""  /></h1>
+     
+    <div class="sliderWrapper">      
+        <div>
+            <uib-carousel interval="myInterval" no-wrap="noWrapSlides">
+              <uib-slide ng-repeat="slide in slides" active="slide.active">
+                <img ng-src="{{slide.image}}" style="margin:auto;">
+                <div class="carousel-caption">
+                <h4>Slide {{$index}}</h4>
+                  <p>{{slide.text}}</p>
+                </div>
+              </uib-slide>
+            </uib-carousel>
+		</div>
+    </div>-->
+  <div class="textBreakBottom"></div>
+  <div class="mainCategory" ng-repeat="(key,result) in homeCategory| limitTo:4">
+  <h4 class="sectionTitle">{{key}}<a  ng-href="#/catalog/{{key}}" class="sectionTitleLink">More »</a></h4>
+  <div class="homeProductsWrapper">
+    <div class="homeProductWrapper" ng-repeat="res1 in homeCategory[key]| limitTo:2"><a ng-href="#productdetail/{{res1.Product.id}}"><img class="img-thumbnail" ng-src="app/webroot/img/small/{{ res1.Product.ProductImage[0].img_src }}"/>
+      <div class="homeProductInfoWrapper"><span class="homeProductTitle">{{res1.Product.title | limitTo:25 }}</span><h3 href="" class="homePurchaseButton">{{ res1.Product.price | currency : $ : 2}}</h3></a></div>
+    </div>
+   </div>
+   <div class="textBreakBottom"></div>
+  </div>
+  
+</div>
+</div>

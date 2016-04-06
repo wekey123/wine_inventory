@@ -1,0 +1,128 @@
+<style>
+.glyphicon { margin-right:5px; }
+
+.item.list-group-item
+{
+    float: none;
+    width: 100%;
+    background-color: #fff;
+    margin-bottom: 10px;
+}
+.item.list-group-item:nth-of-type(odd):hover,.item.list-group-item:hover
+{
+    background: #428bca;
+}
+
+.item.list-group-item .list-group-image
+{
+    margin-right: 10px;
+}
+.item.list-group-item .thumbnail
+{
+    margin-bottom: 0px;
+}
+
+.item.list-group-item:nth-of-type(odd)
+{
+    background: #eeeeee;
+}
+
+.item.list-group-item h3
+{
+	text-align:center;
+}
+
+.item.list-group-item .imagenewDiv
+{
+	text-align:center;
+}
+.item.list-group-item:after
+{
+    clear: both;
+}
+.list-group-item-text
+{
+    margin: 0 0 11px;
+}
+.row {
+	  margin-right: 10px;
+	  margin-left: 10px;
+}
+</style>
+
+<!--<div class="row">
+   	 <div class="col-xs-8 col-md-8">
+        <div class="form-group" style="text-align:center;">
+          <input type="text" class="form-control" name="search" autocorrect="off" ng-model="search" placeholder="search" > 
+        </div> 
+  	  </div> 
+       <div class="col-xs-4 col-md-4">
+      <button type="button" class="btn btn-primary btn-sm" ng-click="searchClick(search)">SEARCH</button>
+      </div>
+</div>-->
+
+<div class="row">
+	<div ng-show="loader" style="text-align: center;top: 50%; position: absolute;left: 50%;"><img src="app/webroot/img/26.gif" style="text-align:center;" /></div>
+</div>
+
+<div class="row" ng-hide="loader">
+    <div class="well well-sm">
+        <div class="btn-group">
+            <a href="#" id="list" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-th-list">
+            </span>List</a> <a href="#" id="grid" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-th"></span>Grid</a>
+        </div>
+        <div class="btn-group" style="float:right;">
+			   <select class="form-control"  name="dropdownvalue" ng-model="dropdownvalue">
+                <option value="">DEFAULT</option>
+                <option value="+Product.title">ASCENDING</option>
+                <option value="-Product.title">DESCENDING</option>
+                <option value="+Product.price">LOW TO HIGH</option>
+                <option value="-Product.price">HIGH TO LOW</option>
+              </select>
+         </div>
+    </div>
+    <div id="products" class="row list-group">
+        <div ng-hide="loader">
+            <div class="cataglog">
+               <h2 style="padding-left: 20px; font-size: 22px;">{{ catalogTitle }} ({{ catalogProductCount }})</h2>
+              <!--<div class="item col-xs-6 col-lg-6" ng-repeat="result in allProducts | startFrom: currentPage*pageSize | limitTo: pageSize">-->
+              	<div class="item col-xs-6 col-lg-6" ng-repeat="result in allProducts | sortByDetails: dropdownvalue">  
+                  <h3 style="margin:10px 5px 10px 5px; font-weight: bold; text-align:center;" class="gridh3">{{ result.Product.title | limitTo:30 }}...</h3>
+                  <!--<h3 style="margin:10px 5px 10px 5px; font-weight: bold;" class="listh5">{{ result.Product.title }}</h3>-->
+                  
+				  <div class="imagenewDiv" style="text-align:center;"><!--image-lazy-src-->
+                  <a ng-href="#productdetail/{{result.Product.id}}"> <img class="img-thumbnail"  ng-src="app/webroot/img/small/{{ result.Product.ProductImage[0].img_src }}"  err-SRC="app/webroot/img/small/default.png"/> </a>
+                  </div>
+                  
+                  <div class="row">
+                    <div class="col-xs-12 col-md-12">
+                	  <p style="padding-top:10px;">{{ result.Product.price | currency : $ : 2}} </p> 
+                      <button  id="{{ 'buttonId_' + result.Product.id }}" type="button"  class="btn btn-primary btn-xs"   ng-click="addCart(result.Product.id,result.Product.title,result.Product.price,1,result.Product.ProductImage[0].img_src,$event)" >{{ buttonText(result.Product.id,$event) }}</button>
+                  	</div>
+                  </div>
+                   
+              </div>
+            </div>
+            
+           <!-- <div class="row">
+                <ul class="pager">
+                  <li><a href="javascript:void(0)" ng-hide="currentPage == 0" ng-click="currentPage=currentPage-1">Previous</a></li>
+                  <li> <span ng-cloak>{{currentPage+1}}/{{numberOfPages()}}</span></li>
+                  <li><a href="javascript:void(0)" ng-hide="currentPage >= allProducts.length/pageSize - 1" ng-click="currentPage=currentPage+1">Next</a></li>
+                </ul>
+            </div>-->
+        
+   		</div>
+    </div>
+</div>
+<script>
+$(document).ready(function() {
+    $('#list').click(function(event){event.preventDefault();
+		$('#products .item').addClass('list-group-item');
+	});
+    $('#grid').click(function(event){
+		event.preventDefault();$('#products .item').removeClass('list-group-item');
+		$('#products .item').addClass('grid-group-item')
+	});
+});
+</script>

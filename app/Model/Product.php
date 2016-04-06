@@ -69,7 +69,6 @@ class Product extends AppModel {
 	   'order' => ''
 	  )
 	 );
-	
 	public $hasMany = array(
 		'Order' => array(
 			'className' => 'Order',
