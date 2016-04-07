@@ -110,6 +110,7 @@
 	<tr>
 		<th><?php echo __('#'); ?></th>
 		<th><?php echo __('Weight'); ?></th>
+        <th><?php echo __('Quantity/case'); ?></th>
 		<th><?php echo __('Sku'); ?></th>
 		<th><?php echo __('Barcode'); ?></th>
 		<th><?php echo __('Price'); ?></th>
@@ -121,7 +122,8 @@
 	<?php foreach ($product['Vary'] as $vary): ?>
 		<tr>
 			<td><?php echo $vary['id']; ?></td>
-            <td><?php echo $vary['variant'].$vary['size']; ?></td>
+            <td><?php echo $vary['variant'].$vary['metric']; ?></td>
+            <td><?php echo $vary['qty'].$vary['qty_type']; ?></td>
 			<td><?php echo $vary['sku']; ?></td>
 			<td><?php echo $vary['barcode']; ?></td>
 			<td><?php echo $this->Util->currencyFormat($vary['price']);  ?></td>

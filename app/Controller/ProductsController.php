@@ -117,7 +117,9 @@ class ProductsController extends AppController {
 					$this->request->data['Vary']['price'] = $value['price'];
 					$this->request->data['Vary']['sku'] = $value['sku'];
 					$this->request->data['Vary']['barcode'] = $value['barcode'];					
-					$this->request->data['Vary']['size'] = $value['size'];
+					$this->request->data['Vary']['metric'] = $value['metric'];
+					$this->request->data['Vary']['qty_type'] = $value['qty_type'];
+					$this->request->data['Vary']['qty'] = $value['qty'];
 					$this->Vary->create();
 					$this->Vary->save($this->request->data);
 				  }
@@ -172,6 +174,7 @@ class ProductsController extends AppController {
 			throw new NotFoundException(__('Invalid product'));
 		}
 		if ($this->request->is(array('post', 'put'))) {
+			//echo '<pre>';print_r($this->request->data);exit;
 			//$this->request->data['Invoice']['expiry'] = date("Y-m-d", strtotime($this->request->data['Invoice']['expiry']));
 			$this->request->data['Product']['user_id'] = $user['id'];
 			$this->request->data['Product']['expiry'] = date("Y-m-d", strtotime($this->request->data['Product']['expiry']));
@@ -189,7 +192,10 @@ class ProductsController extends AppController {
 					$this->request->data['Vary']['variant'] = $value['variant'];
 					$this->request->data['Vary']['price'] = $value['price'];
 					$this->request->data['Vary']['sku'] = $value['sku'];
-					$this->request->data['Vary']['barcode'] = $value['barcode'];					
+					$this->request->data['Vary']['barcode'] = $value['barcode'];
+					$this->request->data['Vary']['metric'] = $value['metric'];
+					$this->request->data['Vary']['qty_type'] = $value['qty_type'];
+					$this->request->data['Vary']['qty'] = $value['qty'];					
 					$this->Vary->create();
 					$this->Vary->save($this->request->data);
 				  }
