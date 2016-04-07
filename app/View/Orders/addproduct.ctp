@@ -1,4 +1,4 @@
-<?php
+<?php 
 	echo $this->Html->script('angular/lib/js/angular.min.js'); 
 	echo $this->Html->script('angular/lib/js/angular-route.min.js'); 
 	echo $this->Html->script('angular/lib/js/angular-resource.min.js');

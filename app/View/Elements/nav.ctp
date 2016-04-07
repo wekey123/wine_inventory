@@ -28,7 +28,7 @@
                              <li> <?php echo $this->Html->link('Product',array('controller'=>'products','action' => 'index'),array('class'=>trim($menuActive)=='Product'  ? 'menu-top-active' : '')); ?> </li>
                              <li> <?php echo $this->Html->link('PO',array('controller'=>'orders','action' => 'index'),array('class'=>trim($menuActive)=='Order'  ? 'menu-top-active dropdown-toggle' : 'dropdown-toggle','data-toggle'=>'dropdown','href'=>'#')); ?>
                               <ul class="dropdown-menu">
-                                    <li><?php echo $this->Html->link('PO List',array('controller'=>'orders','action' => 'index'),array('style'=>'color:#222;','href'=>'#')); ?></li> 								<li><?php echo $this->Html->link('Create PO',array('controller'=>'orders','action' => 'add'),array('style'=>'color:#222;','href'=>'#')); ?></li> 
+                                    <li><?php echo $this->Html->link('PO List',array('controller'=>'orders','action' => 'index'),array('style'=>'color:#222;','href'=>'#')); ?></li> 								<li><?php echo $this->Html->link('Create PO',array('controller'=>'orders','action' => 'addproduct'),array('style'=>'color:#222;','href'=>'#')); ?></li> 
 							  </ul>
                               </li>
                               

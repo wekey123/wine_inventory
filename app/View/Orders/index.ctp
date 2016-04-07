@@ -14,7 +14,7 @@
    <div class="container">
      <div class="row">
         <div class="col-md-12">
-           <?php echo $this->Html->link('Create PO', array('action' => 'add'),array('class'=>'btn btn-primary','style'=>'margin-bottom:20px; float:right')); ?>
+           <?php echo $this->Html->link('Create PO', array('action' => 'addproduct'),array('class'=>'btn btn-primary','style'=>'margin-bottom:20px; float:right')); ?>
             <h4 class="page-head-line">Purchase Order Lists</h4>
         </div>
         <div class="col-md-12">

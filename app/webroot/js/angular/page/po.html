@@ -22,8 +22,12 @@
                      <div class="col-md-4">
                      <input type="text" class="form-control" ng-model="search" placeholder="search"/>
                      </div>
+                     
                      <div class="col-md-4">
-                     <span>{{ getTotalQty() }} CART ${{ getTotalSum() }}</span>
+                     <a style="color:#F0677C; text-decoration:none;" ng-href="#cart">
+                     <span style="padding:2px;" class="glyphicon glyphicon-shopping-cart">{{ getTotalQty() }}</span>
+                     <span style="padding:2px;">${{ getTotalSum() }} </span>
+                     </a>
                      </div>
                  </div>
             </div>

@@ -49,13 +49,13 @@ shopping.controller('cartController',['$scope','$routeParams','$http','$cookies'
 		 $scope.postdata = $cookies.getObject('cart');
 		 $scope.postdata.cartQty = $scope.cartTotalQty();
          $scope.postdata.cartSum = $scope.cartTotalSum();
-		 if(type == 'submitCart')
+		 if(type == 'submit')
 		 $scope.postdata.type = '1'; //submitted
 		 else
 		  $scope.postdata.type = 'pending';//  pending
-		  
+		  console.log($scope.postdata);
 		 $http({method: 'POST',url: 'http://192.168.1.105/orders/addcart.json',data :$scope.postdata,cache: false}).success(function (data, status, headers, config) {
-			console.log(data);
+			 console.log($scope.postdata);
 		}).error(function (data, status, headers, config) {
 		   $scope.loader = false;
 		}); 

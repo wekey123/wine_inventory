@@ -4,10 +4,21 @@
 	  margin-left: 7px;
 }
 </style>
-
-<div class="row" ng-show="cartItem.items.length">
-	<h2>Items in your cart</h2>
+<div class="container">
+   
+     <div class="row">
+        <div class="col-md-12">
+      		<a ng-href="#po" class="btn btn-primary" style="margin-bottom:20px; float:right">ADD MORE SHOPPING</a>
+            <h4 class="page-head-line">Purchase Orders Cart List</h4>
+        </div>
+     </div>
+     
+     
+    <div class="row" ng-show="cartItem.items.length">
 	<div class="panel panel-default">
+   			<div class="panel-heading">
+              Items in your cart
+            </div>
             <div class="panel-body">
             
                 <div class="table-responsive" style="overflow-x:hidden;"><span class="error_msg_var">{{ validationError }}</span> 
@@ -51,23 +62,30 @@
 
     
     <div class="row"  style="margin:0 0 0 25px; border-top-color:#0000FF;">
-        <!--<div class="col-xs-12 col-lg-12">Cart Quantity:  {{ cartTotalQty() }}</div>-->
         <div class="col-xs-12 col-lg-12" style="text-align:center"><span style="font-weight:bold;">Order Total:</span> ${{ cartTotalSum() }}</div>
-        <div class="col-xs-6 col-lg-6">
-          <a href="#po" class="btn btn-primary btn-sm">CONTINUE SHOPPING</a> 
-        </div>
-        <div class="col-xs-6 col-lg-6">
-        <!--cartTotalQty(),cartTotalSum()-->
-         <button type="button" class="btn btn-primary btn-sm" ng-click="submitCart();">CHECKOUT CART</button>
-        </div>
     </div>
+    
+    <div class="row"  style="margin:0 0 0 25px; border-top-color:#0000FF;">
+        <div class="col-lg-4" style="text-align:center;">
+          <a ng-href="#po" class="btn btn-primary btn-sm">ADD MORE SHOPPING</a> 
+        </div>
+        <div class="col-lg-4" style="text-align:center;">
+         <button type="button" class="btn btn-primary btn-sm" ng-click="submitCart('pending');">SAVE CART</button>
+        </div>
+         <div class="col-lg-4" style="text-align:center;">
+         <button type="button" class="btn btn-primary btn-sm" ng-click="submitCart('submit');">SUBMIT CART</button>
+        </div>
+     </div>
+     
     <br/><br/>
 
-<div>
+    <div>
 
-<div class="row" ng-hide="cartItem.items.length"  style="margin:0 0 0 25px;">
-    <div class="col-xs-12 col-lg-12">
-         <h2>Items in your cart</h2>
-        <p>Cart items is not available</p>
-    </div>
-<div>
+    <div class="row" ng-hide="cartItem.items.length"  style="margin:0 0 0 25px;">
+        <div class="col-xs-12 col-lg-12">
+             <h2>Items in your cart</h2>
+            <p>Cart items is not available</p>
+        </div>
+    <div>
+    
+ </div>
