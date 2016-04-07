@@ -315,11 +315,11 @@ footer {
 
 /************  Common CSS *************/
 .varHead label{
-	width:25%;
+	/*width:19%;*/
 	margin-bottom:0px;
 }
 .varHead input[type="text"]{
-	width:15%;
+	/*width:15%;*/
 	float:left;
 	margin-right:10%;
 	margin-bottom:0px;

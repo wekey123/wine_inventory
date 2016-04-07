@@ -23,6 +23,8 @@ App::uses('AppHelper', 'View/Helper');
 //App::uses('TimeHelper', 'View/Helper')
 App::uses('User', 'Model');
 App::uses('Product', 'Model');
+App::uses('Vendor', 'Model');
+App::uses('Category', 'Model');
 
 /**
  * Application helper
@@ -73,6 +75,20 @@ class UtilHelper extends AppHelper {
 		     return '';
 	}
 	
+	public function getVendorName($pid){
+		 $model = new Vendor();
+		 if($pid != ''){ 
+		 	return $model->find("first",array('conditions'=>array('Vendor.id'=>$pid)));
+		 }else
+		     return '';
+	}
+	public function getVendorType($pid){
+		 $model = new Category();
+		 if($pid != ''){ 
+		 	return $model->find("first",array('conditions'=>array('Category.id'=>$pid)));
+		 }else
+		     return '';
+	}
 	
 	public function setInvoiceTotalPrice($invoiceTotalPrice){
 		$this->invoiceTotalPrice = $invoiceTotalPrice;

@@ -19,20 +19,19 @@ class Product extends AppModel {
             'rule' => array('minLength', '8'),
             'message' => 'Minimum 8 characters long'
         ),
-		'category_name' => array(
-            'rule' => 'notBlank',
-        ),
-		'brand' => array(
-           'rule' => 'notBlank',
-        ),
-		'country' => array(
-           'rule' => 'notBlank',
-        ),
 		'vendor_id' => array(
-            'rule' => 'notBlank',
+            'notEmpty' => array(
+            'rule' => array('notBlank'),
+            'message' => 'Please Select the Vendor',
+            'allowEmpty' => false
+        	),
         ),
 		'vendor_type' => array(
-           'rule' => 'notBlank',
+           'notEmpty' => array(
+            'rule' => array('notBlank'),
+            'message' => 'Please Select the Vendor',
+            'allowEmpty' => false
+        	),
         ),
 		'image' => array(
 			'rule' => array(
@@ -50,27 +49,26 @@ class Product extends AppModel {
  * @var array
  */
 	public $belongsTo = array(
-		'User' => array(
-			'className' => 'User',
-			'foreignKey' => 'user_id',
-			'conditions' => '',
-			'fields' => '',
-			'order' => ''
-		),'Category' => array(
-			'className' => 'Category',
-			'foreignKey' => 'vendor_type',
-			'conditions' => '',
-			'fields' => '',
-			'order' => ''
-		),'Vendor' => array(
-			'className' => 'Vendor',
-			'foreignKey' => 'vendor_id',
-			'conditions' => '',
-			'fields' => '',
-			'order' => ''
-		)
-	);
-	
+	  'User' => array(
+	   'className' => 'User',
+	   'foreignKey' => 'user_id',
+	   'conditions' => '',
+	   'fields' => '',
+	   'order' => ''
+	  ),'Category' => array(
+	   'className' => 'Category',
+	   'foreignKey' => 'vendor_type',
+	   'conditions' => '',
+	   'fields' => '',
+	   'order' => ''
+	  ),'Vendor' => array(
+	   'className' => 'Vendor',
+	   'foreignKey' => 'vendor_id',
+	   'conditions' => '',
+	   'fields' => '',
+	   'order' => ''
+	  )
+	 );
 	public $hasMany = array(
 		'Order' => array(
 			'className' => 'Order',

@@ -16,7 +16,7 @@ class ProductsController extends AppController {
  * @var array
  */
  	public $uses = array('Product','Vary','Category','Vendor');
-	public $components = array('Paginator', 'Flash', 'Session' ,'Image','Auth');
+	public $components = array('RequestHandler','Paginator', 'Flash', 'Session' ,'Image','Auth');
 	public $layout = 'admin';
 /**
  * index method
@@ -26,6 +26,7 @@ class ProductsController extends AppController {
 
      public function beforeFilter() {
         $this->Auth->deny('index');
+		$this->Auth->allow('lists');
     }
 	
 	public function index() {
@@ -33,6 +34,41 @@ class ProductsController extends AppController {
 		//debug($this->Paginator->paginate()); exit;
 		$this->set('products', $this->Paginator->paginate());
 	}
+
+    public function lists2() {
+		header("Access-Control-Allow-Origin: *");
+		header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept");
+		$this->layout='';
+        $varies = $this->Vary->find('all');
+		$this->set('varies', $varies);
+        $this->set('_serialize', array('varies'));
+    }
+
+	public function lists() {
+      header("Access-Control-Allow-Origin: *");
+	  header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept");
+	  $products = $this->Product->find('all');
+	  $i =0;
+	  foreach($products as $product){
+	   foreach($product['Vary'] as $vary){
+		$result[$product['Vendor']['name']][$product['Category']['name']]['Product'][$i] = $product['Product'];
+		$result[$product['Vendor']['name']][$product['Category']['name']]['Product'][$i]['vid'] = $vary['id'];
+		$result[$product['Vendor']['name']][$product['Category']['name']]['Product'][$i]['variant'] = $vary['variant'];
+		$result[$product['Vendor']['name']][$product['Category']['name']]['Product'][$i]['sku'] = $vary['sku'];
+		$result[$product['Vendor']['name']][$product['Category']['name']]['Product'][$i]['barcode'] = $vary['barcode'];
+		$result[$product['Vendor']['name']][$product['Category']['name']]['Product'][$i]['price'] = $vary['price'];
+		$result[$product['Vendor']['name']][$product['Category']['name']]['Product'][$i]['Vendor'] = $product['Vendor']['name'];
+    	$result[$product['Vendor']['name']][$product['Category']['name']]['Product'][$i]['Category'] = $product['Category']['name'];
+		$i++;
+	   }
+	  }
+	  //debug($result); exit;
+	  //$allproducts=array('allproducts'=>$result);
+	  $this->set('products', $result);
+	  $this->set('_serialize', array('products'));
+   }
+
+
 
 /**
  * view method
@@ -42,7 +78,6 @@ class ProductsController extends AppController {
  * @return void
  */
 	public function view($id = null) {
-
 		if (!$this->Product->exists($id)) {
 			throw new NotFoundException(__('Invalid product'));
 		}
@@ -82,6 +117,9 @@ class ProductsController extends AppController {
 					$this->request->data['Vary']['price'] = $value['price'];
 					$this->request->data['Vary']['sku'] = $value['sku'];
 					$this->request->data['Vary']['barcode'] = $value['barcode'];					
+					$this->request->data['Vary']['metric'] = $value['metric'];
+					$this->request->data['Vary']['qty_type'] = $value['qty_type'];
+					$this->request->data['Vary']['qty'] = $value['qty'];
 					$this->Vary->create();
 					$this->Vary->save($this->request->data);
 				  }
@@ -107,7 +145,7 @@ class ProductsController extends AppController {
 		$this->set('category', $value);
 		
 		$vendors1= $this->Vendor->find('all');
-		$vendor[0] = 'Select Vendor';
+		//$vendor[0] = 'Select Vendor';
 		foreach($vendors1 as $key => $vendors) {
 			if(isset($vendors['Category'][0]))
 			$vendor[$vendors['Vendor']['id']]= $vendors['Vendor']['name'];
@@ -136,6 +174,7 @@ class ProductsController extends AppController {
 			throw new NotFoundException(__('Invalid product'));
 		}
 		if ($this->request->is(array('post', 'put'))) {
+			//echo '<pre>';print_r($this->request->data);exit;
 			//$this->request->data['Invoice']['expiry'] = date("Y-m-d", strtotime($this->request->data['Invoice']['expiry']));
 			$this->request->data['Product']['user_id'] = $user['id'];
 			$this->request->data['Product']['expiry'] = date("Y-m-d", strtotime($this->request->data['Product']['expiry']));
@@ -153,7 +192,10 @@ class ProductsController extends AppController {
 					$this->request->data['Vary']['variant'] = $value['variant'];
 					$this->request->data['Vary']['price'] = $value['price'];
 					$this->request->data['Vary']['sku'] = $value['sku'];
-					$this->request->data['Vary']['barcode'] = $value['barcode'];					
+					$this->request->data['Vary']['barcode'] = $value['barcode'];
+					$this->request->data['Vary']['metric'] = $value['metric'];
+					$this->request->data['Vary']['qty_type'] = $value['qty_type'];
+					$this->request->data['Vary']['qty'] = $value['qty'];					
 					$this->Vary->create();
 					$this->Vary->save($this->request->data);
 				  }
