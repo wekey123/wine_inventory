@@ -3,8 +3,6 @@ shopping.service('cartService',['$routeParams','$http','$cookies','$filter','$ro
 	this.cartItem = {};
 	this.cartItem.items = [];
 	this.errorMessage = "";
-	//this.cartCount = $rootScope.cartCount();
-	//this.getTotalQty = $rootScope.getTotalQty();
 	this.cartDisable = true;
 	
 	this.expiresTime = function(){
@@ -15,30 +13,58 @@ shopping.service('cartService',['$routeParams','$http','$cookies','$filter','$ro
 	};
 
 	this.addCart = function(singleObj){
-		self.addData = {id: singleObj.id, title:singleObj.title, price:singleObj.price, qty:singleObj.qty, img:singleObj.img};
+		console.log(singleObj);
 		var data = self.checkData(singleObj.id);
 		if(data){
 		  self.errorMessage;
-	  	  self.cartItem.items.push(self.addData);
-		  self.cartTotalQty();
-		  $cookies.putObject('cart', self.cartItem,{ expires:self.expiresTime() });
-		  $log.debug("fun: addCart - ");
-		  console.log(self.cartItem.items);
+	  	  self.cartItem.items.push(singleObj);
+		  self.cartTotalQty('addCart');
 		}else{
-		  self.updateMoreQty(self.cartItem.items,singleObj.id);	
+		  self.updateMoreQty(singleObj,singleObj.id);	
 		  self.errorMessage = "Product already available in the cart";
 		  $log.debug('fun: addCart - Product already available in the cart')
 		}
 	}	
+	
+	this.checkData = function(checkId){
+		var found = $filter('getById')(self.cartItem.items, checkId);
+		console.log(found);
+		if(found === null){
+		  console.log('available');
+		  return true;	
+		}else {
+		  console.log('Not available');
+		  return false;
+		}
+	}
+	
+	this.cartTotalQty = function(page){
+		var totalQty = 0;
+		for(var i=0; i<self.cartItem.items.length; i++){
+			var items = self.cartItem.items[i];
+			totalQty += parseInt(items.qty);
+		}
+		$log.debug("cartTotalQty: "+totalQty+ " Fucntion Name :"+page);
+		$cookies.putObject('cart', self.cartItem,{ expires:self.expiresTime() });
+		return totalQty;
+	}
 
 	this.updateMoreQty = function(input,id) {
-		var i=0, len=input.length;
-		for (; i<len; i++) {
-		   if(input[i].id === id){
-			   self.cartItem.items[i].qty = parseInt(input[i].qty) + 1;
+		   var cartItems = self.cartItem.items;
+		   var foundItem = $filter('filter')(cartItems, { id: id  }, true)[0];
+		   var arrayIndex = cartItems.indexOf(foundItem)
+		   if(foundItem.id === id){
+			   console.log('Hello'+input.qty);
+			   self.cartItem.items[arrayIndex].qty = parseInt(input.qty);
+			   self.cartItem.items[arrayIndex].price = parseFloat(input.price);
+			   self.cartItem.items[arrayIndex].sum = parseFloat(input.sum);
+			   //console.log(self.cartItem.items);
 			   $cookies.putObject('cart', self.cartItem,{ expires:self.expiresTime() });
+			   self.cartTotalQty('updateMoreQty');
+		   }else{
+			    console.log('fuck');
 		   }
-		}
+			 
 	 }
 	 
 	 this.addMoreQty = function(input,index) {
@@ -61,7 +87,6 @@ shopping.service('cartService',['$routeParams','$http','$cookies','$filter','$ro
 	this.updateCart = function(qty,sum){
 		self.cartItem["qtyTotal"] = qty;
 		self.cartItem["sumTotal"] = sum;
-		//$rootScope.cartCount();
 		console.log('a');
 		console.log(self.cartTotalQty())
 		$cookies.putObject('cart', self.cartItem,{ expires:self.expiresTime() });
@@ -70,22 +95,11 @@ shopping.service('cartService',['$routeParams','$http','$cookies','$filter','$ro
 	
 	this.removeCart = function(removeId){
 		self.cartItem.items.splice(removeId, 1);
-		//$rootScope.cartCount();
 		self.cartTotalQty();
 		$cookies.putObject('cart', self.cartItem,{ expires:self.expiresTime() });
 		$log.debug("fun: removeCart - "+ self.cartItem);
 	}
 	 
-	this.checkData = function(checkId){
-		var found = $filter('getById')(self.cartItem.items, checkId);
-		if(found === null){
-		  console.log('available');
-		  return true;	
-		}else {
-		  console.log('Not available');
-		  return false;
-		}
-	}
 	
 	this.cartTotalSum = function(){
 		var totalSum = 0;
@@ -102,23 +116,12 @@ shopping.service('cartService',['$routeParams','$http','$cookies','$filter','$ro
 	}
 	
  	this.roundOfValue = function(value){
+	 if(isNaN(value)){
+		return 0;
+	 }
 	 return Math.round(value * 100) / 100;	
 	}
 	
-	/*this.getTotalQty = function(){
-		return $rootScope.getTotalQty();
-	}*/
-	
-	this.cartTotalQty = function(){
-		var totalQty = 0;
-		for(var i=0; i<self.cartItem.items.length; i++){
-			var items = self.cartItem.items[i];
-			totalQty += parseInt(items.qty);
-		}
-		$cookies.putObject('cart', self.cartItem,{ expires:self.expiresTime() });
-		console.log(totalQty);
-		return totalQty;
-	}
 	
 	this.getCartItems = function(){
 		if($cookies.getObject('cart')){
@@ -127,10 +130,12 @@ shopping.service('cartService',['$routeParams','$http','$cookies','$filter','$ro
 		}
 	}
 	
-	this.addCartItems = function(){
+	this.checkCookieBeforeAdd = function(){
 		if($cookies.getObject('cart')){
 		   self.cartItem.items = $cookies.getObject('cart').items;
 		   return self.cartItem.items;
+		}else{
+		   return 0;
 		}
 	}
 	

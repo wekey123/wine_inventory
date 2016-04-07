@@ -4,55 +4,65 @@
 	  margin-left: 7px;
 }
 </style>
+
 <div class="row" ng-show="cartItem.items.length">
-	<div class="row">
-        <div class="col-xs-12 col-lg-12">
-            <h2>Items in your cart</h2>
-        </div>
+	<h2>Items in your cart</h2>
+	<div class="panel panel-default">
+            <div class="panel-body">
+            
+                <div class="table-responsive" style="overflow-x:hidden;"><span class="error_msg_var">{{ validationError }}</span> 
+                <!--{{ allProducts | json  }} </pre>-->
+                    <table id="order_tab" class="table table-striped table-bordered" cellspacing="0" width="80%">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Vendor</th>
+                                <th>Category</th>
+                                <th>Title</th>
+                                <th>Image</th>
+                                <th style="width: 10%;">Price</th>
+                                <th style="width: 10%;">Quantity</th>
+                                <th style="width: 12%;">Total Price</th>
+                                <th>Update Cart</th>
+                                <th>Remove Cart</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                          			 <tr ng-repeat="itm in cartItem.items">
+                                     <td>{{$index+1}}</td>
+                                     <td>{{itm.vendor}}</td>
+                                     <td>{{itm.category}}</td>
+                                     <td>{{itm.title}}</td>
+                                     <td><img style="height:50px;"  ng-src="/img/product/small/{{itm.img}}" />     </td>
+                                     <td><input type="text"  class="form-control" ng-model="itm.price" /></td>
+                                     <td><input type="text"  class="form-control"  ng-model="itm.qty" /></td>
+                                     <td> ${{  itm.sum = roundOfValue(itm.qty * itm.price) }} </td>
+                                      <td><a ng-click="updateToCart(itm)">Update Cart</a></td>
+                                     <td><a ng-click="removeCart($index)">Remove Cart</a></td>
+                                    </tr>
+                                    
+                        </tbody>
+                    </table>
+                    <!--<pre>{{ filteredItemsLen() }}</pre>-->
+                </div>
+            </div>
+            
     </div>
-    <div class="row" ng-repeat="itm in cartItem.items" style="padding-top:10px; padding-bottom:10px; background-color: #e4e4e4;  border-bottom: thin solid; border-color: #ccc;">
-        <div class="col-xs-4 col-lg-4" style="padding-left:10px; padding-right:2px;">
-            <img class="img-thumbnail" ng-src="app/webroot/img/small/{{itm.img}}" />     
-        </div>
-        <div class="col-xs-7 col-lg-7"  style="padding-left:2px; padding-right:2px;">
-      		<div class="row">
-              <div class="col-xs-12 col-lg-12"  style="padding-left:2px; padding-right:2px;">
-        		<a ng-href="#productdetail/{{itm.id}}"> {{ itm.title | limitTo:30 }}... </a>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-xs-12 col-lg-12"  style="padding-left:2px; padding-right:2px;">
-        		Quantity: <a style="text-decoration: none;" class="glyphicon glyphicon-plus" ng:click="addMoreQty(itm,$index)"></a>
-                <input type="text" ng-model="itm.qty" value="{{ itm.qty }}" disabled style="width: 30px;"/>
-                <a style="text-decoration: none;" class="glyphicon glyphicon-minus" ng:click="removeMoreQty(itm,$index)"></a>
-                <span ng-show="itm.qty <= 0" style="color:red;"> Min QTY </span> 
-                <span ng-show="itm.qty >= 10" style="color:red;"> Max QTY </span>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-xs-12 col-lg-12"  style="padding-left:2px; padding-right:2px;">
-				<!--{{itm.qty }} X ${{ itm.price }}  = ${{ itm.sum = roundOfValue(itm.qty * itm.price) }}-->
-                Sum: ${{ itm.sum = roundOfValue(itm.qty * itm.price) }}
-              </div>
-            </div>
-        </div>
-        <div class="col-xs-1 col-lg-1"  style="padding-left:1px;">
-             <span class="glyphicon glyphicon-trash" style="float:left;" ng-click="removeCart($index)"></span>
-        </div>
-        
-    </div>
+
+    
     <div class="row"  style="margin:0 0 0 25px; border-top-color:#0000FF;">
         <!--<div class="col-xs-12 col-lg-12">Cart Quantity:  {{ cartTotalQty() }}</div>-->
         <div class="col-xs-12 col-lg-12" style="text-align:center"><span style="font-weight:bold;">Order Total:</span> ${{ cartTotalSum() }}</div>
         <div class="col-xs-6 col-lg-6">
-          <a href="#catalog" class="btn btn-primary btn-sm">CONTINUE SHOPPING</a> 
+          <a href="#po" class="btn btn-primary btn-sm">CONTINUE SHOPPING</a> 
         </div>
         <div class="col-xs-6 col-lg-6">
-         <button type="button" class="btn btn-primary btn-sm" ng-click="updateCart(cartTotalQty(),cartTotalSum());">CHECKOUT CART</button>
+        <!--cartTotalQty(),cartTotalSum()-->
+         <button type="button" class="btn btn-primary btn-sm" ng-click="submitCart();">CHECKOUT CART</button>
         </div>
     </div>
     <br/><br/>
-    </div>
+
 <div>
 
 <div class="row" ng-hide="cartItem.items.length"  style="margin:0 0 0 25px;">
