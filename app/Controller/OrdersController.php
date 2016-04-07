@@ -28,8 +28,61 @@ class OrdersController extends AppController {
     public function beforeFilter() {
         $this->Auth->deny('index');
 		$this->Auth->allow('apiAddProducts');
+		$this->Auth->allow('addcart');
     }
-	
+	public function addcart() {
+	    $this->layout = ''; 
+		header("Access-Control-Allow-Origin: *");
+		header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept");
+		$user = $this->Auth->user();
+		if ($this->request->is('post')) {
+			$po='ORD'.rand('111111','999999');
+				$value = $this->request->data;
+				$this->Order->create();
+				$this->request->data['Order']['total_quantity']=$value['cartQty'];
+				$this->request->data['Order']['total_price']=$value['cartSum'];
+				$this->request->data['Order']['user_id']=$user['id'];
+				//$this->request->data['Order']['user_id']=1;
+				$this->request->data['Order']['po_no']=$po;
+				if($value['type']=='pending')
+				$this->request->data['Order']['status']=0;
+				else
+				$this->request->data['Order']['status']=1;
+				if ($this->Order->save($this->request->data)) {
+					$i=0;
+				  foreach ($value['items'] as $quan){
+					  if(!empty($quan)){
+						$options = array('conditions' => array('Vary.id' => $quan['id']));
+						$Orders = $this->Vary->find('first',$options);
+						$this->request->data['Vary']['product_id'] = $quan['id'];
+						$this->request->data['Vary']['po_no'] = $po;   
+						$this->request->data['Vary']['quantity'] = $quan['qty'];
+						$this->request->data['Vary']['price'] = $quan['price'];
+						$this->request->data['Vary']['price_total'] = $quan['price'] * $quan['qty'];
+						$this->request->data['Vary']['type'] = 'order';	
+						$this->request->data['Vary']['variant'] = $Orders['Vary']['variant'];
+						$this->request->data['Vary']['sku'] = $Orders['Vary']['sku'];
+						$this->request->data['Vary']['metric'] = $Orders['Vary']['metric'];
+						$this->request->data['Vary']['qty_type'] = $Orders['Vary']['qty_type'];
+						$this->request->data['Vary']['qty'] = $Orders['Vary']['qty'];
+						$this->request->data['Vary']['barcode'] = $Orders['Vary']['barcode'];
+						$this->request->data['Vary']['var_id'] =$Orders['Vary']['id'];
+						$this->Vary->create();
+						$this->Vary->save($this->request->data);
+					$i++;
+					  }
+				 }
+				    $responseCart = array('orderID'=>$po,'message'=>'Purchase Order Posted Successfully','Response'=>'S');exit;
+				}
+				 else {
+					$responseCart = array('message'=>'Unable To save Order','Response'=>'E');exit;
+				}
+		}else{
+		   $responseCart = array('message'=>'Request Data is Incorrect','Response'=>'E');exit;
+		}
+		//$this->set(array('addToCart' => $responseCart,'_serialize' => array('cartResp')));
+		
+	}
 	public function index() {
 		if ($this->request->is('post')) {
 			$start_date_timestamp = strtotime($this->request->data['dateFrom']);
