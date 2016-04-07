@@ -1,109 +1,156 @@
-<!DOCTYPE html>
-<html>
-<style>
-table, th , td  {
-  border: 1px solid grey;
-  border-collapse: collapse;
-  padding: 5px;
-}
-table tr:nth-child(odd)	{
-  background-color: #f1f1f1;
-}
-table tr:nth-child(even) {
-  background-color: #ffffff;
-}
-</style>
-<?php echo $this->Html->script('angular.min.js'); ?>
-<body>
-<div ng-app="myApp" ng-controller="customersCtrl"> 
-
-<table>
-  <tr ng-repeat="x in names | startFrom:currentPage*pageSize | limitTo:pageSize">
-    <td>{{ x.Product.id }}</td>
-    <td>{{ x.Product.title }}</td>
-  </tr>
-</table>
-<button ng-disabled="currentPage == 0" ng-click="currentPage=currentPage-1">
-        Previous
-    </button>
-    {{currentPage+1}}/{{numberOfPages()}}
-    <button ng-disabled="currentPage >= names.length/pageSize - 1" ng-click="currentPage=currentPage+1">
-        Next
-    </button>
-    
-    
-    <div>
-        <form class="form-horizontal">
-            <div class="form-group">
-                <div class="col-md-3"><label><i class="fa fa-question-circle fa-fw"></i> District List</label></div>
-                <div class="col-md-4">
-                    <select class="form-control" ng-model="selectedDist" ng-options="district.name for district in districts">
-                        <option value="">Select</option>
-                    </select>
+<?php echo $this->element('tableScript'); ?>
+<div class="content-wrapper">
+   <div class="container">
+     <div class="row">
+        <div class="col-md-12">
+            <h4 class="page-head-line">Purchase Orders</h4>
+        </div>
+     </div>
+     <?php echo $this->Form->create('Product',array('id'=>'orderAdd','type' => 'file','role'=>'form')); ?>
+ 	<div class="row">	
+ 	 <div class="col-md-12">
+         <!--    Hover Rows  -->
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                Products List
+                <?php //echo '<pre>';print_r($products);?>
+                <button class="btn btn-primary btn-lg" style="margin-left:71%;padding:7px 16px;" id="submitButton"> Click to Make an Order   </button>
+            </div>
+            <div class="panel-body">
+                <div class="table-responsive" style="overflow-x:hidden;"><span class="error_msg_var"></span>
+                
+               <!--  <input id="filter" type="text" class="form-control" placeholder="Type here...">-->
+                
+                    <table id="order_tab" class="table table-striped table-bordered" cellspacing="0" width="100%">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th><?php echo $this->Paginator->sort('category'); ?></th>
+                                <th><?php echo $this->Paginator->sort('title'); ?></th>
+                                <th><?php echo $this->Paginator->sort('image'); ?></th>
+                                <th><?php echo $this->Paginator->sort('brand'); ?></th>
+                                <th><?php echo $this->Paginator->sort('action'); ?></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                         <?php $i=1; foreach ($products as $product): ?>
+                            <tr id="NoncollapseExample<?php echo $i;?>">
+                                <td><?php echo h($i); ?></td>
+                                <td><?php echo h($product['Product']['category_name']); ?>&nbsp;</td>
+                                <td><?php echo h($product['Product']['title']); ?>&nbsp;</td>
+                                <td><?php echo $this->Html->image('product/small/'.$product['Product']['image']);?>&nbsp;</td>
+                                <td><?php echo h($product['Product']['brand']); ?>&nbsp;</td>
+                                <td><?php echo $this->Form->button('Order',array('class'=>'btn btn-default order','data-toggle'=>"collapse",'aria-expanded'=>false,'aria-controls'=>'collapseExample','href'=>'#collapseExample'.$i,'key'=>$i,'rel'=> htmlspecialchars(json_encode(($product['Vary'])))));  ?>
+                                &nbsp;
+                                <div id="wrapper<?php echo $i;?>" rel="0"></div>
+                         		<input type="hidden" name="Vary[<?php echo $i;?>][total_quantity]" id="total_quantity<?php echo $i;?>" value="0"  />
+                                <input type="hidden" name="Vary[<?php echo $i;?>][total_price]" id="total_price<?php echo $i;?>" value="0"  />
+                                <input type="hidden" name="Vary[<?php echo $i;?>][store_data]" id="store_data<?php echo $i;?>" value="0"  />
+                                
+                                </td>
+                            </tr>
+                            
+                                
+                        <?php $i++;  endforeach; ?>
+                        </tbody>
+                    </table>
                 </div>
             </div>
-            <div class="form-group">
-                <div class="col-md-3"><label><i class="fa fa-question-circle fa-fw"></i> Thana List</label></div>
-                <div class="col-md-4">
-                    <select class="form-control" ng-model="selectedThana" ng-options="thana.name for thana in thanas | filter: filterExpression">
-                        <option value="">Select</option>
-                    </select>
-                </div>
-            </div>
-        </form>
+        </div>
+        <!-- End  Hover Rows  -->
+      </div>
     </div>
-    
-    
+
 </div>
-
+</div>
 <script>
-//http://www.w3schools.com/angular/customers.php
-//http://192.168.1.105/products/lists
-var app = angular.module('myApp', []);
-app.controller('customersCtrl', function($scope, $http) {
-    $http.get("http://192.168.1.105/products/lists.json")
-    .then(function (response) {console.log(response);$scope.names = response.data.varies;});
-	 $scope.currentPage = 0;
-     $scope.pageSize = 10;
-     $scope.names = [];
-	 $scope.numberOfPages=function(){
-		return Math.ceil($scope.names.length/$scope.pageSize);                
-	 }
-	 
-	 
-	 $scope.selectedDist={};
-            $scope.districts = [
-                {id: 1, name: 'Dhaka'},
-                {id: 2, name: 'Goplaganj'},
-                {id: 3, name: 'Faridpur'}
-            ];
 
-            $scope.thanas = [
-                {id: 1, name: 'Mirpur', dId: 1},
-                {id: 2, name: 'Uttra', dId: 1},
-                {id: 3, name: 'Shahabag', dId: 1},
-                {id: 4, name: 'Kotalipara', dId: 2},
-                {id: 5, name: 'Kashiani', dId: 2},
-                {id: 6, name: 'Moksedpur', dId: 2},
-                {id: 7, name: 'Vanga', dId: 3},
-                {id: 8, name: 'faridpur', dId: 3}
-            ];
-            $scope.filterExpression = function(thana) {
-                return (thana.dId === $scope.selectedDist.id );
-            };
-	 
-	 
-	 
-	
-});
-app.filter('startFrom', function() {
-    return function(input, start) {
-        start = +start; //parse to int
-        return input.slice(start);
-    }
+$('#submitButton').click( function() {
+	$('#orderAdd').submit();
 });
 
+function format ( d,key ) {
+ var toReturn; 
+		/*<th><a class="trClose">X</a></th>	*/
+     toReturn =  '<table class="table table-hover"><thead><tr><th>#</th><th>Varient</th><th>SKU</th><th>Price</th><th>Quantity</th></tr></thead><tbody id="orderSaveID'+key+'">';
+		$(jQuery.parseJSON(d)).each(function(i) {
+			var itemQuantityVal = '';
+			var itemQuantityPri = this.price;   
+			var $myDiv = $('#wrapper'+key).attr('rel');
+			//console.log($myDiv);
+			if ($myDiv == true){
+			itemQuantityVal = $('#wrapper'+key).find('#itemQuantity'+i).val();
+			itemQuantityPri = $('#wrapper'+key).find('#itemPrice'+i).val();
+			}
+			else{
+			 $('#wrapper'+key).append('<input type="hidden" name="Vary['+key+'][quantity]['+i+']" id="itemQuantity'+i+'" placeholder="Quantity" /> <input type="hidden" name="Vary['+key+'][price]['+i+']"  value='+this.price+' id="itemPrice'+i+'" /><input type="hidden" name="Vary['+key+'][variant]['+i+']" value='+this.variant+'   id="itemVariant" /><input type="hidden" name="Vary['+key+'][sku]['+i+']" value='+this.sku+' id="itemSKU" /><input type="hidden" name="Vary['+key+'][barcode]['+i+']" value='+this.barcode+'   id="itemBarcode" /><input type="hidden" name="Vary['+key+'][product_id]" id="projectID'+key+'" value='+this.product_id+'  /><input type="hidden" name="Vary['+key+'][var_id]['+i+']" id="varID'+key+'" value='+this.id+'  />');
+			}
+	 		toReturn += '<tr><td>'+this.id+'</td><td>'+this.variant+'</td><td>'+this.sku+'</td><td><input type="text" name="Vary['+key+'][price]['+i+']" id="itemPrice" placeholder="Price"  value="'+itemQuantityPri+'" /></td><td><input type="text" name="Vary['+key+'][quantity]['+i+']" id="itemQuantity" placeholder="Quantity" value="'+itemQuantityVal+'" class="ItemQuan"/></td></tr>';
+			
+		});
+		toReturn += ' <tr></tr></tbody></table>';
+		return toReturn;
+}
+
+
+    $(document).ready(function() {
+		var arr=[];
+		var table = $('#order_tab').DataTable();
+			$('.order').on('click', function () {
+				var tr = $(this).closest('tr');
+				var row = table.row( tr );
+		 		var d= $(this).attr('rel');
+				var key= $(this).attr('key');
+				var total_price=0;
+				var total_quantity=0;
+				if ( row.child.isShown() ) {
+				// Save the quantity of each box on purchase Order
+				$('#orderSaveID'+key).find(".ItemQuan").each(function(i) {
+					total_price += $(this).val() * parseFloat($(this).parent().prev().find('input[type="text"]').val());
+					total_quantity += isNaN(parseInt($(this).val())) ? 0 :  parseInt($(this).val());
+					$('#wrapper'+key).find('#itemQuantity'+i).val($(this).val());
+					$('#wrapper'+key).find('#itemPrice'+i).val($(this).parent().prev().find('input[type="text"]').val());
+				});
+				
+				// if no quantity mentioned below shows the error
+				/*if(total_quantity==0){
+					 $('.error_msg_var').html('Quantity field cannot be empty');
+					 return false;
+				}
+				else
+			 	$('.error_msg_var').html('');*/
+				
+				
+				$(this).html('Order');
+				// calculate te total price and quantity for each product for order
+				$('#total_price'+key).val(total_price);
+				$('#total_quantity'+key).val(total_quantity);
+				$('#store_data'+key).val(true);
+				
+				// Updated the attribute to retain the text box value, we saved earlier
+				$('#wrapper'+key).attr('rel',1);
+				
+				// Add green background to convey the success of order.
+				if(total_quantity > 0)
+				$('#NoncollapseExample'+key).addClass('success');
+				
+				// Hide the child row once it in open status.
+				row.child.hide();
+				tr.removeClass('shown');
+				}
+				else {
+					$(this).html('Save');
+					// Show the child row once it in close status. send the child row content to format function above
+					row.child( format ( d,key ) ).show();
+					tr.addClass('shown');
+					/*$('.trClose').on('click', function () {
+						row.child().hide();
+						tr.removeClass('shown');
+					});*/
+				}
+		
+			});
+			
+			
+	});
 </script>
-
-</body>
-</html>
