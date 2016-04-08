@@ -16,7 +16,7 @@ class OrdersController extends AppController {
  *
  * @var array
  */
- 	public $uses = array('Order','Product','Vary','Category','User');
+ 	public $uses = array('Order','Product','Vary','Category','User','Vendor');
 	public $components = array('Paginator', 'Flash', 'Session','RequestHandler');
 	public $layout = 'admin';
 
@@ -125,6 +125,12 @@ class OrdersController extends AppController {
         );
 		$this->set('orders', $this->Paginator->paginate());
 		//echo '<pre>';print_r($this->Paginator->paginate());exit;
+		$vendors1= $this->Vendor->find('all');
+		foreach($vendors1 as $key => $vendors) {
+			if(isset($vendors['Category'][0]))
+			$vendor[$vendors['Vendor']['id']]= $vendors['Vendor']['name'];
+		}
+		$this->set('vendor', $vendor);
 	}
 	
 	public function apiAddProducts() {

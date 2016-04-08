@@ -16,6 +16,15 @@
         <div class="col-md-12">
            <?php echo $this->Html->link('Create PO', array('action' => 'addproduct'),array('class'=>'btn btn-primary','style'=>'margin-bottom:20px; float:right')); ?>
             <h4 class="page-head-line">Purchase Order Lists</h4>
+            <div class="form-group">
+                <label>Select Vendor</label>
+                <select class="form-control" name="filterVendor" id="filterVendor">
+                  <option value="" style="width:45%; float:left">Select Vendor</option>
+                     <?php foreach($vendor as $key => $vend) {?>
+                        <option value="<?php echo h($vend); ?>"  style="width:45%; float:left"><?php echo h($vend); ?></option>
+                        <?php } ?>
+                </select>
+            </div>
         </div>
         <div class="col-md-12">
          <h5 style="color:#F0677C; float: left;"><?php echo $this->Flash->render(); ?></h5>
@@ -68,7 +77,7 @@
 										
 										?>
                                         <input type="hidden" name="" id="Allvary" rel="" value="<?php echo htmlspecialchars(json_encode(($pos))); ?>"  /></td>
-                                        <td class="order"><?php echo h($i); ?></td>
+                                        <td class="order"><?php echo h($i); ?><input type="hidden" value="<?php echo h($order['Order']['vendor']); ?>" /></td>
                                         <td class="order"><?php echo h($order['Order']['vendor']); ?>&nbsp;
                                         <td class="order"><?php echo h($order['Order']['po_no']); ?>&nbsp;
                                         <?php 
@@ -152,8 +161,37 @@ $(document).ready(function() {
             // Open this row
             row.child( format(pos) ).show();
             tr.addClass('shown');
+			tr.next('tr').find("td:first").attr('colspan',10)
         }
     } );
 } );
-	
+	function filterTable(inputVal){
+		if(inputVal !=''){console.log(inputVal);
+		var table1 = $('#example');
+		table1.find('tr').each(function(index, row){
+			$(row).hide();
+			var allCells = $(row).find('input[type="hidden"]');
+			if(allCells.length > 0)
+			{
+				allCells.each(function(index, td)
+				{ console.log($(td).val());
+					if($(td).val() == inputVal){
+						console.log('a');
+						  $(row).show();
+					}
+				});
+				
+			}
+		});
+		}else{console.log('no'+inputVal);
+			var table1 = $('#example');
+				table1.find('tr').each(function(index, row){$(row).show();
+			});
+		}
+		console.log(table1);
+		//paginateTable(table1);
+	}
+	$('#filterVendor').on('change',function(e){
+		filterTable($(this).val());//paginateTable1();
+	});	
     </script>
