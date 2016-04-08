@@ -67,22 +67,24 @@ class OrdersController extends AppController {
 						$this->request->data['Vary']['qty'] = $Orders['Vary']['qty'];
 						$this->request->data['Vary']['barcode'] = $Orders['Vary']['barcode'];
 						$this->request->data['Vary']['var_id'] =$Orders['Vary']['id'];
+						unset($this->Vary->validate);
 						$this->Vary->create();
 						$this->Vary->save($this->request->data);
-					$i++;
+						//debug($this->Vary->validationErrors); //show validationErrors 
+						//exit;
+						$i++;
 					  }
 				 }
-				    $responseCart = array('orderID'=>$po,'message'=>'Purchase Order Posted Successfully','Response'=>'S');exit;
-				}
-				 else {
-					$responseCart = array('message'=>'Unable To save Order','Response'=>'E');exit;
+				    $responseCart = array('orderID'=>$po,'message'=>'Purchase Order Posted Successfully','response'=>'S');
+				}else {
+					$responseCart = array('message'=>'Unable To save Order','response'=>'E');
 				}
 		}else{
-		   $responseCart = array('message'=>'Request Data is Incorrect','Response'=>'E');exit;
+		   $responseCart = array('message'=>'Request Data is Incorrect','response'=>'E');
 		}
-		//$this->set(array('addToCart' => $responseCart,'_serialize' => array('cartResp')));
-		
+	   $this->set(array('responseCart' => $responseCart,'_serialize' => array('responseCart')));
 	}
+	
 	public function index() {
 		if ($this->request->is('post')) {
 			$start_date_timestamp = strtotime($this->request->data['dateFrom']);

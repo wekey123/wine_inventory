@@ -54,8 +54,14 @@ shopping.controller('cartController',['$scope','$routeParams','$http','$cookies'
 		 else
 		  $scope.postdata.type = 'pending';//  pending
 		  console.log($scope.postdata);
-		 $http({method: 'POST',url: 'http://192.168.1.105/orders/addcart.json',data :$scope.postdata,cache: false}).success(function (data, status, headers, config) {
-			 console.log($scope.postdata);
+		 $http({method: 'POST',url: '/orders/addcart.json',data :$scope.postdata,cache: false}).success(function (data, status, headers, config) {
+			 console.log(data);
+			 if(data.responseCart.response !== 'E'){
+				 console.log(data.responseCart.message);
+				 window.location = "/orders";
+			 }else{
+				 console.log(data);
+			 }
 		}).error(function (data, status, headers, config) {
 		   $scope.loader = false;
 		}); 
