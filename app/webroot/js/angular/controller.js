@@ -49,6 +49,7 @@ shopping.controller('cartController',['$scope','$routeParams','$http','$cookies'
 		 $scope.postdata = $cookies.getObject('cart');
 		 $scope.postdata.cartQty = $scope.cartTotalQty();
          $scope.postdata.cartSum = $scope.cartTotalSum();
+		 $scope.postdata.vendor = cartService.getVendorName();
 		 if(type == 'submit')
 		 $scope.postdata.type = '1'; //submitted
 		 else
@@ -73,6 +74,7 @@ shopping.controller('cartController',['$scope','$routeParams','$http','$cookies'
 shopping.controller("addPoController", ["$scope","$log","$timeout","$http",'$rootScope','$cookies','$filter','cartService', function ($scope, $log, $timeout, $http,$rootScope,$cookies,$filter,cartService) {
 	
 	$scope.cookieCartItems = cartService.checkCookieBeforeAdd();
+	$scope.vendorName = cartService.getVendorName();
 	$scope.allProducts = '{}';
 	$scope.loader = true;
 	$scope.validationError = '';
@@ -167,6 +169,18 @@ shopping.controller("addPoController", ["$scope","$log","$timeout","$http",'$roo
 	/*pagination*/
 	
 	 $scope.addToCart = function(object) {
+		  console.log('A');
+		 console.log($scope.vendorName);
+		if(!$scope.vendorName || !$scope.cookieCartItems){
+			 cartService.setVendorName(object.vendor);
+			 $scope.vendorName = cartService.getVendorName();
+		}
+		  console.log('B');
+		 console.log($scope.vendorName);
+		if($scope.vendorName != '' && $scope.vendorName != object.vendor){
+		    $scope.validationError = "Please Select Same Vendor Products"; 
+			return false;
+		}
 	    if (typeof object.qty != 'undefined'){
 			if(object.qty  != '' && object.price != ''){	
 				$scope.addData = {vendor: object.vendor, category: object.category, id: parseInt(object.vid), title: object.title, price: parseFloat(object.price), qty: parseInt(object.qty), img: object.image, sum: parseFloat(object.sum)};

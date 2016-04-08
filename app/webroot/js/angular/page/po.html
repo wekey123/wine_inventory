@@ -2,6 +2,10 @@
    
      <div class="row">
         <div class="col-md-12">
+                      <a class="btn btn-primary"  style="margin-bottom:20px; float:right" ng-href="#cart">
+                     <span style="padding:2px;" class="glyphicon glyphicon-shopping-cart"></span>{{ getTotalQty() }} Cart
+                     <span style="padding:2px;">${{ getTotalSum() }} </span>
+                     </a>
             <h4 class="page-head-line">Purchase Orders</h4>
         </div>
      </div>
@@ -24,10 +28,16 @@
                      </div>
                      
                      <div class="col-md-4">
-                     <a style="color:#F0677C; text-decoration:none;" ng-href="#cart">
+                     <!--<a style="color:#F0677C; text-decoration:none;" ng-href="#cart">
                      <span style="padding:2px;" class="glyphicon glyphicon-shopping-cart">{{ getTotalQty() }}</span>
                      <span style="padding:2px;">${{ getTotalSum() }} </span>
-                     </a>
+                     </a>-->
+                     
+                     <!--<a href="#" class="btn btn-info btn-lg">
+                      <span class="glyphicon glyphicon-shopping-cart"></span> Shopping Cart
+                    </a>-->
+                    
+                     
                      </div>
                  </div>
             </div>
@@ -83,7 +93,7 @@
                                      <td><input type="text"  class="form-control" ng-model="result.price" /></td>
                                      <td><input type="text"  class="form-control"  ng-model="result.qty" /></td>
                                      <td> ${{  result.sum = roundOfValue(result.qty * result.price) }} </td>
-                                     <td><a ng-click="addToCart(result)">Add to Cart</a></td>
+                                     <td><a ng-click="addToCart(result)" class="btn btn-primary">Add to Cart</a></td>
                                     </tr>
                                     
                         </tbody>

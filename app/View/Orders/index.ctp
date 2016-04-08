@@ -42,13 +42,14 @@
                                     <tr>
                                             <th><?php echo $this->Paginator->sort('#'); ?></th>
                                             <th><?php echo $this->Paginator->sort('No'); ?></th>
-                                            <?php /*?><th><?php echo $this->Paginator->sort('product_id'); ?></th><?php */?>
+                                            <th><?php echo $this->Paginator->sort('vendor'); ?></th>
                                             <th><?php echo $this->Paginator->sort('po_no', 'Purchase Order Number'); ?></th>
                                             <th><?php echo $this->Paginator->sort('total_quantity'); ?></th>
                                             <th><?php echo $this->Paginator->sort('total_price'); ?></th>
                                             <th><?php echo $this->Paginator->sort('user_id', 'Created By'); ?></th>
+                                             <th><?php echo $this->Paginator->sort('status'); ?></th>
                                             <th><?php echo $this->Paginator->sort('created'); ?></th>
-                                            <th><?php echo $this->Paginator->sort('modified'); ?></th>
+                                            <?php /*?><th><?php echo $this->Paginator->sort('modified'); ?></th><?php */?>
                                             <th class="actions"><?php echo __('Actions'); ?></th>
                                     </tr>
                                     </thead>
@@ -68,6 +69,7 @@
 										?>
                                         <input type="hidden" name="" id="Allvary" rel="" value="<?php echo htmlspecialchars(json_encode(($pos))); ?>"  /></td>
                                         <td class="order"><?php echo h($i); ?></td>
+                                        <td class="order"><?php echo h($order['Order']['vendor']); ?>&nbsp;
                                         <td class="order"><?php echo h($order['Order']['po_no']); ?>&nbsp;
                                         <?php 
 										foreach($order['Vary'] as $vary){
@@ -87,7 +89,8 @@
                                         <td><?php echo $this->Util->currencyFormat($order[0]['total_price'], 'USD');  ?>&nbsp;</td>
                                         <td><?php echo h($order['User']['username']); ?>&nbsp;</td>
                                         <td><?php  echo $this->Util->dateFormat($order['Order']['created']); ?>&nbsp;</td>
-                                        <td><?php  echo $this->Util->dateFormat($order['Order']['modified']); ?>&nbsp;</td>
+                                        <td><?php  echo ($order['Order']['status'] == 0) ? 'Pending' : (($order['Order']['status'] == 1) ? 'Submitted' : (($order['Order']['status'] == 2) ? 'Invoice Received' : (($order['Order']['status'] == 3) ? 'Partially Paid' : (($order['Order']['status'] == 4) ? 'Fully Paid' : '' ) ))); ?>&nbsp;</td>
+                                       <?php /*?> <td><?php  echo $this->Util->dateFormat($order['Order']['modified']); ?>&nbsp;</td><?php */?>
                                         <td class="actions">
                                             <?php echo $this->Html->link(__('CSV'), array('action' => 'download',$order['Order']['po_no'])); ?> |
                                             <?php echo $this->Html->link(__('Mail'), array('action' => 'download',$order['Order']['po_no'],'email')); ?> |

@@ -34,6 +34,7 @@ class OrdersController extends AppController {
 	    $this->layout = ''; 
 		header("Access-Control-Allow-Origin: *");
 		header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept");
+		//echo "<pre>"; print_r($this->request->data); echo "</pre>";  exit;
 		$user = $this->Auth->user();
 		if ($this->request->is('post')) {
 			$po='ORD'.rand('111111','999999');
@@ -42,6 +43,7 @@ class OrdersController extends AppController {
 				$this->request->data['Order']['total_quantity']=$value['cartQty'];
 				$this->request->data['Order']['total_price']=$value['cartSum'];
 				$this->request->data['Order']['user_id']=$user['id'];
+				$this->request->data['Order']['vendor'] = $value['vendor'];
 				//$this->request->data['Order']['user_id']=1;
 				$this->request->data['Order']['po_no']=$po;
 				if($value['type']=='pending')
@@ -54,7 +56,8 @@ class OrdersController extends AppController {
 					  if(!empty($quan)){
 						$options = array('conditions' => array('Vary.id' => $quan['id']));
 						$Orders = $this->Vary->find('first',$options);
-						$this->request->data['Vary']['product_id'] = $quan['id'];
+						$this->request->data['Vary']['product_id'] = $Orders['Vary']['product_id'];
+						$this->request->data['Vary']['vendor'] = $quan['vendor'];
 						$this->request->data['Vary']['po_no'] = $po;   
 						$this->request->data['Vary']['quantity'] = $quan['qty'];
 						$this->request->data['Vary']['price'] = $quan['price'];
@@ -100,6 +103,8 @@ class OrdersController extends AppController {
         'SUM(total_quantity) as total_quantity',
 		'SUM(total_price) as total_price',
         'po_no',
+		'vendor',
+		'status',
 		'user_id',
 		'created',
 		'modified',

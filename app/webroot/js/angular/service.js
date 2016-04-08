@@ -3,11 +3,14 @@ shopping.service('cartService',['$routeParams','$http','$cookies','$filter','$ro
 	this.cartItem = {};
 	this.cartItem.items = [];
 	this.errorMessage = "";
+	this.vendorName = "";
 	this.cartDisable = true;
 	
 	this.expiresTime = function(){
 		var now = new Date();
-    	now.setDate(now.getDate() + 7);	
+    	//now.setDate(now.getDate() + 7);	
+		now.setDate(now.getDate());	
+		now.setMinutes(now.getMinutes() + 05);
 		$log.debug("fun: expiresTime - "+ now);
 		return now;
 	};
@@ -137,6 +140,19 @@ shopping.service('cartService',['$routeParams','$http','$cookies','$filter','$ro
 		}else{
 		   return 0;
 		}
+	}
+	
+	this.getVendorName = function(){
+		if($cookies.getObject('vendor')){
+		   self.vendorName = $cookies.getObject('vendor');
+		   return self.vendorName;
+		}else{
+		   return false;
+		}
+	}
+	
+	this.setVendorName = function(vendorName){
+		    $cookies.putObject('vendor', vendorName,{ expires:self.expiresTime() });
 	}
 	
 }]);
