@@ -44,7 +44,7 @@
                                             <th class="actions"><?php echo __('Actions'); ?></th>
                                         </tr>
                                     </thead>
-                                    <tbody class="searchable">
+                                    <tbody class="searchable" id="exampleBody">
                                      <?php $i =1; foreach ($products as $product): ?>
                                         <tr>
                                             <td><?php echo $i; ?><input type="hidden" value="<?php echo h($product['Product']['vendor_id']); ?>" /></td>
@@ -95,7 +95,7 @@
 <script>
 	function filterTable(inputVal){
 		if(inputVal !=''){console.log(inputVal);
-		var table = $('#example');
+		var table = $('#exampleBody');
 		table.find('tr').each(function(index, row){
 			$(row).hide();
 			var allCells = $(row).find('input[type="hidden"]');

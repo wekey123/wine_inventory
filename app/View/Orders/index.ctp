@@ -62,7 +62,7 @@
                                             <th class="actions"><?php echo __('Actions'); ?></th>
                                     </tr>
                                     </thead>
-                                    <tbody>
+                                    <tbody id="exampleBody">
                                     <?php $i=1;foreach ($orders as $order): ?>
                                     <tr>
                                           <td class="details-control"><?php 
@@ -101,8 +101,10 @@
                                         <td><?php  echo ($order['Order']['status'] == 0) ? 'Pending' : (($order['Order']['status'] == 1) ? 'Submitted' : (($order['Order']['status'] == 2) ? 'Invoice Received' : (($order['Order']['status'] == 3) ? 'Partially Paid' : (($order['Order']['status'] == 4) ? 'Fully Paid' : '' ) ))); ?>&nbsp;</td>
                                        <?php /*?> <td><?php  echo $this->Util->dateFormat($order['Order']['modified']); ?>&nbsp;</td><?php */?>
                                         <td class="actions">
-                                            <?php echo $this->Html->link(__('CSV'), array('action' => 'download',$order['Order']['po_no'])); ?> |
-                                            <?php echo $this->Html->link(__('Mail'), array('action' => 'download',$order['Order']['po_no'],'email')); ?> |
+                                            <?php //echo $this->Html->link(__('CSV'), array('action' => 'download',$order['Order']['po_no'])); ?> 
+                                            <?php //echo $this->Html->link(__('Mail'), array('action' => 'download',$order['Order']['po_no'],'email')); ?> 
+                                            <?php echo $this->Html->link(__('Excel'), array('action' => 'report',$order['Order']['po_no'])); ?> |
+                                            <?php echo $this->Html->link(__('Mail'), array('action' => 'report',$order['Order']['po_no'],'email')); ?> |
                                             <?php echo $this->Html->link(__('Edit'), array('action' => 'edit', $order['Order']['po_no'])); ?>
                                             <?php /*?><?php echo $this->Form->postLink(__('Delete'), array('action' => 'delete', $order['Order']['id']), array('confirm' => __('Are you sure you want to delete # %s?', $order['Order']['id']))); ?><?php */?>
                                         </td>
@@ -163,11 +165,11 @@ $(document).ready(function() {
             tr.addClass('shown');
 			tr.next('tr').find("td:first").attr('colspan',10)
         }
-    } );
-} );
+		});
+	});
 	function filterTable(inputVal){
 		if(inputVal !=''){console.log(inputVal);
-		var table1 = $('#example');
+		var table1 = $('#exampleBody');
 		table1.find('tr').each(function(index, row){
 			$(row).hide();
 			var allCells = $(row).find('input[type="hidden"]');
