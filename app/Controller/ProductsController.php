@@ -33,6 +33,12 @@ class ProductsController extends AppController {
 		$this->Product->recursive = 0;
 		//debug($this->Paginator->paginate()); exit;
 		$this->set('products', $this->Paginator->paginate());
+		$vendors1= $this->Vendor->find('all');
+		foreach($vendors1 as $key => $vendors) {
+			if(isset($vendors['Category'][0]))
+			$vendor[$vendors['Vendor']['id']]= $vendors['Vendor']['name'];
+		}
+		$this->set('vendor', $vendor);
 	}
 
     public function lists2() {
