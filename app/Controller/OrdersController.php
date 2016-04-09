@@ -157,10 +157,51 @@ class OrdersController extends AppController {
 		$this->set('_serialize', array('products'));
 	}
 	
+	
+	public function apiEditProducts($value = null) {
+   		header("Access-Control-Allow-Origin: *");
+		header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept");
+		//$this->Order->unBindModel(array('hasMany' => array('Vary','Invoice')));
+		//$this->Order->unBindModel(array('belongsTo' => array('Product','User')));
+		//$orders = $this->Order->find('first',array('conditions' => array('Order.po_no'=> $value)));
+		
+		$this->Vary->unBindModel(array('belongsTo' => array('Product','Order')));
+		$varies = $this->Vary->find('all',array('conditions' => array('Vary.po_no'=> $value)));
+		
+		$i = 0;
+		foreach($varies as $vary){
+			
+			$this->Product->unBindModel(array('belongsTo' => array('User')));
+			$this->Product->unBindModel(array('hasMany' => array('Vary','Order')));
+			$prod = $this->Product->find('first',array('conditions' => array('Product.id'=> $vary['Vary']['product_id']),'fields' => array('Product.title', 'Product.image','Category.name', 'Vendor.name')));
+			
+			$result[$i]['category']  = $prod['Category']['name'];
+			$result[$i]['id']  = $vary['Vary']['var_id'];
+			$result[$i]['img']  = $prod['Product']['image'];
+			$result[$i]['price']  = $vary['Vary']['price']; 
+			$result[$i]['qty']  = $vary['Vary']['quantity']; 
+			$result[$i]['sum']  = $vary['Vary']['price_total']; 
+			$result[$i]['title']  = $prod['Product']['title'];
+			$result[$i]['vendor']  = $prod['Vendor']['name'];
+			$result[$i]['vid']  = $vary['Vary']['id']; // variant ID
+			$result[$i]['pid']  = $vary['Vary']['product_id']; // Product_id
+			$result[$i]['po_no']  = $vary['Vary']['po_no']; // OrderPo
+			$i++;
+			
+		}
+		debug($result); exit;
+		$this->set('prod', $result);
+		$this->set('_serialize', array('prod'));
+	}
+	
 	public function addproduct() {
 
 
 	}
+	
+ 	public function editproduct($id = null) {
+	 
+ 	}
 
 /**
  * view method
@@ -260,7 +301,8 @@ class OrdersController extends AppController {
  * @throws NotFoundException
  * @param string $id
  * @return void
- */
+ */	
+ 
 	public function edit($id = null) {
 		$user = $this->Auth->user();
 		if ($this->request->is('post')) {

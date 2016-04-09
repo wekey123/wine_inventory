@@ -100,6 +100,10 @@ shopping.service('cartService',['$routeParams','$http','$cookies','$filter','$ro
 		self.cartItem.items.splice(removeId, 1);
 		self.cartTotalQty();
 		$cookies.putObject('cart', self.cartItem,{ expires:self.expiresTime() });
+		console.log("remove Cart:"+ self.cartItem.items.length)
+		if(self.cartItem.items.length == 0){
+		$cookies.putObject('vendor', '',{ expires:'Thu, 01 Jan 1970 00:00:00 UTC' });
+		}
 		$log.debug("fun: removeCart - "+ self.cartItem);
 	}
 	 
@@ -133,6 +137,11 @@ shopping.service('cartService',['$routeParams','$http','$cookies','$filter','$ro
 		}
 	}
 	
+	this.unSetCartItems = function(){
+		$cookies.putObject('cart', '',{ expires:'Thu, 01 Jan 1970 00:00:00 UTC' });
+		$cookies.putObject('vendor', '',{ expires:'Thu, 01 Jan 1970 00:00:00 UTC' });
+	}
+	
 	this.checkCookieBeforeAdd = function(){
 		if($cookies.getObject('cart')){
 		   self.cartItem.items = $cookies.getObject('cart').items;
@@ -154,5 +163,5 @@ shopping.service('cartService',['$routeParams','$http','$cookies','$filter','$ro
 	this.setVendorName = function(vendorName){
 		    $cookies.putObject('vendor', vendorName,{ expires:self.expiresTime() });
 	}
-	
+
 }]);

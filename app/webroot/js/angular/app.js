@@ -4,8 +4,11 @@ var shopping = angular.module('shopping', ['ngRoute','ngResource','ngCookies','a
 
 shopping.config(function($routeProvider){console.log('trr');
     $routeProvider
-        .when("/po",{templateUrl: '/app/webroot/js/angular/page/po.html',controller:'addPoController'}).when('/cart',{templateUrl: '/app/webroot/js/angular/page/cart.html',controller:'cartController'}).otherwise({ redirectTo: "/po" })
-	
+        .when("/po",{templateUrl: '/app/webroot/js/angular/page/po.html',controller:'addPoController'})
+		.when("/po/:id",{templateUrl: '/app/webroot/js/angular/page/po.html',controller:'addPoController'})
+		.when("/cart",{templateUrl: '/app/webroot/js/angular/page/cart.html',controller:'cartController'})
+		.otherwise({ redirectTo: "/po" });
+		
 });
 
 
@@ -13,13 +16,6 @@ shopping.run(function($rootScope,$cookies,$location,$http,$routeParams){
 	
 	
 	$rootScope.cookieCartItems = $cookies.getObject('cart') || 0;
-	
-	console.log("Root scope");
-	
-	if($cookies.getObject('cart')){
-		
-		console.log($cookies.getObject('cart').items);
-	}
 	
 	$rootScope.getTotalQty = function(){
 		var totalQty = 0;

@@ -1,5 +1,5 @@
 shopping.controller('cartController',['$scope','$routeParams','$http','$cookies','$filter','$rootScope','$log','cartService',function($scope, $routeParams, $http,$cookies,$filter,$rootScope,$log,cartService){
-	
+
 	 $scope.cartItem = cartService.getCartItems();
 	 
 	  $scope.updateToCart = function(object) {
@@ -59,6 +59,7 @@ shopping.controller('cartController',['$scope','$routeParams','$http','$cookies'
 			 console.log(data);
 			 if(data.responseCart.response !== 'E'){
 				 console.log(data.responseCart.message);
+				 cartService.unSetCartItems();
 				 window.location = "/orders";
 			 }else{
 				 console.log(data);
@@ -71,14 +72,13 @@ shopping.controller('cartController',['$scope','$routeParams','$http','$cookies'
 }]);
 
 
-shopping.controller("addPoController", ["$scope","$log","$timeout","$http",'$rootScope','$cookies','$filter','cartService', function ($scope, $log, $timeout, $http,$rootScope,$cookies,$filter,cartService) {
-	
+shopping.controller("addPoController", ["$scope","$log","$timeout","$http",'$rootScope','$cookies','$filter','cartService','$routeParams', function ($scope, $log, $timeout, $http,$rootScope,$cookies,$filter,cartService,$routeParams) {
+console.log($routeParams.id);
 	$scope.cookieCartItems = cartService.checkCookieBeforeAdd();
 	$scope.vendorName = cartService.getVendorName();
 	$scope.allProducts = '{}';
 	$scope.loader = true;
 	$scope.validationError = '';
-	
 	$http({method: 'GET',url: '/orders/apiAddProducts.json',cache: false
 	 }).success(function (data, status, headers, config) {
 	    $scope.allProducts = data.products;
@@ -92,6 +92,7 @@ shopping.controller("addPoController", ["$scope","$log","$timeout","$http",'$roo
 				angular.forEach(productObj.Product, function(prod, key) {
 					$scope.prod = prod;
 					if($scope.cookieCartItems){
+						
 						var i=0, len=$scope.cookieCartItems.length;
 						for (; i<len; i++) {
 						   if(parseInt($scope.cookieCartItems[i].id) === parseInt($scope.prod.vid)){
@@ -177,7 +178,7 @@ shopping.controller("addPoController", ["$scope","$log","$timeout","$http",'$roo
 		}
 		  console.log('B');
 		 console.log($scope.vendorName);
-		if($scope.vendorName != '' && $scope.vendorName != object.vendor){
+		if($scope.vendorName != object.vendor){
 		    $scope.validationError = "Please Select Same Vendor Products"; 
 			return false;
 		}
