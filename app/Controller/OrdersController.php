@@ -484,8 +484,7 @@ public function in_array_r($needle, $haystack, $strict = false) {
 		$this->autoLayout = false;
 		Configure::write('debug', '0');
 	}
-	public function report($orderId = null)
-	{
+	public function report($orderId = null,$page = null){
 		$this->layout = null;
 		$this->Order->bindModel(array('hasMany' => array('Vary' => array('foreignKey' => false,'conditions' => array('Vary.type' => 'order','Vary.po_no'=>$orderId)))),false);
 		$options = array('conditions' => array('Order.po_no' => $orderId),'group' => 'Order.po_no');
@@ -501,7 +500,7 @@ public function in_array_r($needle, $haystack, $strict = false) {
 		$total[8] = 0;
 		$total[9] = '';
 		$total[10] = 0.00;
-			debug($Orders['Vary']); exit;
+			//debug($Orders['Vary']); exit;
 			foreach($Orders['Vary'] as $vary){
 			
 				$result[$vary['po_no']][$i]['SNO'] = $i+1;
@@ -527,6 +526,8 @@ public function in_array_r($needle, $haystack, $strict = false) {
 		//debug($result); exit;
 		$this->set('data', $result);
 		$this->set('totals', $total);
+		$this->set('frompage',$page);
+		$this->set('orderId',$orderId);
 		$this->autoLayout = false;
 		Configure::write('debug', '0');
 	}
@@ -534,13 +535,33 @@ public function in_array_r($needle, $haystack, $strict = false) {
 	public function emailCheck($pono = null){
 		$user = $this->Auth->user();
 		if ($this->request->is('post')) {
-			//debug($this->request->data); exit;
+			$Email = new CakeEmail('gmail');
+		    $Email->to($this->request->data['Order']['to']);
+		    $Email->subject($this->request->data['Order']['subject']);
+			$filename = 'PurchaseOrder_'.$pono.'.xlsx';
+			$pathwithfilename = WWW_ROOT.'mailpo'.DS.$filename;
+			$Email->attachments(array($filename => array('file' => $pathwithfilename)));
+			if($Email->send($this->request->data['Order']['message']))
+			$this->Flash->success(__('Your message has been sent.'));
+			else
+			$this->Flash->error(__('Message Sent failed.'));
+			return $this->redirect(array('action' => 'index'));
+		}else{
+			$this->set('po_no', $pono);
+		}
+	}
+	
+	public function emailCheckCSV($pono = null){
+		$user = $this->Auth->user();
+		if ($this->request->is('post')) {
 			$Email = new CakeEmail('gmail');
 		    $Email->to($this->request->data['Order']['to']);
 		    $Email->subject($this->request->data['Order']['subject']);
 			$filename = 'PO_'.$pono.'.csv';
 			$pathwithfilename = WWW_ROOT.'mailpo'.DS.$filename;
 			$Email->attachments(array($filename => array('file' => $pathwithfilename)));
+			echo $filename;
+			debug($this->request->data); exit;
 			if($Email->send($this->request->data['Order']['message']))
 			$this->Flash->success(__('Your message has been sent.'));
 			else
