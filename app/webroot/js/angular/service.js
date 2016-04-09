@@ -10,7 +10,7 @@ shopping.service('cartService',['$routeParams','$http','$cookies','$filter','$ro
 		var now = new Date();
     	//now.setDate(now.getDate() + 7);	
 		now.setDate(now.getDate());	
-		now.setMinutes(now.getMinutes() + 05);
+		now.setMinutes(now.getMinutes() + 30);
 		$log.debug("fun: expiresTime - "+ now);
 		return now;
 	};

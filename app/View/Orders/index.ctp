@@ -56,8 +56,8 @@
                                             <th><?php echo $this->Paginator->sort('total_quantity'); ?></th>
                                             <th><?php echo $this->Paginator->sort('total_price'); ?></th>
                                             <th><?php echo $this->Paginator->sort('user_id', 'Created By'); ?></th>
-                                             <th><?php echo $this->Paginator->sort('status'); ?></th>
                                             <th><?php echo $this->Paginator->sort('created'); ?></th>
+                                            <th><?php echo $this->Paginator->sort('status'); ?></th>
                                             <?php /*?><th><?php echo $this->Paginator->sort('modified'); ?></th><?php */?>
                                             <th class="actions"><?php echo __('Actions'); ?></th>
                                     </tr>
@@ -106,7 +106,7 @@
                                             <?php echo $this->Html->link(__('Excel'), array('action' => 'report',$order['Order']['po_no'])); ?> |
                                             <?php echo $this->Html->link(__('Mail'), array('action' => 'report',$order['Order']['po_no'],'email')); ?>
                                             <?php if($order['Order']['status'] == 0){ echo '| ';
-                                              echo $this->Html->link(__('Edit'), array('action' => 'editproduct/#po/', $order['Order']['po_no'],''));  
+                                              echo $this->Html->link(__('Edit'), array('action' => 'addproduct/#po/', $order['Order']['po_no'],''));  
                                              }
 											?>
                                             <?php /*?><?php echo $this->Form->postLink(__('Delete'), array('action' => 'delete', $order['Order']['id']), array('confirm' => __('Are you sure you want to delete # %s?', $order['Order']['id']))); ?><?php */?>

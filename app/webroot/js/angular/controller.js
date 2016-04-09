@@ -73,26 +73,37 @@ shopping.controller('cartController',['$scope','$routeParams','$http','$cookies'
 
 
 shopping.controller("addPoController", ["$scope","$log","$timeout","$http",'$rootScope','$cookies','$filter','cartService','$routeParams', function ($scope, $log, $timeout, $http,$rootScope,$cookies,$filter,cartService,$routeParams) {
-console.log($routeParams.id);
+
 	$scope.cookieCartItems = cartService.checkCookieBeforeAdd();
 	$scope.vendorName = cartService.getVendorName();
 	$scope.allProducts = '{}';
 	$scope.loader = true;
 	$scope.validationError = '';
-	$http({method: 'GET',url: '/orders/apiAddProducts.json',cache: false
+	$scope.url = '';
+	if($routeParams.id)
+		$scope.url = '/orders/apiAddProducts/'+$routeParams.id+'.json';
+	else
+	   $scope.url = '/orders/apiAddProducts.json';
+console.log($scope.url);
+	$http({method: 'GET',url: $scope.url,cache: false
 	 }).success(function (data, status, headers, config) {
 	    $scope.allProducts = data.products;
 		$scope.vendor = [];
 		$scope.category = [];
 		$scope.product = [];
+		$scope.allProducts = data.products;
 		angular.forEach($scope.allProducts, function(category, vendorkey) {
 			$scope.vendor.push({'vendorName':vendorkey});
 			angular.forEach(category, function(productObj, categoryKey) {
 				$scope.category.push({'categoryName':categoryKey,'vendorName':vendorkey});
 				angular.forEach(productObj.Product, function(prod, key) {
 					$scope.prod = prod;
+					//console.log($scope.prod); return false;
+					if($routeParams.id && $scope.prod.cv_id){
+						$scope.addToCart($scope.prod);
+					}
+					
 					if($scope.cookieCartItems){
-						
 						var i=0, len=$scope.cookieCartItems.length;
 						for (; i<len; i++) {
 						   if(parseInt($scope.cookieCartItems[i].id) === parseInt($scope.prod.vid)){
@@ -103,7 +114,7 @@ console.log($routeParams.id);
 						}
 					}
 					
-					$scope.product.push($scope.prod);
+					$scope.product.push($scope.prod);	
 				});
 			});
 		});
@@ -111,7 +122,7 @@ console.log($routeParams.id);
 		//$scope.selectedVendor = $scope.vendor[0]['vendorName'];
 		//console.log($scope.vendor);
 		//console.log($scope.category);
-		//console.log($scope.product);	
+		console.log($scope.product);	
 		//$scope.category = $scope.allProducts;
 	 }).error(function (data, status, headers, config) {
 	   $scope.loader = false;

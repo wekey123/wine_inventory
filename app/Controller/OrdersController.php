@@ -133,7 +133,7 @@ class OrdersController extends AppController {
 		$this->set('vendor', $vendor);
 	}
 	
-	public function apiAddProducts() {
+	public function apiAddProducts($value = null) {
    		header("Access-Control-Allow-Origin: *");
 		header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept");
 		$products = $this->Product->find('all');
@@ -148,6 +148,16 @@ class OrdersController extends AppController {
 				$result[$product['Vendor']['name']][$product['Category']['name']]['Product'][$i]['price'] = $vary['price'];
 				$result[$product['Vendor']['name']][$product['Category']['name']]['Product'][$i]['vendor'] = $product['Vendor']['name'];
 				$result[$product['Vendor']['name']][$product['Category']['name']]['Product'][$i]['category'] = $product['Category']['name'];
+				if(isset($value)){
+				$orderVar = $this->Vary->find('first',array('conditions' => array('Vary.var_id'=> $vary['id'],'Vary.po_no'=>$value),'fields' => array('Vary.id', 'Vary.price', 'Vary.quantity','Vary.price_total','Vary.po_no')));
+					if(!empty($orderVar)){
+						$result[$product['Vendor']['name']][$product['Category']['name']]['Product'][$i]['price'] = !empty($orderVar) ? $orderVar['Vary']['price'] : '';
+						$result[$product['Vendor']['name']][$product['Category']['name']]['Product'][$i]['qty'] = !empty($orderVar) ? $orderVar['Vary']['quantity'] : '';
+						$result[$product['Vendor']['name']][$product['Category']['name']]['Product'][$i]['sum'] = !empty($orderVar) ? $orderVar['Vary']['price_total'] : '';
+						$result[$product['Vendor']['name']][$product['Category']['name']]['Product'][$i]['po_no'] = !empty($orderVar) ? $orderVar['Vary']['po_no'] : '';
+						$result[$product['Vendor']['name']][$product['Category']['name']]['Product'][$i]['cv_id'] = !empty($orderVar) ? $orderVar['Vary']['id'] : '';
+					}
+				}
 				$i++;
 			}
 			
@@ -156,43 +166,42 @@ class OrdersController extends AppController {
 		$this->set('products', $result);
 		$this->set('_serialize', array('products'));
 	}
-	
+
 	
 	public function apiEditProducts($value = null) {
-   		header("Access-Control-Allow-Origin: *");
-		header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept");
-		//$this->Order->unBindModel(array('hasMany' => array('Vary','Invoice')));
-		//$this->Order->unBindModel(array('belongsTo' => array('Product','User')));
-		//$orders = $this->Order->find('first',array('conditions' => array('Order.po_no'=> $value)));
+      header("Access-Control-Allow-Origin: *");
+	  header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept");
+	  $products = $this->Product->find('all');
+	  $i =0;
+	  foreach($products as $product){
+	   foreach($product['Vary'] as $key => $vary){
+		$result[$product['Vendor']['name']][$product['Category']['name']]['Product'][$i] = $product['Product'];
+		$result[$product['Vendor']['name']][$product['Category']['name']]['Product'][$i]['vid'] = $vary['id'];
+		$result[$product['Vendor']['name']][$product['Category']['name']]['Product'][$i]['variant'] = $vary['variant'];
+		$result[$product['Vendor']['name']][$product['Category']['name']]['Product'][$i]['sku'] = $vary['sku'];
+		$result[$product['Vendor']['name']][$product['Category']['name']]['Product'][$i]['barcode'] = $vary['barcode'];
+		$result[$product['Vendor']['name']][$product['Category']['name']]['Product'][$i]['price'] = $vary['price'];
+		$result[$product['Vendor']['name']][$product['Category']['name']]['Product'][$i]['vendor'] = $product['Vendor']['name'];
+		$result[$product['Vendor']['name']][$product['Category']['name']]['Product'][$i]['category'] = $product['Category']['name'];
+			if(isset($value)){
+			$orderVar = $this->Vary->find('first',array('conditions' => array('Vary.var_id'=> $vary['id'],'Vary.po_no'=>$value),'fields' => array('Vary.id', 'Vary.price', 'Vary.quantity','Vary.price_total','Vary.po_no')));
+				if(!empty($orderVar)){
+					$result[$product['Vendor']['name']][$product['Category']['name']]['Product'][$i]['price'] = !empty($orderVar) ? $orderVar['Vary']['price'] : '';
+					$result[$product['Vendor']['name']][$product['Category']['name']]['Product'][$i]['qty'] = !empty($orderVar) ? $orderVar['Vary']['quantity'] : '';
+					$result[$product['Vendor']['name']][$product['Category']['name']]['Product'][$i]['sum'] = !empty($orderVar) ? $orderVar['Vary']['price_total'] : '';
+					$result[$product['Vendor']['name']][$product['Category']['name']]['Product'][$i]['po_no'] = !empty($orderVar) ? $orderVar['Vary']['po_no'] : '';
+					$result[$product['Vendor']['name']][$product['Category']['name']]['Product'][$i]['cv_id'] = !empty($orderVar) ? $orderVar['Vary']['id'] : '';
+				}
+			}
+		$i++;
+	   }
+	   
 		
-		$this->Vary->unBindModel(array('belongsTo' => array('Product','Order')));
-		$varies = $this->Vary->find('all',array('conditions' => array('Vary.po_no'=> $value)));
-		
-		$i = 0;
-		foreach($varies as $vary){
-			
-			$this->Product->unBindModel(array('belongsTo' => array('User')));
-			$this->Product->unBindModel(array('hasMany' => array('Vary','Order')));
-			$prod = $this->Product->find('first',array('conditions' => array('Product.id'=> $vary['Vary']['product_id']),'fields' => array('Product.title', 'Product.image','Category.name', 'Vendor.name')));
-			
-			$result[$i]['category']  = $prod['Category']['name'];
-			$result[$i]['id']  = $vary['Vary']['var_id'];
-			$result[$i]['img']  = $prod['Product']['image'];
-			$result[$i]['price']  = $vary['Vary']['price']; 
-			$result[$i]['qty']  = $vary['Vary']['quantity']; 
-			$result[$i]['sum']  = $vary['Vary']['price_total']; 
-			$result[$i]['title']  = $prod['Product']['title'];
-			$result[$i]['vendor']  = $prod['Vendor']['name'];
-			$result[$i]['vid']  = $vary['Vary']['id']; // variant ID
-			$result[$i]['pid']  = $vary['Vary']['product_id']; // Product_id
-			$result[$i]['po_no']  = $vary['Vary']['po_no']; // OrderPo
-			$i++;
-			
-		}
-		debug($result); exit;
-		$this->set('prod', $result);
-		$this->set('_serialize', array('prod'));
-	}
+	  }
+	  $this->set('products', $result);
+	  $this->set('_serialize', array('products'));
+ }
+	
 	
 	public function addproduct() {
 
