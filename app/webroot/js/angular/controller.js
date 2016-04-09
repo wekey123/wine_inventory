@@ -45,28 +45,34 @@ shopping.controller('cartController',['$scope','$routeParams','$http','$cookies'
 	 }
 	 
 	  $scope.submitCart = function(type){
+
 		 $scope.loader = true;
 		 $scope.postdata = $cookies.getObject('cart');
 		 $scope.postdata.cartQty = $scope.cartTotalQty();
          $scope.postdata.cartSum = $scope.cartTotalSum();
 		 $scope.postdata.vendor = cartService.getVendorName();
+		 $scope.postdata.poNo = $cookies.getObject('cart').items[0].po_no;
 		 if(type == 'submit')
 		 $scope.postdata.type = '1'; //submitted
 		 else
 		  $scope.postdata.type = 'pending';//  pending
 		  console.log($scope.postdata);
-		  
-		if($routeParams.id)
-			$scope.url = $rootScope.filePath.location+'orders/addcart/'+$routeParams.id+'.json';
+		  console.log($scope.postdata.poNo);
+		if($scope.postdata.poNo)
+			$scope.url = $rootScope.filePath.location+'orders/addcart/'+$scope.postdata.poNo+'.json';
 		else
 	  		$scope.url = $rootScope.filePath.location+'orders/addcart.json';
-	
+			console.log($scope.url);
+		 //return false;
 		 $http({method: 'POST',url: $scope.url,data :$scope.postdata,cache: false}).success(function (data, status, headers, config) {
 			 console.log(data);
 			 if(data.responseCart.response !== 'E'){
 				 console.log(data.responseCart.message);
 				 cartService.unSetCartItems();
-				 window.location = "/orders";
+				 if($rootScope.server)
+					 window.location = "/inventory/orders";
+				 else
+					 window.location = "/orders";
 			 }else{
 				 console.log(data);
 			 }
@@ -86,12 +92,15 @@ shopping.controller("addPoController", ["$scope","$log","$timeout","$http",'$roo
 	$scope.loader = true;
 	$scope.validationError = '';
 	$scope.url = '';
-	//console.log($rootScope.filePath.location); return false;
-	if($routeParams.id)
+
+	if($routeParams.id){
 		$scope.url = $rootScope.filePath.location+'orders/apiAddProducts/'+$routeParams.id+'.json';
-	else
+		$scope.cookieCartItems = 0;
+		cartService.unSetCartItems();
+	}else{
 	   $scope.url = $rootScope.filePath.location+'orders/apiAddProducts.json';
-    console.log($scope.url);
+	}
+
 	$http({method: 'GET',url: $scope.url,cache: false
 	 }).success(function (data, status, headers, config) {
 	    $scope.allProducts = data.products;
@@ -105,12 +114,10 @@ shopping.controller("addPoController", ["$scope","$log","$timeout","$http",'$roo
 				$scope.category.push({'categoryName':categoryKey,'vendorName':vendorkey});
 				angular.forEach(productObj.Product, function(prod, key) {
 					$scope.prod = prod;
-					//console.log($scope.prod); return false;
-					if($routeParams.id && $scope.prod.cv_id){
-						$scope.addToCart($scope.prod);
-					}
 					
-					if($scope.cookieCartItems){
+					if($routeParams.id && $scope.prod.ov_id){
+						$scope.addToCart($scope.prod,'edit');
+					}else if($scope.cookieCartItems){
 						var i=0, len=$scope.cookieCartItems.length;
 						for (; i<len; i++) {
 						   if(parseInt($scope.cookieCartItems[i].id) === parseInt($scope.prod.vid)){
@@ -187,7 +194,7 @@ shopping.controller("addPoController", ["$scope","$log","$timeout","$http",'$roo
     }
 	/*pagination*/
 	
-	 $scope.addToCart = function(object) {
+	 $scope.addToCart = function(object,option) {
 		  console.log('A');
 		 console.log($scope.vendorName);
 		if(!$scope.vendorName || !$scope.cookieCartItems){
@@ -202,7 +209,13 @@ shopping.controller("addPoController", ["$scope","$log","$timeout","$http",'$roo
 		}
 	    if (typeof object.qty != 'undefined'){
 			if(object.qty  != '' && object.price != ''){	
+			
+				if(option == 'edit')
+				$scope.addData = {vendor: object.vendor, category: object.category, id: parseInt(object.vid), title: object.title, price: parseFloat(object.price), qty: parseInt(object.qty), img: object.image, sum: parseFloat(object.sum),ov_id: parseInt(object.ov_id), po_no: object.po_no};
+				else
 				$scope.addData = {vendor: object.vendor, category: object.category, id: parseInt(object.vid), title: object.title, price: parseFloat(object.price), qty: parseInt(object.qty), img: object.image, sum: parseFloat(object.sum)};
+				
+				//console.log($scope.addData); return false;
 				cartService.addCart($scope.addData);
 				$scope.validationError = "";
 			 }else{
@@ -213,11 +226,7 @@ shopping.controller("addPoController", ["$scope","$log","$timeout","$http",'$roo
 		}
 		
 	 }
-	 
-	  /*$scope.cartTotalSum = function(){
-		  cartService.cartTotalSum()
-	  }
-	 */
+
 	 $scope.roundOfValue = function(a){ // a - row sum of price and qty
 		  return cartService.roundOfValue(a);
 	 }

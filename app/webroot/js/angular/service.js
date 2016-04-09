@@ -99,12 +99,12 @@ shopping.service('cartService',['$routeParams','$http','$cookies','$filter','$ro
 	this.removeCart = function(removeId){
 		self.cartItem.items.splice(removeId, 1);
 		self.cartTotalQty();
+		console.log(self.cartItem);
 		$cookies.putObject('cart', self.cartItem,{ expires:self.expiresTime() });
 		console.log("remove Cart:"+ self.cartItem.items.length)
 		if(self.cartItem.items.length == 0){
-		$cookies.putObject('vendor', '',{ expires:'Thu, 01 Jan 1970 00:00:00 UTC' });
+			 self.unSetCartItems();
 		}
-		$log.debug("fun: removeCart - "+ self.cartItem);
 	}
 	 
 	

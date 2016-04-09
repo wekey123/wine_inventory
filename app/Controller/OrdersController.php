@@ -36,15 +36,26 @@ class OrdersController extends AppController {
 		header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept");
 		//echo "<pre>"; print_r($this->request->data); echo "</pre>";  exit;
 		$user = $this->Auth->user();
-		if ($this->request->is('post')) {
-			$po='ORD'.rand('111111','999999');
+		if ($this->request->is('post')) {	
 				$value = $this->request->data;
-				$this->Order->create();
+				$this->Order->unbindModel(array('belongsTo' => array('Product','User')));
+				$this->Order->unbindModel(array('hasMany' => array('Invoice','Vary')));
+				if(!empty($value['poNo'])){
+					$ordervalue = $this->Order->find('first',array('conditions'=>array('Order.po_no'=>$value['poNo'])));
+					if(isset($ordervalue)){
+						$this->request->data['Order']['id'] = $ordervalue['Order']['id'];
+						$po = $ordervalue['Order']['po_no'];
+					}else{
+						
+					}
+				}else{
+					$po='ORD'.rand('111111','999999');
+					$this->Order->create();
+				}
 				$this->request->data['Order']['total_quantity']=$value['cartQty'];
 				$this->request->data['Order']['total_price']=$value['cartSum'];
 				$this->request->data['Order']['user_id']=$user['id'];
 				$this->request->data['Order']['vendor'] = $value['vendor'];
-				//$this->request->data['Order']['user_id']=1;
 				$this->request->data['Order']['po_no']=$po;
 				if($value['type']=='pending')
 				$this->request->data['Order']['status']=0;
@@ -56,6 +67,12 @@ class OrdersController extends AppController {
 					  if(!empty($quan)){
 						$options = array('conditions' => array('Vary.id' => $quan['id']));
 						$Orders = $this->Vary->find('first',$options);
+						
+						if(!empty($quan['ov_id']))
+							$this->request->data['Vary']['id'] = $quan['ov_id'];
+						else
+							$this->request->data['Vary']['id'] = '';
+							
 						$this->request->data['Vary']['product_id'] = $Orders['Vary']['product_id'];
 						$this->request->data['Vary']['vendor'] = $quan['vendor'];
 						$this->request->data['Vary']['po_no'] = $po;   
@@ -155,13 +172,11 @@ class OrdersController extends AppController {
 						$result[$product['Vendor']['name']][$product['Category']['name']]['Product'][$i]['qty'] = !empty($orderVar) ? $orderVar['Vary']['quantity'] : '';
 						$result[$product['Vendor']['name']][$product['Category']['name']]['Product'][$i]['sum'] = !empty($orderVar) ? $orderVar['Vary']['price_total'] : '';
 						$result[$product['Vendor']['name']][$product['Category']['name']]['Product'][$i]['po_no'] = !empty($orderVar) ? $orderVar['Vary']['po_no'] : '';
-						$result[$product['Vendor']['name']][$product['Category']['name']]['Product'][$i]['cv_id'] = !empty($orderVar) ? $orderVar['Vary']['id'] : '';
+						$result[$product['Vendor']['name']][$product['Category']['name']]['Product'][$i]['ov_id'] = !empty($orderVar) ? $orderVar['Vary']['id'] : '';
 					}
 				}
 				$i++;
 			}
-			
-				
 		}
 		$this->set('products', $result);
 		$this->set('_serialize', array('products'));

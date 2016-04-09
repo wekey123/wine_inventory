@@ -33,12 +33,14 @@ shopping.run(function($rootScope,$cookies,$location,$http,$routeParams){ console
 	var host = $location.host()+'/';
 	var path = $location.path();
 	console.log(host);
-	if(host == '52.4.188.247/')
+	if(host == '52.4.188.247/'){
 	$rootScope.filePath = {location:protocol+host+'inventory/'};
-	else
+	$rootScope.server = true;
+	}else{
 	$rootScope.filePath = {location:protocol+host};
 	console.log($rootScope.filePath);
-	
+	$rootScope.server = false;
+	}
 	
 	$rootScope.cookieCartItems = $cookies.getObject('cart') || 0;
 	
