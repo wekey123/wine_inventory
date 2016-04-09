@@ -2,12 +2,25 @@
 var shopping = angular.module('shopping', ['ngRoute','ngResource','ngCookies','angular.filter','simplePagination','ui.bootstrap']);
 
 
-shopping.config(function($routeProvider){console.log('Function: config');
+shopping.config(function($routeProvider,$locationProvider){console.log('Function: config');
+
+	var host = window.location.host;
+	console.log(host);
+	if(host == '52.4.188.247'){
+	console.log('A');
     $routeProvider
+        .when("/po",{templateUrl: '/inventory/app/webroot/js/angular/page/po.html',controller:'addPoController'})
+		.when("/po/:id",{templateUrl: '/inventory/app/webroot/js/angular/page/po.html',controller:'addPoController'})
+		.when("/cart",{templateUrl: '/inventory/app/webroot/js/angular/page/cart.html',controller:'cartController'})
+		.otherwise({ redirectTo: "/po" });
+	}else{
+	console.log('B');
+	$routeProvider
         .when("/po",{templateUrl: '/app/webroot/js/angular/page/po.html',controller:'addPoController'})
 		.when("/po/:id",{templateUrl: '/app/webroot/js/angular/page/po.html',controller:'addPoController'})
 		.when("/cart",{templateUrl: '/app/webroot/js/angular/page/cart.html',controller:'cartController'})
 		.otherwise({ redirectTo: "/po" });
+	}
 		
 });
 
@@ -15,7 +28,7 @@ shopping.config(function($routeProvider){console.log('Function: config');
 
 
 shopping.run(function($rootScope,$cookies,$location,$http,$routeParams){ console.log('Function: Run');
-	
+
 	var protocol = $location.protocol()+'://';
 	var host = $location.host()+'/';
 	var path = $location.path();
@@ -24,7 +37,8 @@ shopping.run(function($rootScope,$cookies,$location,$http,$routeParams){ console
 	$rootScope.filePath = {location:protocol+host+'inventory/'};
 	else
 	$rootScope.filePath = {location:protocol+host};
-
+	console.log($rootScope.filePath);
+	
 	
 	$rootScope.cookieCartItems = $cookies.getObject('cart') || 0;
 	
