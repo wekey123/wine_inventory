@@ -1,4 +1,4 @@
-shopping.controller('cartController',['$scope','$routeParams','$http','$cookies','$filter','$rootScope','$log','cartService',function($scope, $routeParams, $http,$cookies,$filter,$rootScope,$log,cartService){
+shopping.controller('cartController',['$scope','$routeParams','$http','$cookies','$filter','$rootScope','$log','cartService',function($scope, $routeParams, $http,$cookies,$filter,$rootScope,$log,cartService){console.log('Function: cartController');
 
 	 $scope.cartItem = cartService.getCartItems();
 	 
@@ -55,7 +55,13 @@ shopping.controller('cartController',['$scope','$routeParams','$http','$cookies'
 		 else
 		  $scope.postdata.type = 'pending';//  pending
 		  console.log($scope.postdata);
-		 $http({method: 'POST',url: '/orders/addcart.json',data :$scope.postdata,cache: false}).success(function (data, status, headers, config) {
+		  
+		if($routeParams.id)
+			$scope.url = $rootScope.filePath.location+'orders/addcart/'+$routeParams.id+'.json';
+		else
+	  		$scope.url = $rootScope.filePath.location+'orders/addcart.json';
+	
+		 $http({method: 'POST',url: $scope.url,data :$scope.postdata,cache: false}).success(function (data, status, headers, config) {
 			 console.log(data);
 			 if(data.responseCart.response !== 'E'){
 				 console.log(data.responseCart.message);
@@ -72,7 +78,7 @@ shopping.controller('cartController',['$scope','$routeParams','$http','$cookies'
 }]);
 
 
-shopping.controller("addPoController", ["$scope","$log","$timeout","$http",'$rootScope','$cookies','$filter','cartService','$routeParams', function ($scope, $log, $timeout, $http,$rootScope,$cookies,$filter,cartService,$routeParams) {
+shopping.controller("addPoController", ["$scope","$log","$timeout","$http",'$rootScope','$cookies','$filter','cartService','$routeParams','$location', function ($scope, $log, $timeout, $http,$rootScope,$cookies,$filter,cartService,$routeParams,$location) {console.log('Function: addPoController');
 
 	$scope.cookieCartItems = cartService.checkCookieBeforeAdd();
 	$scope.vendorName = cartService.getVendorName();
@@ -80,11 +86,12 @@ shopping.controller("addPoController", ["$scope","$log","$timeout","$http",'$roo
 	$scope.loader = true;
 	$scope.validationError = '';
 	$scope.url = '';
+	//console.log($rootScope.filePath.location); return false;
 	if($routeParams.id)
-		$scope.url = '/orders/apiAddProducts/'+$routeParams.id+'.json';
+		$scope.url = $rootScope.filePath.location+'orders/apiAddProducts/'+$routeParams.id+'.json';
 	else
-	   $scope.url = '/orders/apiAddProducts.json';
-console.log($scope.url);
+	   $scope.url = $rootScope.filePath.location+'orders/apiAddProducts.json';
+    console.log($scope.url);
 	$http({method: 'GET',url: $scope.url,cache: false
 	 }).success(function (data, status, headers, config) {
 	    $scope.allProducts = data.products;

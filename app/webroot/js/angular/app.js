@@ -2,7 +2,7 @@
 var shopping = angular.module('shopping', ['ngRoute','ngResource','ngCookies','angular.filter','simplePagination','ui.bootstrap']);
 
 
-shopping.config(function($routeProvider){console.log('trr');
+shopping.config(function($routeProvider){console.log('Function: config');
     $routeProvider
         .when("/po",{templateUrl: '/app/webroot/js/angular/page/po.html',controller:'addPoController'})
 		.when("/po/:id",{templateUrl: '/app/webroot/js/angular/page/po.html',controller:'addPoController'})
@@ -12,8 +12,19 @@ shopping.config(function($routeProvider){console.log('trr');
 });
 
 
-shopping.run(function($rootScope,$cookies,$location,$http,$routeParams){
+
+
+shopping.run(function($rootScope,$cookies,$location,$http,$routeParams){ console.log('Function: Run');
 	
+	var protocol = $location.protocol()+'://';
+	var host = $location.host()+'/';
+	var path = $location.path();
+	console.log(host);
+	if(host == '52.4.188.247/')
+	$rootScope.filePath = {location:protocol+host+'inventory/'};
+	else
+	$rootScope.filePath = {location:protocol+host};
+
 	
 	$rootScope.cookieCartItems = $cookies.getObject('cart') || 0;
 	
