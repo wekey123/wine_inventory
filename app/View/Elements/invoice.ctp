@@ -19,11 +19,11 @@
                                             <th><?php echo $this->Paginator->sort('Price'); ?></th>
                                             <th><?php echo $this->Paginator->sort('SKU'); ?></th>
                                             <th><?php echo $this->Paginator->sort('Barcode'); ?></th>
-                                            <th><?php echo $this->Paginator->sort('Order Number'); ?></th>
+                                            <th><?php //echo $this->Paginator->sort('Order Number'); ?><input type="checkbox" name="" class="all"  /></th>
                                         </tr>
                                     </thead>
                                     <tbody id="invoiceSaveID">
-                                     <?php $i =1;foreach ($order['Vary'] as $product):
+                                     <?php $i =1;$j =1;foreach ($order['Vary'] as $product):
 									 if($product['type'] =='order' && $product['quantity'] > 0){ ?>
                                         <tr>
                                             <td><?php echo $i; ?>&nbsp;</td>
@@ -46,9 +46,10 @@
                                             <td><?php echo $this->Util->currencyFormat($product['price']); ?>&nbsp;</td>
                                             <td><?php echo h($product['sku']); ?>&nbsp;</td>
                                             <td><?php echo h($product['barcode']); ?>&nbsp;</td>
-                                            <td><?php echo h($product['po_no']); ?>&nbsp;</td>
+                                            <td><?php //echo h($product['po_no']); ?> <input type="checkbox" <?php echo isset($product['inv_count']) ? ($product['inv_count'] == $product['quantity'] ? 'checked="checked"' : '') : '';?> rel="<?php echo $product['quantity'];?>" name="" id="<?php echo $i ?>"  />&nbsp;
+                                            </td>
                                         </tr>
-                                    <?php $i++; }endforeach; ?>
+                                    <?php $i++; ?> <input type="hidden" class="Allchk" value="<?php echo isset($product['inv_count']) ? ($product['inv_count'] == $product['quantity'] ? $j++ : $j--) : $j--;?>" rel="<?php echo $j == $i ? true : false; ?>" rel2="<?php echo $j; ?>"  rel3="<?php echo $i; ?>"/><?php } endforeach; ?>
                                      <input type="hidden" name="Vary[type]" value="invoice"   id="itemVariant" />
                                     </tbody>
                                 </table>
@@ -61,5 +62,42 @@
     <script>
     $(document).ready(function() {
 		$('#invoice_tab').DataTable();
+		console.log($('.Allchk').attr("rel"));
+		if($('.Allchk').attr("rel"))
+		$('.all').prop("checked", $('.Allchk').attr("rel"));
 	} );
+	$(document).on("change", ".all:not('.minus')", function (e) {console.log('d');console.log($(this).is(":checked"));
+		$('input[type=checkbox]').each(function () {
+			if($(this).is(":checked"))
+			$(this).parent().parent().find('.invoiceQuantitychk').val('');
+			else
+			$(this).parent().parent().find('.invoiceQuantitychk').val($(this).attr('rel'));
+		});
+		$(':checkbox').prop("checked", $(this).is(":checked"));
+	});
+	
+	$(document).on("change", ".all.minus", function (e) {console.log('c');
+		$(':checkbox').prop("checked", false);
+		$(".all").removeClass("minus");
+	});
+	$(document).on("change", ":checkbox:not('.all')", function (e) {
+		if ($(':checkbox').not(".all").length == $(':checkbox:checked').not(".all").length) {
+			$(this).parent().parent().find('.invoiceQuantitychk').val($(this).attr('rel'));
+			$(".all").prop("checked", true).removeClass("minus");
+		} else {
+			
+			$(".all").prop("checked", false).addClass("minus");
+			if ($(':checkbox:checked').not(".all").length == 0) {
+				$(this).parent().parent().find('.invoiceQuantitychk').val('');
+				console.log('a');
+				$(".all").removeClass("minus");
+			}else{
+				if($(this).is(":checked"))
+				$(this).parent().parent().find('.invoiceQuantitychk').val($(this).attr('rel'));
+				else
+				$(this).parent().parent().find('.invoiceQuantitychk').val('');
+				console.log($(this).is(":checked"));
+			}
+		}
+	});
     </script>

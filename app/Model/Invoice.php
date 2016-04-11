@@ -11,8 +11,19 @@ class Invoice extends AppModel {
 	
 	
 	public $validate = array(
+	   'vendor_name' => array(
+            'notEmpty' => array(
+            'rule' => array('notBlank'),
+            'message' => 'Please Select the Vendor',
+            'allowEmpty' => false
+        	),
+        ),
         'po_no' => array(
-           'rule' => 'notBlank',
+           'notEmpty' => array(
+            'rule' => array('notBlank'),
+            'message' => 'Please Select the Order',
+            'allowEmpty' => false
+        	),
         ),
 		'invoice_no' => array(
             'rule' => 'notBlank',
