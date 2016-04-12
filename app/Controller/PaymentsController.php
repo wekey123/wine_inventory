@@ -15,7 +15,7 @@ class PaymentsController extends AppController {
  *
  * @var array
  */
-	public $uses = array('Payment','Invoice','Product','Vary','Category','Order');
+	public $uses = array('Payment','Invoice','Product','Vary','Category','Order','Vendor');
 	public $components = array('Paginator', 'Flash', 'Session' ,'Image','Auth');
 	public $layout = 'admin';
 
@@ -85,10 +85,10 @@ class PaymentsController extends AppController {
 	public function add() {
 		$user = $this->Auth->user();
 		if ($this->request->is('post')) {
-			//debug($this->request->data); exit;
 			$this->request->data['Payment']['user_id'] = $user['id'];
 			$this->request->data['Payment']['payment_date'] = date("Y-m-d", strtotime($this->request->data['Payment']['payment_date']));
 			$this->request->data['Payment']['payment_amount'] = str_replace(array( ',','$'), '', $this->request->data['Payment']['payment_amount']);
+			//debug($this->request->data); exit;
 			$this->Payment->create();
 			if ($this->Payment->save($this->request->data)) {
 				if(($this->request->data['dueAmount']-str_replace(array( ',','$'), '', $this->request->data['Payment']['payment_amount'])) <= 0){
@@ -110,6 +110,7 @@ class PaymentsController extends AppController {
 			$invoicelist[]=$invoice['Invoice']['invoice_no'];
 		}
 		$this->set(compact('invoicelist'));
+		self::vendorList();
 		/*$invoices = $this->Payment->Invoice->find('list');
 		$this->set(compact('invoices'));*/
 	}
@@ -228,6 +229,31 @@ class PaymentsController extends AppController {
 		 $options = array('conditions' => array('Invoice.invoice_no' => $no));
 		 $this->set('invoice', $this->Invoice->find('first', $options));
 		 $this->render('payment');
+	}
+	private function vendorList(){
+		$vendors1= $this->Vendor->find('all');
+		//$vendor[0] = 'Select Vendor';
+		foreach($vendors1 as $key => $vendors) {
+			if(isset($vendors['Category'][0]))
+			$vendor[$vendors['Vendor']['name']]= $vendors['Vendor']['name'];
+		}
+		$this->set('vendor', $vendor);
+		
+	}
+	public function invoicelist($value = null) {
+		 $this->layout = '';
+		 $this->autoRender = false ;
+		 $no=$_POST['label'];
+		 $options = array('conditions' => array('Invoice.vendor_name' => $no,'Invoice.status' => array(0,1)),'fields'=> array('Invoice.id','Invoice.invoice_no'));
+		 $cat= $this->Invoice->find('all', $options);
+		 if(!empty($cat)){
+		 $val='<option value="">Select the Invoice</option>';
+		 foreach($cat as $cate){
+			 $val.='<option value="'.$cate['Invoice']['invoice_no'].'">'.$cate['Invoice']['invoice_no'].'</option>';
+		 }
+		 }else
+		 $val='no';
+		 return $val;
 	}
 	
 }

@@ -4,7 +4,7 @@
                      <!--    Hover Rows  -->
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            Products List
+                           <label style="color:#a94442;">PO Products List </label>
                         </div>
                         <div class="panel-body">
                             <div class="table-responsive" style="overflow-x:hidden;"><span class="error_msg_var"></span>

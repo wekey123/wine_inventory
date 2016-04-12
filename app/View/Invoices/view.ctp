@@ -2,6 +2,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-12">
+                <?php echo $this->Html->link('Invoice Lists', array('action' => '/'),array('class'=>'btn btn-primary','style'=>'margin-bottom:20px; float:right')); ?>
                     <h4 class="page-head-line"><?php echo __('Invoice View'); ?></h4>
 
                 </div>
