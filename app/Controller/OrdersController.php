@@ -177,6 +177,7 @@ class OrdersController extends AppController {
 				}
 				$i++;
 			}
+					$result['Vendor'] = $product['Vendor']['name'];
 		}
 		$this->set('products', $result);
 		$this->set('_serialize', array('products'));
