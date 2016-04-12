@@ -9,7 +9,7 @@
      <div class="row">
         <div class="col-md-12">
       		<a ng-href="#po" class="btn btn-primary" style="margin-bottom:20px; float:right">ADD MORE SHOPPING</a>
-            <h4 class="page-head-line">Purchase Orders Cart List</h4>
+            <h4 class="page-head-line" style="color: #286090; border-bottom: 2px solid #286090;">Purchase Orders Cart List</h4>
         </div>
      </div>
      
@@ -48,8 +48,8 @@
                                      <td><input type="text"  class="form-control" ng-model="itm.price" /></td>
                                      <td><input type="text"  class="form-control"  ng-model="itm.qty" /></td>
                                      <td> ${{  itm.sum = roundOfValue(itm.qty * itm.price) }} </td>
-                                      <td><a ng-click="updateToCart(itm)">Update Cart</a></td>
-                                     <td><a ng-click="removeCart($index)">Remove Cart</a></td>
+                                      <td><a class="btn btn-primary btn-sm" ng-click="updateToCart(itm)">Update Cart</a></td>
+                                     <td><a class="btn btn-primary btn-sm" ng-click="removeCart($index)">Remove Cart</a></td>
                                     </tr>
                                     
                         </tbody>
