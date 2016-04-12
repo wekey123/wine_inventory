@@ -15,7 +15,7 @@ class InvoicesController extends AppController {
  *
  * @var array
  */
-	public $uses = array('Invoice','Product','Vary','Category','Order','InvoiceColumn');
+	public $uses = array('Invoice','Product','Vary','Category','Order','InvoiceColumn','Vendor');
 	public $components = array('Paginator', 'Flash', 'Session' ,'Image','Auth');
 	public $layout = 'admin';
 /**
@@ -115,7 +115,7 @@ class InvoicesController extends AppController {
 						$i++;
 					}
 				 
-				$this->Order->updateAll(array('Order.status' => 1),array('Order.po_no' => $this->request->data['Invoice']['po_no']));
+				$this->Order->updateAll(array('Order.status' => 2),array('Order.po_no' => $this->request->data['Invoice']['po_no']));
 					
 				$this->Flash->success(__('The invoice has been saved.'));
 				return $this->redirect(array('action' => 'index'));
@@ -130,7 +130,7 @@ class InvoicesController extends AppController {
 				return $this->redirect(array('action' => 'index'));
 			}
 		}
-		$orders = $this->Invoice->Order->find('all',array('conditions'=>array('Order.status'=>0),'fields'=>array('Order.po_no'),'group'=>'Order.po_no'));
+		/*$orders = $this->Invoice->Order->find('all',array('conditions'=>array('Order.status'=>0),'fields'=>array('Order.po_no'),'group'=>'Order.po_no'));
 		
 		if(empty($orders)){
 			$this->Flash->success(__('Currently No order has been added. Please make the order.'));
@@ -142,7 +142,20 @@ class InvoicesController extends AppController {
 		$this->set(compact('orderlist'));
 		//echo '<pre>';print_r($orders);
 		$this->set(compact('orders'));
+		}*/
+		
+		self::categoryList();
+	}
+	
+	private function categoryList(){
+		$vendors1= $this->Vendor->find('all');
+		//$vendor[0] = 'Select Vendor';
+		foreach($vendors1 as $key => $vendors) {
+			if(isset($vendors['Category'][0]))
+			$vendor[$vendors['Vendor']['name']]= $vendors['Vendor']['name'];
 		}
+		$this->set('vendor', $vendor);
+		
 	}
 
 /**
@@ -171,7 +184,7 @@ class InvoicesController extends AppController {
 				    $this->InvoiceColumn->save($this->request->data);
 				 }
 				}
-				
+				$pricetotal = 0;$allQuan = 0;
 			  if(isset($this->request->data['Vary'])){
 				$i=1;
 				$value = $this->request->data['Vary'];
@@ -184,6 +197,8 @@ class InvoicesController extends AppController {
 						$this->request->data['Vary']['barcode'] = $value['barcode'][$i];
 						$this->request->data['Vary']['price'] = $value['price'][$i];
 						$this->request->data['Vary']['price_total'] = $value['price'][$i] * $quan;
+						$pricetotal +=$value['price'][$i] * $quan;
+						$allQuan += $quan;
 						$this->request->data['Vary']['type'] = 'invoice';
 						$this->request->data['Vary']['var_id'] = $value['var_id'][$i];
 						$this->request->data['Vary']['id'] = isset($value['inv_id']) ? $value['inv_id'][$i] : '';
@@ -192,8 +207,8 @@ class InvoicesController extends AppController {
 						$i++;
 					}
 				 
-				$this->Order->updateAll(array('Order.status' => 1),array('Order.po_no' => $this->request->data['Invoice']['po_no']));
-					
+				$this->Order->updateAll(array('Order.status' => 2),array('Order.po_no' => $this->request->data['Invoice']['po_no']));
+				$this->Invoice->updateAll(array('Invoice.total_price'=>$pricetotal,'Invoice.total_quantity'=>$allQuan),array('Invoice.id' => $id));	
 				$this->Flash->success(__('The invoice has been saved.'));
 				return $this->redirect(array('action' => 'index'));
 			}
@@ -243,6 +258,7 @@ class InvoicesController extends AppController {
 		}
 		$orders = $this->Invoice->Order->find('list');
 		$this->set(compact('orders'));
+		self::categoryList();
 	}
 
 
@@ -315,6 +331,19 @@ class InvoicesController extends AppController {
 		return true;
 		else
 		return false;
+	}
+	
+	public function orderlist($value = null) {
+		 $this->layout = '';
+		 $this->autoRender = false ;
+		 $no=$_POST['label'];
+		 $options = array('conditions' => array('Order.vendor' => $no,'Order.status' => array(0,1)),'fields'=> array('Order.id','Order.po_no'));
+		 $cat= $this->Order->find('all', $options);
+		 $val='<option value="">Select the Order</option>';
+		 foreach($cat as $cate){
+			 $val.='<option value="'.$cate['Order']['po_no'].'">'.$cate['Order']['po_no'].'</option>';
+		 }
+		 return $val;
 	}
 	
 }

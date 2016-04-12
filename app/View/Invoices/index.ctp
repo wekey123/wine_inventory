@@ -4,7 +4,7 @@
      <div class="row">
         <div class="col-md-12">
         <?php echo $this->Html->link('Add Invoice', array('action' => 'add'),array('class'=>'btn btn-primary','style'=>'margin-bottom:20px; float:right')); ?>
-            <h4 class="page-head-line">Invoices</h4>
+            <h4 class="page-head-line">Invoices Entry List</h4>
         </div>
         <div class="col-md-12">
         <h5 style="color:#F0677C; float: left;"><?php echo $this->Flash->render(); ?></h4>
@@ -15,7 +15,7 @@
                      <!--    Hover Rows  -->
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                           <?php echo __('Invoices List'); ?>
+                           <?php echo __('Invoices Entry List'); ?>
                         </div>
                         <div class="panel-body">
                             <div class="table-responsive" style="overflow-x:hidden;">
