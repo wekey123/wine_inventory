@@ -19,13 +19,14 @@
     margin-left: 30%;
 }
 </style>
-<div class="content-wrapper">
+<div class="content-wrapper" style="min-height:0px;">
     <div class="container">
     <?php echo $this->Form->create('Invoice',array('id'=>'invoiceAdd','role'=>'form')); ?>
       <div class="row">
             <div class="col-md-12">
-                <h1 class="page-head-line"><?php echo __('Add Invoice Entry'); ?> <span id="error_msg"></span></h1> 
+                <h1 class="page-head-line"><?php echo __('Add Invoice Entry'); ?></h1> 
             </div>
+              <div class="col-md-12"><span id="error_msg_no" style="color:red"></span></div>
         </div>
      <div class="row">
      <div class="col-md-5" style="margin-right:10%;"> 
@@ -38,7 +39,7 @@
     <div class="row invoiceFormAll" style="display:none">
     
      <div class="col-md-12">
-                <h1 class="page-head-line"><?php echo __('Invoice Form'); ?> <span id="error_msg"></span></h1> 
+                <h1 class="page-head-line" style="font-size:16px;"><?php echo __('Invoice Form'); ?> <span id="error_msg"></span></h1> 
             </div>
     
         <div class="col-md-5" style="margin-right:10%;">               
@@ -71,7 +72,7 @@
 		<div class="row invoiceFormAll" style="display:none">
         <div class="col-md-12">
             <div class="panel panel-default">
-            	<div class="panel-heading">Invoice Coloumns <span class="error_msg_var"></span> <a id="invoiceAddColoumn" class="btn btn-primary addmore">Add More Coloumns</a><!--<span class="varient-enable glyphicon glyphicon-plus"></span>--></div>              
+            	<div class="panel-heading"><label style="color:#a94442">More Invoice Coloumns </label><span class="error_msg_var"></span> <a id="invoiceAddColoumn" class="btn btn-primary addmore">Add More Coloumns</a><!--<span class="varient-enable glyphicon glyphicon-plus"></span>--></div>              
                 <div class="panel-body" id="varient_body">           
                 
                  <div id='TextBoxesGroup'>	</div>
@@ -107,16 +108,20 @@
 	
 	$('#VendorType').on('change',function(e){
 		$('#VendorCatType').html('');
+		$('#error_msg_no').html('');
 		$.ajax({
 			  type: 'POST',
 			  url: '<?php echo $ServerBaseURL.'/invoices/orderlist'; ?>',//whatever any url
 			  data: {label: $(this).val()},
 			  success: function(message) {
-				  if(message){
+				  if(message != 'no'){
 					  console.log(message);
 					  $('#VendorCatType').html(message);
 				  }else{
-					 console.log(message);
+					   $('.invoiceFormAll').hide();
+		 			   $('#invoiceForm').html('');
+					   $('#error_msg_no').html('Currently the vendor has no orders.');
+					 	console.log(message);
 				  }
 			   }
 		   });
@@ -135,8 +140,9 @@
 				  $('#invoiceForm').append(message);
 			   }
 		   });
-		 }else
-		 $('.invoiceFormAll').hide();$('#invoiceForm').html('');
+		 }else{
+		 $('.invoiceFormAll').hide();$('#invoiceForm').html('');$('#error_msg_no').html('');
+		 }
 	 });
 	 
 </script>

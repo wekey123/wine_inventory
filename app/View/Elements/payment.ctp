@@ -1,4 +1,14 @@
-					<?php  
+<style>
+.table-responsive strong {
+    width: 30%;
+    float: left;
+}
+.table-responsive span.colon {
+    width: 5%;
+    float: left;
+}
+</style>
+        			<?php  
 						  $totalAmountPayed = array();
 						  $paymentqty = array();
 				          $this->Util->setInvoiceTotalPrice($invoice['Invoice']['total_price']);
@@ -19,20 +29,21 @@
                         </div>
                         <div class="panel-body">
                             <div class="table-responsive">
+                             <strong><?php echo __('Vendor Name'); ?></strong> <span class="colon"> : </span> <span><?php echo h($invoice['Invoice']['vendor_name']); ?></span> <br />
                                <?php 
 								   echo $this->Form->input('Payment.po_no',array('div'=>false,'error'=>false,'type'=>'hidden', 'value' => $invoice['Invoice']['po_no']));
 							   ?>
-                               
-                                <strong><?php echo __('Invoice Number'); ?></strong> <span> : </span> <span><?php echo h($invoice['Invoice']['invoice_no']); ?></span> <br />
-                               <strong><?php echo __('Invoice Date'); ?></strong> <span> : </span> <span><?php echo $this->Util->DateOnlyFormat($invoice['Invoice']['invoice_date']); ?></span> <br /> 
-                               <strong><?php echo __('Total Quantity'); ?></strong> <span> : </span> <span id="invoiceqty"><?php echo h($invoice['Invoice']['total_quantity']); ?></span> <br />
-                               <strong><?php echo __('Quantity Left'); ?></strong> <span> : </span> <span id="invoiceqty"><?php echo $this->Util->getQtyLeft(); ?></span> <br />
-                                <strong><?php echo __('Total Amount'); ?></strong> <span> : </span> <span><?php echo $this->Util->currencyFormat($invoice['Invoice']['total_price']); ?></span> <br />
+                               <strong><?php echo __('PO Number'); ?></strong> <span class="colon"> : </span> <span><?php echo h($invoice['Invoice']['po_no']); ?></span> <br />
+                                <strong><?php echo __('Invoice Number'); ?></strong> <span class="colon"> : </span> <span><?php echo h($invoice['Invoice']['invoice_no']); ?></span> <br />
+                               <strong><?php echo __('Invoice Date'); ?></strong> <span class="colon"> : </span> <span><?php echo $this->Util->DateOnlyFormat($invoice['Invoice']['invoice_date']); ?></span> <br /> 
+                               <strong><?php echo __('Total Quantity'); ?></strong> <span class="colon"> : </span> <span id="invoiceqty"><?php echo h($invoice['Invoice']['total_quantity']); ?></span> <br />
+                               <strong><?php echo __('Quantity Left'); ?></strong> <span class="colon"> : </span> <span id="invoiceqty"><?php echo $this->Util->getQtyLeft(); ?></span> <br />
+                                <strong><?php echo __('Total Amount'); ?></strong> <span class="colon"> : </span> <span><?php echo $this->Util->currencyFormat($invoice['Invoice']['total_price']); ?></span> <br />
                                 <?php $due= $this->Util->getAmountDue();?>
-                                <strong><?php echo __('Amount Due'); ?></strong> <span> : </span> <span><?php  echo $this->Util->currencyFormat($due);  ?></span> <br />
-                               <strong><?php echo __('Vendor Name'); ?></strong> <span> : </span> <span><?php echo h($invoice['Invoice']['vendor_name']); ?></span> <br />
-                               <strong><?php echo __('Shipping By'); ?></strong> <span> : </span> <span><?php echo h($invoice['Invoice']['shipping_method']); ?></span> <br />
-                              <strong><?php echo __('Created Date'); ?></strong> <span> : </span> <span><?php echo $this->Util->DateFormat($invoice['Invoice']['created']); ?></span> <br />
+                                <strong><?php echo __('Amount Due'); ?></strong> <span class="colon"> : </span> <span><?php  echo $this->Util->currencyFormat($due);  ?></span> <br />
+                              
+                               <?php /*?><strong><?php echo __('Shipping By'); ?></strong> <span> : </span> <span><?php echo h($invoice['Invoice']['shipping_method']); ?></span> <br /><?php */?>
+                              <strong><?php echo __('Created Date'); ?></strong> <span class="colon"> : </span> <span><?php echo $this->Util->DateFormat($invoice['Invoice']['created']); ?></span> <br />
                                
                                 
                             </div>

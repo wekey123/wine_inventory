@@ -339,11 +339,64 @@ class InvoicesController extends AppController {
 		 $no=$_POST['label'];
 		 $options = array('conditions' => array('Order.vendor' => $no,'Order.status' => array(0,1)),'fields'=> array('Order.id','Order.po_no'));
 		 $cat= $this->Order->find('all', $options);
+		 if(!empty($cat)){
 		 $val='<option value="">Select the Order</option>';
 		 foreach($cat as $cate){
 			 $val.='<option value="'.$cate['Order']['po_no'].'">'.$cate['Order']['po_no'].'</option>';
 		 }
+		 }else
+		 $val='no';
 		 return $val;
 	}
 	
+	public function report($invoiceId = null,$page = null){
+		$this->layout = null;
+		$this->Invoice->bindModel(array('hasMany' => array('Vary' => array('foreignKey' => false,'conditions' => array('Vary.type' => 'invoice','Vary.po_no'=>$invoiceId)))),false);
+		$options = array('conditions' => array('Invoice.invoice_no' => $invoiceId),'group' => 'Invoice.invoice_no');
+		$Invoice = $this->Invoice->find('first',$options);
+		$i =0;
+		$total[1] = '';
+		$total[2] = '';
+		$total[3] = '';
+		$total[4] = '';
+		$total[5] = '';
+		$total[6] = '';
+		$total[7] = '';
+		$total[8] = '';
+		$total[9] = 0;
+		$total[10] = '';
+		$total[11] = 0.00;
+		//$total[12] = 0.00;
+			//debug($Invoice); exit;
+			foreach($Invoice['Vary'] as $vary){
+				$result[$vary['po_no']][$i]['SNO'] = $i+1;
+				$result[$vary['po_no']][$i]['VENDOR NAME'] = $Invoice['Invoice']['vendor_name'];
+				$result[$vary['po_no']][$i]['INVOICE NUMBER'] = $vary['po_no'];
+				$result[$vary['po_no']][$i]['PO NUMBER'] = $Invoice['Invoice']['po_no'];
+				$options = array('conditions' => array('Product.id' => $vary['product_id']));
+				$product_array = $this->Product->find('first',$options);
+				$result[$vary['po_no']][$i]['PRODUCT NAME'] = $product_array['Product']['title'];
+				//$result[$vary['po_no']][$i]['CATEGORY NAME'] = $product_array['Product']['category_name'];
+				$result[$vary['po_no']][$i]['SIZE'] = $vary['variant'];
+				$result[$vary['po_no']][$i]['SKU'] = $vary['sku'];
+				$result[$vary['po_no']][$i]['BARCODE'] = $vary['barcode'];
+				$result[$vary['po_no']][$i]['QTY'] = $vary['quantity'];
+				$price = number_format($vary['price'], 2, '.', '');
+				$result[$vary['po_no']][$i]['PRICE'] = '$'.$price;
+				$extended_price = number_format(($vary['quantity']*$price), 2, '.', '');
+				$result[$vary['po_no']][$i]['EXTENDED PRICE'] = '$'.$extended_price;
+				$total[9] += $vary['quantity'];
+				$total[11] += number_format($extended_price, 2, '.', '');
+				$i++;
+			}
+			
+		$total[11] = '$'.number_format($total[11], 2, '.', '');
+		//debug($result); exit;
+		$this->set('data', $result);
+		$this->set('totals', $total);
+		$this->set('frompage',$page);
+		$this->set('invoiceId',$invoiceId);
+		$this->autoLayout = false;
+		Configure::write('debug', '0');
+	}
 }
