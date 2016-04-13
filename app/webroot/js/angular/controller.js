@@ -5,6 +5,7 @@ shopping.controller("addPoController", ["$scope","$log","$timeout","$http",'$roo
 	$scope.allProducts = '{}';
 	$scope.loader = true;
 	$scope.validationError = '';
+	$scope.showProduct = false;
 	$scope.url = $rootScope.filePath.location+'orders/apiAddProducts.json';
 	$http({method: 'GET',url: $scope.url,cache: false
 	 }).success(function (data, status, headers, config) {
@@ -16,7 +17,7 @@ shopping.controller("addPoController", ["$scope","$log","$timeout","$http",'$roo
 		angular.forEach($scope.allProducts, function(category, vendorkey) {
 			$scope.vendor.push({'vendorName':vendorkey});
 			angular.forEach(category, function(productObj, categoryKey) {
-				$scope.category.push({'categoryName':categoryKey,'vendorName':vendorkey});
+				$scope.category.push({'categoryName':categoryKey,'vendorName':vendorkey,'categoryNamebox':false});
 				angular.forEach(productObj.Product, function(prod, key) {
 					$scope.prod = prod;
 					 if($scope.cookieCartItems){
@@ -33,7 +34,11 @@ shopping.controller("addPoController", ["$scope","$log","$timeout","$http",'$roo
 				});
 			});
 		});
+		
+		if(!$scope.cartVendorName)
 		$scope.selectedVendor = $scope.vendor[0]['vendorName'];
+		else
+		$scope.selectedVendor = $scope.cartVendorName;
 		//console.log($scope.vendor);
 		//console.log($scope.category);
 		//console.log($scope.product);	
@@ -42,6 +47,17 @@ shopping.controller("addPoController", ["$scope","$log","$timeout","$http",'$roo
 	   $scope.loader = false;
 	});
 	
+	$scope.selectedCategory = [];
+	
+	$scope.changeCategory = function(){
+		 angular.forEach($scope.category, function(cat, key) {
+			$scope.category[key].categoryNamebox = false;
+			$scope.showProduct = false;
+			$scope.selectedCategory = [];
+		}); 
+	};
+	
+	
 	 /*Vendor Filter to category*/
  	 $scope.categoryFilterExpression = function(categoryList) {
 		if($scope.selectedVendor === 'all'){
@@ -49,6 +65,7 @@ shopping.controller("addPoController", ["$scope","$log","$timeout","$http",'$roo
 		}
         return (categoryList.vendorName === $scope.selectedVendor );
      };
+	 
 	/*Vendor Filter to product*/ 
 	 $scope.productFilterExpression = function(productList) {
 		if($scope.selectedVendor === 'all'){
@@ -58,26 +75,31 @@ shopping.controller("addPoController", ["$scope","$log","$timeout","$http",'$roo
      };
 	
 	
+	
 	/*Category Filter*/
-	 $scope.selectedCategory = [];
 	 /*Select Category*/
 	 $scope.checkCategory = function(cat) {
+		 console.log('checkCategory');
+		 console.log(cat); 
+		 
         var i = $.inArray(cat, $scope.selectedCategory);
         if (i > -1) {
+			$scope.showProduct = true;
             $scope.selectedCategory.splice(i, 1);
         } else {
+			$scope.showProduct = true;
             $scope.selectedCategory.push(cat);
         }
     }
 
 	/*Category filter with product*/
 	$scope.categoryProductFilterExpression = function(productList) {
-		
         if ($scope.selectedCategory.length > 0) {
             if ($.inArray(productList.category, $scope.selectedCategory) < 0)
                 return;
-        }
-        
+        }else{
+			$scope.showProduct = false;
+		}
         return productList;
     }
 	/*Category*/

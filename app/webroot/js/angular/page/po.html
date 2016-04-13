@@ -18,7 +18,7 @@
                  <div class="form-group">
                     <div class="col-md-2"><label><i class="fa fa-question-circle fa-fw"></i> Vendor List</label></div>
                     <div class="col-md-2">
-                        <select class="form-control" ng-model="selectedVendor" >
+                        <select class="form-control" ng-model="selectedVendor" ng-change="changeCategory()">
                             <option value="all">ALL</option>
                             <option  ng-repeat="allVendor in vendor" value="{{allVendor.vendorName}}">{{allVendor.vendorName}}</option>
                         </select>
@@ -47,7 +47,7 @@
           <div class="col-md-12">
                  <div class="form-group">
                     <div class="col-md-2"><label><i class="fa fa-question-circle fa-fw"></i>Category List</label></div><br/>
-                       <!--  <pre>{{category | json}}</pre>-->
+                     <!-- <pre>{{category | json}}</pre>-->
                    	 <div class="col-md-12">    
                           <label style="padding: 05px 10px 10px 10px;" ng-repeat="allCategory in category | filter:categoryFilterExpression | orderBy:'+categoryName' | unique:'categoryName'">{{allCategory.categoryName}}
 							 <!--<input type="checkbox" ng-model="allCategory.categoryNamebox" ng-click="checkCategory(allCategory.categoryName)">-->
@@ -61,7 +61,7 @@
          </div>
 	 </div>
         
-        <div class="panel panel-default">
+        <div class="panel panel-default" ng-show="showProduct">
             <div class="panel-heading">
                 Products List
             </div>
