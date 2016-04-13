@@ -138,8 +138,10 @@ shopping.service('cartService',['$routeParams','$http','$cookies','$filter','$ro
 	}
 	
 	this.unSetCartItems = function(){
-		$cookies.putObject('cart', '',{ expires:'Thu, 01 Jan 1970 00:00:00 UTC' });
-		$cookies.putObject('vendor', '',{ expires:'Thu, 01 Jan 1970 00:00:00 UTC' });
+		$cookies.remove("cart");
+		$cookies.remove("vendor");
+		/*$cookies.putObject('cart', '',{ expires:'Thu, 01 Jan 1970 00:00:00 UTC' });
+		$cookies.putObject('vendor', '',{ expires:'Thu, 01 Jan 1970 00:00:00 UTC' });*/
 	}
 	
 	this.checkCookieBeforeAdd = function(){
@@ -152,11 +154,12 @@ shopping.service('cartService',['$routeParams','$http','$cookies','$filter','$ro
 	}
 	
 	this.getVendorName = function(){
-		console.log($cookies.getObject('vendor'));
 		if($cookies.getObject('vendor')){
 		   self.vendorName = $cookies.getObject('vendor');
 		   return self.vendorName;
 		}else{
+		   $cookies.remove("vendor");
+		   self.vendorName = '';
 		   return false;
 		}
 	}

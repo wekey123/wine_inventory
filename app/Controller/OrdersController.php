@@ -94,7 +94,11 @@ class OrdersController extends AppController {
 						
 						//debug($this->Vary->validationErrors); //show validationErrors 
 						//exit;
+						if(!empty($items['ov_id'])){
+						$this->Vary->updateAll(array('Vary.po_qty' => $this->request->data['Vary']['quantity']),array('Vary.product_id' => $this->request->data['Vary']['product_id'],'Vary.type' => 'product'));
+						}else{
 						$this->Vary->updateAll(array('Vary.po_qty' => $product['Vary']['po_qty']+$this->request->data['Vary']['quantity']),array('Vary.product_id' => $this->request->data['Vary']['product_id'],'Vary.type' => 'product'));
+						}
 						$i++;
 					  }
 				 }
@@ -154,10 +158,16 @@ class OrdersController extends AppController {
 	}
 	
 	public function apiAddProducts($value = null) {
+		Configure::write('debug', 0);
    		header("Access-Control-Allow-Origin: *");
 		header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept");
 		$products = $this->Product->find('all');
 		$i =0;
+		/*if(isset($value)){
+					$result['totalQty'] = 0;
+					$result['totalSum'] = 0.00;
+					$result['editVendor'] = '';
+		}*/
 		foreach($products as $product){
 			foreach($product['Vary'] as $key => $vary){
 				$result[$product['Vendor']['name']][$product['Category']['name']]['Product'][$i] = $product['Product'];
@@ -176,14 +186,18 @@ class OrdersController extends AppController {
 					$orderVar = $this->Vary->find('first',array('conditions' => array('Vary.var_id'=> $vary['id'],'Vary.po_no'=>$value),'fields' => array('Vary.id', 'Vary.price', 'Vary.quantity','Vary.price_total','Vary.po_no')));
 						if(!empty($orderVar)){
 							$result[$product['Vendor']['name']][$product['Category']['name']]['Product'][$i]['price'] = !empty($orderVar) ? $orderVar['Vary']['price'] : '';
-							$result[$product['Vendor']['name']][$product['Category']['name']]['Product'][$i]['qty'] = !empty($orderVar) ? $orderVar['Vary']['quantity'] : '';
+							$result[$product['Vendor']['name']][$product['Category']['name']]['Product'][$i]['quantity'] = !empty($orderVar) ? $orderVar['Vary']['quantity'] : '';							//$result[$product['Vendor']['name']][$product['Category']['name']]['Product'][$i]['qty'] = !empty($orderVar) ? $orderVar['Vary']['quantity'] : '';
 							$result[$product['Vendor']['name']][$product['Category']['name']]['Product'][$i]['sum'] = !empty($orderVar) ? $orderVar['Vary']['price_total'] : '';
 							$result[$product['Vendor']['name']][$product['Category']['name']]['Product'][$i]['po_no'] = !empty($orderVar) ? $orderVar['Vary']['po_no'] : '';
 							$result[$product['Vendor']['name']][$product['Category']['name']]['Product'][$i]['ov_id'] = !empty($orderVar) ? $orderVar['Vary']['id'] : '';
+							
+							$result['totalQty']  += !empty($orderVar) ? $orderVar['Vary']['quantity'] : 0;
+							$result['totalSum']  += !empty($orderVar) ? $orderVar['Vary']['price_total'] : 0.00;
+							$result['editVendor'] = $product['Vendor']['name'];
 						}
 					}
 				if(isset($value)){
-					$result['Vendor'] = $product['Vendor']['name'];
+					
 				}
 			$i++;
 			}

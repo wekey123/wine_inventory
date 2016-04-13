@@ -1,5 +1,5 @@
-shopping.controller("addPoController", ["$scope","$log","$timeout","$http",'$rootScope','$cookies','$filter','cartService','$routeParams','$location', function ($scope, $log, $timeout, $http,$rootScope,$cookies,$filter,cartService,$routeParams,$location) {console.log('Function: addPoController');
-
+shopping.controller("editPoController", ["$scope","$log","$timeout","$http",'$rootScope','$cookies','$filter','cartService','$routeParams','$location', function ($scope, $log, $timeout, $http,$rootScope,$cookies,$filter,cartService,$routeParams,$location) {console.log('Function: addPoController');
+	
 	if(!$rootScope.cartItems){
 		$scope.cookieCartItems = 0;
 		$scope.cartVendorName = '';
@@ -8,13 +8,18 @@ shopping.controller("addPoController", ["$scope","$log","$timeout","$http",'$roo
 		$scope.cookieCartItems = cartService.checkCookieBeforeAdd();
 		$scope.cartVendorName = cartService.getVendorName();
 	}
-	$scope.addCart = true;
-	$scope.editCart = false;
+	console.log($scope.cookieCartItems);
+	$scope.vendorName = cartService.getVendorName();
+	$scope.editCart = true;
+	$scope.addCart = false;
+	$scope.ordId = $routeParams.id;
+	
 	$scope.allProducts = '{}';
 	$scope.loader = true;
 	$scope.validationError = '';
-	$scope.showProduct = false;
-	$scope.url = $rootScope.filePath.location+'orders/apiAddProducts.json';
+
+
+	$scope.url = $rootScope.filePath.location+'orders/apiAddProducts/'+$routeParams.id+'.json';//return false;
 	$http({method: 'GET',url: $scope.url,cache: false
 	 }).success(function (data, status, headers, config) {
 	    $scope.allProducts = data.products;
@@ -22,13 +27,28 @@ shopping.controller("addPoController", ["$scope","$log","$timeout","$http",'$roo
 		$scope.category = [];
 		$scope.product = [];
 		$scope.allProducts = data.products;
+		console.log($scope.allProducts);
+		/*		$rootScope.getTotalQty = function(){
+			return $scope.allProducts.totalQty | 0;
+		}
+		$rootScope.getTotalSum = function(){
+			return $scope.allProducts.totalSum | 0.00;
+		}*/
+		$scope.selectedVendor = $scope.allProducts.editVendor | '';
+		
 		angular.forEach($scope.allProducts, function(category, vendorkey) {
+			if(vendorkey !== 'editVendor' && vendorkey !== 'totalQty' && vendorkey !== 'totalSum' && vendorkey !== ''){
 			$scope.vendor.push({'vendorName':vendorkey});
+			}
+			console.log('------Vednor--------');
+			console.log($scope.vendor);
+			$scope.selectedVendor = category;
 			angular.forEach(category, function(productObj, categoryKey) {
-				$scope.category.push({'categoryName':categoryKey,'vendorName':vendorkey,'categoryNamebox':false});
+				if(isNaN(categoryKey))
+				$scope.category.push({'categoryName':categoryKey,'vendorName':vendorkey});
 				angular.forEach(productObj.Product, function(prod, key) {
 					$scope.prod = prod;
-					 if($scope.cookieCartItems){
+					if($scope.cookieCartItems){
 						var i=0, len=$scope.cookieCartItems.length;
 						for (; i<len; i++) {
 						   if(parseInt($scope.cookieCartItems[i].id) === parseInt($scope.prod.pv_id)){
@@ -37,20 +57,20 @@ shopping.controller("addPoController", ["$scope","$log","$timeout","$http",'$roo
 							  $scope.prod.sum = parseFloat($scope.cookieCartItems[i].sum);
 						   }
 						}
+					}else if($routeParams.id && $scope.prod.ov_id){
+						$scope.addToCart($scope.prod);
+						//$scope.checkCategory(scope.prod.category);
 					}
 					$scope.product.push($scope.prod);	
 				});
 			});
 		});
+
 		
-		if(!$scope.cartVendorName)
-		$scope.selectedVendor = $scope.vendor[0]['vendorName'];
-		else
-		$scope.selectedVendor = $scope.cartVendorName;
-		//console.log($scope.vendor);
-		//console.log($scope.category);
-		//console.log($scope.product);	
-		//return false;
+		console.log($scope.vendor);
+		console.log($scope.category);
+		console.log($scope.product);	
+
 	 }).error(function (data, status, headers, config) {
 	   $scope.loader = false;
 	});
@@ -124,6 +144,7 @@ shopping.controller("addPoController", ["$scope","$log","$timeout","$http",'$roo
     }
 	/*pagination*/
 	
+	
 	 $scope.addToCart = function(object,option) {
 		 console.log('A');
 		 console.log($scope.cartVendorName);
@@ -140,8 +161,9 @@ shopping.controller("addPoController", ["$scope","$log","$timeout","$http",'$roo
 	    if (typeof object.quantity != 'undefined'){
 			if(object.quantity  != '' && object.price != ''){	
 			
-				$scope.addData = {vendor_id: parseInt(object.vendor_id),vendor: object.vendor,category_id: parseInt(object.vendor_type),category: object.category, id: parseInt(object.pv_id), p_id: parseInt(object.id), title: object.title, size: object.variant, metric: object.metric, qty_type: object.qty_type, qty: object.qty, price: parseFloat(object.price), quantity: parseInt(object.quantity), img: object.image, sum: parseFloat(object.sum)};
-				console.log($scope.addData);
+				$scope.addData = {vendor_id: parseInt(object.vendor_id),vendor: object.vendor,category_id: parseInt(object.vendor_type),category: object.category, id: parseInt(object.pv_id), p_id: parseInt(object.id), title: object.title, size: object.variant, metric: object.metric, qty_type: object.qty_type, qty: object.qty, price: parseFloat(object.price), quantity: parseInt(object.quantity), img: object.image, sum: parseFloat(object.sum),ov_id: parseInt(object.ov_id), po_no: object.po_no};
+				
+				
 				cartService.addCart($scope.addData);
 				$scope.validationError = "";
 			 }else{
@@ -152,8 +174,9 @@ shopping.controller("addPoController", ["$scope","$log","$timeout","$http",'$roo
 		}
 		
 	 }
+     
 	 
-	 $scope.getTotalSum = function(){
+	  $scope.getTotalSum = function(){
 		 return cartService.cartTotalSum();
 	 }
 	
@@ -161,23 +184,30 @@ shopping.controller("addPoController", ["$scope","$log","$timeout","$http",'$roo
 		return cartService.cartTotalQty();
 	 }
 	 
-
-	 $scope.roundOfValue = function(a){ // a - row sum of price and quantity
+	 $scope.roundOfValue = function(a){ // a - row sum of price and qty
 		  return cartService.roundOfValue(a);
 	 }
 }]);
 
 
 
+
+
+
+
+
+
 <!--CART Controller Code Starts-->
 
 
-shopping.controller('cartController',['$scope','$routeParams','$http','$cookies','$filter','$rootScope','$log','cartService',function($scope, $routeParams, $http,$cookies,$filter,$rootScope,$log,cartService){console.log('Function: cartController');
+shopping.controller('editcartController',['$scope','$routeParams','$http','$cookies','$filter','$rootScope','$log','cartService',function($scope, $routeParams, $http,$cookies,$filter,$rootScope,$log,cartService){console.log('Function: cartController');
 
- 	  $rootScope.cartItems = true;
 	  $scope.cartItem = cartService.getCartItems();
-	  $scope.editCart = false;
-	  $scope.addCart = true;
+	  $scope.ordId = $routeParams.id;
+	  $scope.editCart = true;
+	  $scope.addCart = false;
+	  $rootScope.cartItems = true;
+	 
 	  $scope.updateToCart = function(object) {
 		  console.log(object);
 	    if (typeof object.quantity != 'undefined'){
@@ -195,6 +225,15 @@ shopping.controller('cartController',['$scope','$routeParams','$http','$cookies'
 		
 	 }
 	 
+	 $scope.cartTotalSum = function(){
+		 return cartService.cartTotalSum();
+	 }
+	 
+	  $scope.cartTotalQty = function(){
+		 return cartService.cartTotalQty();
+	 }
+	 
+	 
 	 $scope.updateCart = function(a,b){ // a - qty_sum  b - toal_sum
 		 cartService.updateCart(a,b);
 	 }
@@ -205,22 +244,13 @@ shopping.controller('cartController',['$scope','$routeParams','$http','$cookies'
 	 $scope.roundOfValue = function(a){ // a - row sum of price and qty
 		  return cartService.roundOfValue(a);
 	 }
-	 $scope.cartTotalSum = function(){
-		 return cartService.cartTotalSum();
-	 }
-	
-	$scope.cartTotalQty = function(){
-		return cartService.cartTotalQty();
-	 }
-	 
-	$scope.getTotalSum = function(){
+	 $scope.getTotalSum = function(){
 		 return cartService.cartTotalSum();
 	 }
 	
 	 $scope.getTotalQty = function(){
 		return cartService.cartTotalQty();
 	 }
-	 
 	 
 	 $scope.addMoreQty = function(itm,index){
 		 cartService.addMoreQty(itm,index);

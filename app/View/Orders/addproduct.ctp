@@ -20,6 +20,7 @@
 <?php 
 	echo $this->Html->script('angular/app.js'); 
 	echo $this->Html->script('angular/controller.js'); 
+	echo $this->Html->script('angular/editcontroller.js'); 
 	echo $this->Html->script('angular/service.js');
 	echo $this->Html->script('angular/filter.js'); 
 	//echo $this->Html->script('angular/directives.js'); 

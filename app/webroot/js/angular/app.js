@@ -9,15 +9,17 @@ shopping.config(function($routeProvider,$locationProvider){console.log('Function
 	console.log('A');
     $routeProvider
         .when("/po",{templateUrl: '/inventory/app/webroot/js/angular/page/po.html',controller:'addPoController'})
-		.when("/edit/:id",{templateUrl: '/inventory/app/webroot/js/angular/page/po.html',controller:'addPoController'})
 		.when("/cart",{templateUrl: '/inventory/app/webroot/js/angular/page/cart.html',controller:'cartController'})
+		.when("/edit/:id",{templateUrl: '/inventory/app/webroot/js/angular/page/po.html',controller:'editPoController'})
+		.when("/editcart/:id",{templateUrl: '/inventory/app/webroot/js/angular/page/cart.html',controller:'cartController'})
 		.otherwise({ redirectTo: "/po" });
 	}else{
 	console.log('B');
 	$routeProvider
         .when("/po",{templateUrl: '/app/webroot/js/angular/page/po.html',controller:'addPoController'})
-		.when("/edit/:id",{templateUrl: '/app/webroot/js/angular/page/po.html',controller:'addPoController'})
 		.when("/cart",{templateUrl: '/app/webroot/js/angular/page/cart.html',controller:'cartController'})
+		.when("/edit/:id",{templateUrl: '/app/webroot/js/angular/page/po.html',controller:'editPoController'})
+		.when("/editcart/:id",{templateUrl: '/app/webroot/js/angular/page/cart.html',controller:'editcartController'})
 		.otherwise({ redirectTo: "/po" });
 	}
 		
@@ -26,24 +28,23 @@ shopping.config(function($routeProvider,$locationProvider){console.log('Function
 
 
 
-shopping.run(function($rootScope,$cookies,$location,$http,$routeParams){ console.log('Function: Run');
-
+shopping.run(function($rootScope,$cookies,$location,$http,$routeParams){
+	 
+	console.log('Function: Run');
+	$rootScope.cartItems = false;
 	var protocol = $location.protocol()+'://';
 	var host = $location.host()+'/';
 	var path = $location.path();
 	
-	//console.log(host);
 	if(host == '52.4.188.247/'){
 		$rootScope.filePath = {location:protocol+host+'inventory/'};
 		$rootScope.server = true;
 	}else{
 		$rootScope.filePath = {location:protocol+host};
-		console.log($rootScope.filePath);
 		$rootScope.server = false;
 	}
 	
 	$rootScope.cookieCartItems = $cookies.getObject('cart') || 0;
-	
 	$rootScope.getTotalQty = function(){
 		var totalQty = 0;
 		var cookievar;

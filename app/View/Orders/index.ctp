@@ -14,7 +14,7 @@
    <div class="container">
      <div class="row">
         <div class="col-md-12">
-           <?php echo $this->Html->link('Create PO', array('action' => 'addproduct'),array('class'=>'btn btn-primary','style'=>'margin-bottom:20px; float:right')); ?>
+           <?php echo $this->Html->link('Create PO', array('action' => 'addproduct/#po/'),array('class'=>'btn btn-primary','style'=>'margin-bottom:20px; float:right')); ?>
             <h4 class="page-head-line">Purchase Order Lists</h4>
             <div class="form-group">
                 <label>Select Vendor</label>
@@ -98,18 +98,14 @@
                                         <td><?php echo $this->Util->currencyFormat($order[0]['total_price'], 'USD');  ?>&nbsp;</td>
                                         <td><?php echo h($order['User']['username']); ?>&nbsp;</td>
                                         <td><?php  echo $this->Util->dateFormat($order['Order']['created']); ?>&nbsp;</td>
-                                        <td><?php  echo ($order['Order']['status'] == 0) ? 'Pending' : (($order['Order']['status'] == 1) ? 'Submitted' : (($order['Order']['status'] == 2) ? 'Invoice Received' : (($order['Order']['status'] == 3) ? 'Partially Paid' : (($order['Order']['status'] == 4) ? 'Fully Paid' : '' ) ))); ?>&nbsp;</td>
-                                       <?php /*?> <td><?php  echo $this->Util->dateFormat($order['Order']['modified']); ?>&nbsp;</td><?php */?>
+                                        <td><?php  echo ($order['Order']['status'] == 0) ? 'Email Not Sent' : (($order['Order']['status'] == 1) ? 'Email Sent' : (($order['Order']['status'] == 2) ? 'Invoice Received' : (($order['Order']['status'] == 3) ? 'Partially Paid' : (($order['Order']['status'] == 4) ? 'Fully Paid' : '' ) ))); ?>&nbsp;</td>
                                         <td class="actions">
-                                            <?php //echo $this->Html->link(__('CSV'), array('action' => 'download',$order['Order']['po_no'])); ?> 
-                                            <?php //echo $this->Html->link(__('Mail'), array('action' => 'download',$order['Order']['po_no'],'email')); ?> 
-                                            <?php echo $this->Html->link(__('Excel'), array('action' => 'report',$order['Order']['po_no'])); ?> |
-                                            <?php echo $this->Html->link(__('Mail'), array('action' => 'report',$order['Order']['po_no'],'email')); ?>
-                                            <?php if($order['Order']['status'] == 0){ echo '| ';
-                                              echo $this->Html->link(__('Edit'), array('action' => 'addproduct/#po/', $order['Order']['po_no'],''));  
-                                             }
+                                            <?php if($order['Order']['status'] == 0){
+                                              echo $this->Html->link(__('Edit'), array('action' => 'addproduct/#edit/', $order['Order']['po_no'],''));  
+                                              echo ' |';}
 											?>
-                                            <?php /*?><?php echo $this->Form->postLink(__('Delete'), array('action' => 'delete', $order['Order']['id']), array('confirm' => __('Are you sure you want to delete # %s?', $order['Order']['id']))); ?><?php */?>
+                                            <?php echo $this->Html->link(__('Email'), array('action' => 'report',$order['Order']['po_no'],'email')); ?> |
+                                            <?php echo $this->Html->link(__('Download'), array('action' => 'report',$order['Order']['po_no'])); ?> 
                                         </td>
                                     </tr>
                                 <?php $i++; endforeach; ?>

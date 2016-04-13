@@ -7,7 +7,17 @@
 <div class="container">
    
      <div class="row">
-        <div class="col-md-12">
+        <div class="col-md-12" ng-if="editCart">
+         	<a class="btn btn-primary"  style="margin-bottom:20px; float:right" ng-href="javascript:void(0);">
+                 <span style="padding:2px;" class="glyphicon glyphicon-shopping-cart"></span>{{ getTotalQty() }} Cart
+                 <span style="padding:2px;">${{ getTotalSum() }} </span>
+             </a>
+                     
+      		<a ng-href="#edit/{{ordId}}" class="btn btn-primary" style="margin-bottom:20px; margin-right: 40px; float:right">ADD MORE SHOPPING</a>
+            <h4 class="page-head-line" style="color: #286090; border-bottom: 2px solid #286090;">Purchase Orders Cart List</h4>
+        </div>
+        
+        <div class="col-md-12" ng-if="addCart">
          	<a class="btn btn-primary"  style="margin-bottom:20px; float:right" ng-href="javascript:void(0);">
                  <span style="padding:2px;" class="glyphicon glyphicon-shopping-cart"></span>{{ getTotalQty() }} Cart
                  <span style="padding:2px;">${{ getTotalSum() }} </span>
@@ -27,7 +37,7 @@
             <div class="panel-body">
             
                 <div class="table-responsive" style="overflow-x:hidden;"><span class="error_msg_var">{{ validationError }}</span> 
-                <!--{{ allProducts | json  }} </pre>-->
+               <!-- <pre>  {{ cartItem.items | json  }} </pre> -->
                     <table id="order_tab" class="table table-striped table-bordered" cellspacing="0" width="80%">
                         <thead>
                             <tr>

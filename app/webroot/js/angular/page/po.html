@@ -1,7 +1,15 @@
 <div class="container">
    
      <div class="row">
-        <div class="col-md-12">
+        <div class="col-md-12" ng-if="editCart">
+                     <a class="btn btn-primary"  style="margin-bottom:20px; float:right; background-color: #F0677C; border: 2px solid #F0677C;" ng-href="#editcart/{{ ordId }}">
+                     <span style="padding:2px;" class="glyphicon glyphicon-shopping-cart"></span>{{ getTotalQty() }} Cart
+                     <span style="padding:2px;">${{ getTotalSum() }} </span>
+                     </a>
+            <h4 class="page-head-line">Edit Purchase Order</h4>
+        </div>
+        
+        <div class="col-md-12" ng-if="addCart">
                      <a class="btn btn-primary"  style="margin-bottom:20px; float:right; background-color: #F0677C; border: 2px solid #F0677C;" ng-href="#cart">
                      <span style="padding:2px;" class="glyphicon glyphicon-shopping-cart"></span>{{ getTotalQty() }} Cart
                      <span style="padding:2px;">${{ getTotalSum() }} </span>
@@ -19,7 +27,7 @@
                     <div class="col-md-2"><label><i class="fa fa-question-circle fa-fw"></i> Vendor List</label></div>
                     <div class="col-md-2">
                         <select class="form-control" ng-model="selectedVendor" ng-change="changeCategory()">
-                            <option value="all">ALL</option>
+                            <option value="">Choose Vendor</option>
                             <option  ng-repeat="allVendor in vendor" value="{{allVendor.vendorName}}">{{allVendor.vendorName}}</option>
                         </select>
                     </div>
