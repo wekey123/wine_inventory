@@ -8,7 +8,12 @@
    
      <div class="row">
         <div class="col-md-12">
-      		<a ng-href="#po" class="btn btn-primary" style="margin-bottom:20px; float:right">ADD MORE SHOPPING</a>
+         	<a class="btn btn-primary"  style="margin-bottom:20px; float:right" ng-href="javascript:void(0);">
+                 <span style="padding:2px;" class="glyphicon glyphicon-shopping-cart"></span>{{ getTotalQty() }} Cart
+                 <span style="padding:2px;">${{ getTotalSum() }} </span>
+             </a>
+                     
+      		<a ng-href="#po" class="btn btn-primary" style="margin-bottom:20px; margin-right: 40px; float:right">ADD MORE SHOPPING</a>
             <h4 class="page-head-line" style="color: #286090; border-bottom: 2px solid #286090;">Purchase Orders Cart List</h4>
         </div>
      </div>
@@ -43,11 +48,11 @@
                                      <td>{{$index+1}}</td>
                                      <td>{{itm.vendor}}</td>
                                      <td>{{itm.category}}</td>
-                                     <td>{{itm.title}}</td>
+                                     <td>{{itm.title}} ({{itm.size}}  {{ itm.metric | uppercase }} {{ itm.qty }}/{{ itm.qty_type | uppercase }} )</td>
                                      <td><img style="height:50px;"  ng-src="/img/product/small/{{itm.img}}" />     </td>
                                      <td><input type="text"  class="form-control" ng-model="itm.price" /></td>
-                                     <td><input type="text"  class="form-control"  ng-model="itm.qty" /></td>
-                                     <td> ${{  itm.sum = roundOfValue(itm.qty * itm.price) }} </td>
+                                     <td><input type="text"  class="form-control"  ng-model="itm.quantity" /></td>
+                                     <td> ${{  itm.sum = roundOfValue(itm.quantity * itm.price) }} </td>
                                       <td><a class="btn btn-primary btn-sm" ng-click="updateToCart(itm)">Update Cart</a></td>
                                      <td><a class="btn btn-primary btn-sm" ng-click="removeCart($index)">Remove Cart</a></td>
                                     </tr>

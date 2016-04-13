@@ -16,7 +16,7 @@ shopping.service('cartService',['$routeParams','$http','$cookies','$filter','$ro
 	};
 
 	this.addCart = function(singleObj){
-		console.log(singleObj);
+		console.log(singleObj); //return false;
 		var data = self.checkData(singleObj.id);
 		if(data){
 		  self.errorMessage;
@@ -45,7 +45,7 @@ shopping.service('cartService',['$routeParams','$http','$cookies','$filter','$ro
 		var totalQty = 0;
 		for(var i=0; i<self.cartItem.items.length; i++){
 			var items = self.cartItem.items[i];
-			totalQty += parseInt(items.qty);
+			totalQty += parseInt(items.quantity);
 		}
 		$log.debug("cartTotalQty: "+totalQty+ " Fucntion Name :"+page);
 		$cookies.putObject('cart', self.cartItem,{ expires:self.expiresTime() });
@@ -57,38 +57,38 @@ shopping.service('cartService',['$routeParams','$http','$cookies','$filter','$ro
 		   var foundItem = $filter('filter')(cartItems, { id: id  }, true)[0];
 		   var arrayIndex = cartItems.indexOf(foundItem)
 		   if(foundItem.id === id){
-			   console.log('Hello'+input.qty);
-			   self.cartItem.items[arrayIndex].qty = parseInt(input.qty);
+			   console.log('Hello'+input.quantity);
+			   self.cartItem.items[arrayIndex].quantity = parseInt(input.quantity);
 			   self.cartItem.items[arrayIndex].price = parseFloat(input.price);
 			   self.cartItem.items[arrayIndex].sum = parseFloat(input.sum);
 			   //console.log(self.cartItem.items);
 			   $cookies.putObject('cart', self.cartItem,{ expires:self.expiresTime() });
 			   self.cartTotalQty('updateMoreQty');
 		   }else{
-			    console.log('fuck');
+			    console.log('luck');
 		   }
 			 
 	 }
 	 
 	 this.addMoreQty = function(input,index) {
-		//if(input.qty >= 1){
+		//if(input.quantity >= 1){
 			console.log(Object.keys(input));
-			console.log(parseInt(input.qty)+1);
-			self.cartItem.items[index].qty = parseInt(input.qty)+1;
+			console.log(parseInt(input.quantity)+1);
+			self.cartItem.items[index].quantity = parseInt(input.quantity)+1;
 			$cookies.putObject('cart', self.cartItem,{ expires:self.expiresTime() });
 			console.log(input);
 		//}
 	 }
 	 
 	 this.removeMoreQty = function(input,index) {
-		 if(input.qty > 1){
-			self.cartItem.items[index].qty = parseInt(input.qty) - 1;
+		 if(input.quantity > 1){
+			self.cartItem.items[index].quantity = parseInt(input.quantity) - 1;
 			$cookies.putObject('cart', self.cartItem,{ expires:self.expiresTime() });
 		 }
 	 }
 
-	this.updateCart = function(qty,sum){
-		self.cartItem["qtyTotal"] = qty;
+	this.updateCart = function(quantity,sum){
+		self.cartItem["qtyTotal"] = quantity;
 		self.cartItem["sumTotal"] = sum;
 		console.log('a');
 		console.log(self.cartTotalQty())
@@ -112,7 +112,7 @@ shopping.service('cartService',['$routeParams','$http','$cookies','$filter','$ro
 		var totalSum = 0;
 		for(var i=0; i<self.cartItem.items.length; i++){
 			var items = self.cartItem.items[i];
-			totalSum += parseInt(items.qty) * parseFloat(items.price).toFixed(2);
+			totalSum += parseInt(items.quantity) * parseFloat(items.price).toFixed(2);
 			console.log(typeof totalSum);
 			if(typeof totalSum !== 'number'){
 				  self.errorMessage = "invalid Sum";
@@ -152,6 +152,7 @@ shopping.service('cartService',['$routeParams','$http','$cookies','$filter','$ro
 	}
 	
 	this.getVendorName = function(){
+		console.log($cookies.getObject('vendor'));
 		if($cookies.getObject('vendor')){
 		   self.vendorName = $cookies.getObject('vendor');
 		   return self.vendorName;

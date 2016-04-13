@@ -2,11 +2,11 @@
    
      <div class="row">
         <div class="col-md-12">
-                      <a class="btn btn-primary"  style="margin-bottom:20px; float:right" ng-href="#cart">
+                     <a class="btn btn-primary"  style="margin-bottom:20px; float:right; background-color: #F0677C; border: 2px solid #F0677C;" ng-href="#cart">
                      <span style="padding:2px;" class="glyphicon glyphicon-shopping-cart"></span>{{ getTotalQty() }} Cart
                      <span style="padding:2px;">${{ getTotalSum() }} </span>
                      </a>
-            <h4 class="page-head-line">Purchase Orders</h4>
+            <h4 class="page-head-line">Create Purchase Order</h4>
         </div>
      </div>
      
@@ -88,12 +88,12 @@
                                      <td>{{$index+1}}</td>
                                      <td>{{result.vendor}}</td>
                                      <td>{{result.category}}</td>
-                                     <td>{{result.title}}</td>
+                                     <td>{{result.title}} ({{result.size}}  {{ result.metric | uppercase }} {{ result.qty }}/{{ result.qty_type | uppercase }} )</td>
                                      <td><img style="height:50px;" ng-src="/img/product/small/{{result.image}}" /></td>
                                      <td><input type="text"  class="form-control" ng-model="result.price" /></td>
-                                     <td><input type="text"  class="form-control"  ng-model="result.qty" /></td>
-                                     <td> ${{  result.sum = roundOfValue(result.qty * result.price) }} </td>
-                                     <td><a ng-click="addToCart(result,'add')" class="btn btn-primary">Add to Cart</a></td>
+                                     <td><input type="text"  class="form-control"  ng-model="result.quantity" /></td>
+                                     <td> ${{  result.sum = roundOfValue(result.quantity * result.price) }} </td>
+                                     <td><a style="float:right; background-color: #F0677C; border: 2px solid #F0677C;" ng-click="addToCart(result,'add')" class="btn btn-primary">Add to Cart</a></td>
                                     </tr>
                                     
                         </tbody>

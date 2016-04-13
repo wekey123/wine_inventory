@@ -1,4 +1,3 @@
-//var shopping = angular.module('shopping', ['ngRoute','ngResource','ngCookies','angular.filter','simplePagination','ui.bootstrap','ngAside','ngTouch','shoppingFlash','simpleAuth','shoppingUserAuth']);
 var shopping = angular.module('shopping', ['ngRoute','ngResource','ngCookies','angular.filter','simplePagination','ui.bootstrap']);
 
 
@@ -10,14 +9,14 @@ shopping.config(function($routeProvider,$locationProvider){console.log('Function
 	console.log('A');
     $routeProvider
         .when("/po",{templateUrl: '/inventory/app/webroot/js/angular/page/po.html',controller:'addPoController'})
-		.when("/po/:id",{templateUrl: '/inventory/app/webroot/js/angular/page/po.html',controller:'addPoController'})
+		.when("/edit/:id",{templateUrl: '/inventory/app/webroot/js/angular/page/po.html',controller:'addPoController'})
 		.when("/cart",{templateUrl: '/inventory/app/webroot/js/angular/page/cart.html',controller:'cartController'})
 		.otherwise({ redirectTo: "/po" });
 	}else{
 	console.log('B');
 	$routeProvider
         .when("/po",{templateUrl: '/app/webroot/js/angular/page/po.html',controller:'addPoController'})
-		.when("/po/:id",{templateUrl: '/app/webroot/js/angular/page/po.html',controller:'addPoController'})
+		.when("/edit/:id",{templateUrl: '/app/webroot/js/angular/page/po.html',controller:'addPoController'})
 		.when("/cart",{templateUrl: '/app/webroot/js/angular/page/cart.html',controller:'cartController'})
 		.otherwise({ redirectTo: "/po" });
 	}
@@ -32,14 +31,15 @@ shopping.run(function($rootScope,$cookies,$location,$http,$routeParams){ console
 	var protocol = $location.protocol()+'://';
 	var host = $location.host()+'/';
 	var path = $location.path();
-	console.log(host);
+	
+	//console.log(host);
 	if(host == '52.4.188.247/'){
-	$rootScope.filePath = {location:protocol+host+'inventory/'};
-	$rootScope.server = true;
+		$rootScope.filePath = {location:protocol+host+'inventory/'};
+		$rootScope.server = true;
 	}else{
-	$rootScope.filePath = {location:protocol+host};
-	console.log($rootScope.filePath);
-	$rootScope.server = false;
+		$rootScope.filePath = {location:protocol+host};
+		console.log($rootScope.filePath);
+		$rootScope.server = false;
 	}
 	
 	$rootScope.cookieCartItems = $cookies.getObject('cart') || 0;
@@ -50,7 +50,7 @@ shopping.run(function($rootScope,$cookies,$location,$http,$routeParams){ console
 		if($cookies.getObject('cart')){
 			for(var i=0; i<$cookies.getObject('cart').items.length ; i++){
 				var items = $cookies.getObject('cart').items[i];
-				totalQty += parseInt(items.qty);
+				totalQty += parseInt(items.quantity);
 			}
 			cookievar = totalQty;
 		}else{ 
@@ -68,7 +68,7 @@ shopping.run(function($rootScope,$cookies,$location,$http,$routeParams){ console
 		if($cookies.getObject('cart')){
 			for(var i=0; i<$cookies.getObject('cart').items.length; i++){
 				var items = $cookies.getObject('cart').items[i];
-				totalSum += parseInt(items.qty) * parseFloat(items.price).toFixed(2);
+				totalSum += parseInt(items.quantity) * parseFloat(items.price).toFixed(2);
 			}
 			cookievar = parseFloat($rootScope.roundOfValue(totalSum)).toFixed(2);
 		}else{ 

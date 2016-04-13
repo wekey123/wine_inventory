@@ -54,7 +54,8 @@ class OrdersController extends AppController {
 				}
 				$this->request->data['Order']['total_quantity']=$value['cartQty'];
 				$this->request->data['Order']['total_price']=$value['cartSum'];
-				$this->request->data['Order']['user_id']=$user['id'];
+				$this->request->data['Order']['user_id']= $user['id'];
+				$this->request->data['Order']['vendor_id'] = $value['items'][0]['vendor_id'];
 				$this->request->data['Order']['vendor'] = $value['vendor'];
 				$this->request->data['Order']['po_no']=$po;
 				if($value['type']=='pending')
@@ -63,35 +64,37 @@ class OrdersController extends AppController {
 				$this->request->data['Order']['status']=1;
 				if ($this->Order->save($this->request->data)) {
 					$i=0;
-				  foreach ($value['items'] as $quan){
-					  if(!empty($quan)){
-						$options = array('conditions' => array('Vary.id' => $quan['id']));
-						$Orders = $this->Vary->find('first',$options);
+				  foreach ($value['items'] as $items){
+					  if(!empty($items)){
+						$options = array('conditions' => array('Vary.id' => $items['id']));
+						$product = $this->Vary->find('first',$options);
 						
-						if(!empty($quan['ov_id']))
-							$this->request->data['Vary']['id'] = $quan['ov_id'];
+						if(!empty($items['ov_id']))
+							$this->request->data['Vary']['id'] = $items['ov_id'];
 						else
 							$this->request->data['Vary']['id'] = '';
 							
-						$this->request->data['Vary']['product_id'] = $Orders['Vary']['product_id'];
-						$this->request->data['Vary']['vendor'] = $quan['vendor'];
+						$this->request->data['Vary']['product_id'] = $product['Vary']['product_id'];
+						$this->request->data['Vary']['vendor'] = $items['vendor'];
 						$this->request->data['Vary']['po_no'] = $po;   
-						$this->request->data['Vary']['quantity'] = $quan['qty'];
-						$this->request->data['Vary']['price'] = $quan['price'];
-						$this->request->data['Vary']['price_total'] = $quan['price'] * $quan['qty'];
+						$this->request->data['Vary']['quantity'] = $items['quantity'];
+						$this->request->data['Vary']['price'] = $items['price'];
+						$this->request->data['Vary']['price_total'] = $items['price'] * $items['quantity'];
 						$this->request->data['Vary']['type'] = 'order';	
-						$this->request->data['Vary']['variant'] = $Orders['Vary']['variant'];
-						$this->request->data['Vary']['sku'] = $Orders['Vary']['sku'];
-						$this->request->data['Vary']['metric'] = $Orders['Vary']['metric'];
-						$this->request->data['Vary']['qty_type'] = $Orders['Vary']['qty_type'];
-						$this->request->data['Vary']['qty'] = $Orders['Vary']['qty'];
-						$this->request->data['Vary']['barcode'] = $Orders['Vary']['barcode'];
-						$this->request->data['Vary']['var_id'] =$Orders['Vary']['id'];
+						$this->request->data['Vary']['variant'] = $product['Vary']['variant'];
+						$this->request->data['Vary']['sku'] = $product['Vary']['sku'];
+						$this->request->data['Vary']['metric'] = $product['Vary']['metric'];
+						$this->request->data['Vary']['qty_type'] = $product['Vary']['qty_type'];
+						$this->request->data['Vary']['qty'] = $product['Vary']['qty'];
+						$this->request->data['Vary']['barcode'] = $product['Vary']['barcode'];
+						$this->request->data['Vary']['var_id'] =$product['Vary']['id'];
 						unset($this->Vary->validate);
 						$this->Vary->create();
 						$this->Vary->save($this->request->data);
+						
 						//debug($this->Vary->validationErrors); //show validationErrors 
 						//exit;
+						$this->Vary->updateAll(array('Vary.po_qty' => $product['Vary']['po_qty']+$this->request->data['Vary']['quantity']),array('Vary.product_id' => $this->request->data['Vary']['product_id'],'Vary.type' => 'product'));
 						$i++;
 					  }
 				 }
@@ -158,27 +161,35 @@ class OrdersController extends AppController {
 		foreach($products as $product){
 			foreach($product['Vary'] as $key => $vary){
 				$result[$product['Vendor']['name']][$product['Category']['name']]['Product'][$i] = $product['Product'];
-				$result[$product['Vendor']['name']][$product['Category']['name']]['Product'][$i]['vid'] = $vary['id'];
+				$result[$product['Vendor']['name']][$product['Category']['name']]['Product'][$i]['pv_id'] = $vary['id']; // pv_id variantID
 				$result[$product['Vendor']['name']][$product['Category']['name']]['Product'][$i]['variant'] = $vary['variant'];
 				$result[$product['Vendor']['name']][$product['Category']['name']]['Product'][$i]['sku'] = $vary['sku'];
 				$result[$product['Vendor']['name']][$product['Category']['name']]['Product'][$i]['barcode'] = $vary['barcode'];
 				$result[$product['Vendor']['name']][$product['Category']['name']]['Product'][$i]['price'] = $vary['price'];
+				$result[$product['Vendor']['name']][$product['Category']['name']]['Product'][$i]['metric'] = $vary['metric'];
+				$result[$product['Vendor']['name']][$product['Category']['name']]['Product'][$i]['size'] = $vary['variant'];
+				$result[$product['Vendor']['name']][$product['Category']['name']]['Product'][$i]['qty_type'] = $vary['qty_type'];
+				$result[$product['Vendor']['name']][$product['Category']['name']]['Product'][$i]['qty'] = $vary['qty'];
 				$result[$product['Vendor']['name']][$product['Category']['name']]['Product'][$i]['vendor'] = $product['Vendor']['name'];
 				$result[$product['Vendor']['name']][$product['Category']['name']]['Product'][$i]['category'] = $product['Category']['name'];
 				if(isset($value)){
-				$orderVar = $this->Vary->find('first',array('conditions' => array('Vary.var_id'=> $vary['id'],'Vary.po_no'=>$value),'fields' => array('Vary.id', 'Vary.price', 'Vary.quantity','Vary.price_total','Vary.po_no')));
-					if(!empty($orderVar)){
-						$result[$product['Vendor']['name']][$product['Category']['name']]['Product'][$i]['price'] = !empty($orderVar) ? $orderVar['Vary']['price'] : '';
-						$result[$product['Vendor']['name']][$product['Category']['name']]['Product'][$i]['qty'] = !empty($orderVar) ? $orderVar['Vary']['quantity'] : '';
-						$result[$product['Vendor']['name']][$product['Category']['name']]['Product'][$i]['sum'] = !empty($orderVar) ? $orderVar['Vary']['price_total'] : '';
-						$result[$product['Vendor']['name']][$product['Category']['name']]['Product'][$i]['po_no'] = !empty($orderVar) ? $orderVar['Vary']['po_no'] : '';
-						$result[$product['Vendor']['name']][$product['Category']['name']]['Product'][$i]['ov_id'] = !empty($orderVar) ? $orderVar['Vary']['id'] : '';
+					$orderVar = $this->Vary->find('first',array('conditions' => array('Vary.var_id'=> $vary['id'],'Vary.po_no'=>$value),'fields' => array('Vary.id', 'Vary.price', 'Vary.quantity','Vary.price_total','Vary.po_no')));
+						if(!empty($orderVar)){
+							$result[$product['Vendor']['name']][$product['Category']['name']]['Product'][$i]['price'] = !empty($orderVar) ? $orderVar['Vary']['price'] : '';
+							$result[$product['Vendor']['name']][$product['Category']['name']]['Product'][$i]['qty'] = !empty($orderVar) ? $orderVar['Vary']['quantity'] : '';
+							$result[$product['Vendor']['name']][$product['Category']['name']]['Product'][$i]['sum'] = !empty($orderVar) ? $orderVar['Vary']['price_total'] : '';
+							$result[$product['Vendor']['name']][$product['Category']['name']]['Product'][$i]['po_no'] = !empty($orderVar) ? $orderVar['Vary']['po_no'] : '';
+							$result[$product['Vendor']['name']][$product['Category']['name']]['Product'][$i]['ov_id'] = !empty($orderVar) ? $orderVar['Vary']['id'] : '';
+						}
 					}
-				}
-				$i++;
-			}
+				if(isset($value)){
 					$result['Vendor'] = $product['Vendor']['name'];
+				}
+			$i++;
+			}
+			
 		}
+		//debug($result); exit;
 		$this->set('products', $result);
 		$this->set('_serialize', array('products'));
 	}
