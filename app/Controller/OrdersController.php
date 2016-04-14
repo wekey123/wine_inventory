@@ -283,7 +283,8 @@ class OrdersController extends AppController {
         'po_no',
 		'user_id',
 		'created',
-		'modified'
+		'modified',
+		'vendor_id'
     ),'conditions' => array('Order.po_no'=> $no));
 		$this->set('order', $this->Order->find('first', $options));
 	}
@@ -583,6 +584,8 @@ public function in_array_r($needle, $haystack, $strict = false) {
 	}
 	
 	public function emailCheck($pono = null){
+		//echo $pono;exit;
+		self::view($pono);
 		$user = $this->Auth->user();
 		if ($this->request->is('post')) {
 			$Email = new CakeEmail('gmail');
