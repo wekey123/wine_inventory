@@ -29,7 +29,7 @@
                         </div>
                         <div class="panel-body">
                             <div class="table-responsive">
-                             <strong><?php echo __('Vendor Name'); ?></strong> <span class="colon"> : </span> <span><?php echo h($invoice['Invoice']['vendor_name']); ?></span> <br />
+                             <strong><?php echo __('Vendor Name'); ?></strong> <span class="colon"> : </span> <span><?php echo $this->Util->getVendorNameAlone($invoice['Invoice']['vendor_id']); ?></span> <br />
                                <?php 
 								   echo $this->Form->input('Payment.po_no',array('div'=>false,'error'=>false,'type'=>'hidden', 'value' => $invoice['Invoice']['po_no']));
 							   ?>

@@ -18,8 +18,8 @@
                             <div class="alert alert-warning">
                                <strong><?php echo __('PO Number'); ?></strong> <span> : </span> <span><?php echo h($invoice['Invoice']['po_no']); ?></span> <br />
                                <strong><?php echo __('Invoice Number'); ?></strong> <span> : </span> <span><?php echo h($invoice['Invoice']['invoice_no']); ?></span> <br />
-                               <strong><?php echo __('Total Quantity'); ?></strong> <span> : </span> <span><?php echo h($invoice['Invoice']['total_quantity']); ?></span> <br />
-                               <strong><?php echo __('Total Price'); ?></strong> <span> : </span> <span><?php  echo $this->Util->currencyFormat($invoice['Invoice']['total_price']);  ?></span> <br />
+                               <strong><?php echo __('Invoice Quantity'); ?></strong> <span> : </span> <span><?php echo h($invoice['Invoice']['total_quantity']); ?></span> <br />
+                               <strong><?php echo __('Invoice Price'); ?></strong> <span> : </span> <span><?php  echo $this->Util->currencyFormat($invoice['Invoice']['total_price']);  ?></span> <br />
                                <strong><?php echo __('Created By'); ?></strong> <span> : </span> <span><?php echo h($invoice['User']['username']); ?></span> <br />
                                <strong><?php echo __('Created On'); ?></strong> <span> : </span> <span><?php 
 
@@ -30,11 +30,11 @@
                           
                           <div class="col-md-6">  
                             <div class="alert alert-warning">
-                               <strong><?php echo __('Vendor Name'); ?></strong> <span> : </span> <span><?php echo h($invoice['Invoice']['vendor_name']); ?></span> <br />
-                               <strong><?php echo __('Vendor Address'); ?></strong> <span> : </span> <span><?php echo h($invoice['Invoice']['vendor_address']); ?></span> <br />
+                               <strong><?php echo __('Vendor Name'); ?></strong> <span> : </span> <span><?php echo $this->Util->getVendorNameAlone($invoice['Invoice']['vendor_id']); ?></span> <br />
+                               <?php /*?><strong><?php echo __('Vendor Address'); ?></strong> <span> : </span> <span><?php echo h($invoice['Invoice']['vendor_address']); ?></span> <br /><?php */?>
                            <strong><?php echo __('Shipping Method'); ?></strong> <span> : </span> <span><?php  echo $invoice['Invoice']['shipping_method'];  ?></span> <br />
                                <strong><?php echo __('Payment Terms'); ?></strong> <span> : </span> <span><?php echo h($invoice['Invoice']['payment_terms']); ?></span> <br />
-                                <strong><?php echo __('Invoice Date'); ?></strong> <span> : </span> <span><?php echo $this->Util->dateOnlyFormat($invoice['Invoice']['invoice_date']); ?></span> <br />
+                                <strong><?php echo __('Invoice Date'); ?></strong> <span> : </span> <span><?php echo $invoice['Invoice']['invoice_date']; ?></span> <br />
                                <strong><?php echo __('Estimated Shipping Date'); ?></strong> <span> : </span> <span><?php echo $this->Util->dateOnlyFormat($invoice['Invoice']['estimated_shipping_date']); ?></span> <br />
                             </div>
                           </div>
@@ -77,8 +77,9 @@
                                         <tr>
                                             <th>#</th>
                                             <th><?php echo $this->Paginator->sort('Product Name'); ?></th>
-                                            <th><?php echo $this->Paginator->sort('Varient'); ?></th>
-                                            <th><?php echo $this->Paginator->sort('Quantity'); ?></th>
+                                            <th><?php echo $this->Paginator->sort('Size'); ?></th>
+                                            <th><?php echo $this->Paginator->sort('Invoice Quantity'); ?></th>
+                                            <th><?php echo $this->Paginator->sort('Order Quantity'); ?></th>
                                             <th><?php echo $this->Paginator->sort('Price'); ?></th>
                                             <th><?php echo $this->Paginator->sort('SKU'); ?></th>
                                             <th><?php echo $this->Paginator->sort('Barcode'); ?></th>
@@ -90,8 +91,9 @@
                                         <tr>
                                             <td><?php echo $i; ?>&nbsp;</td>
                                             <td><?php echo h($product['Product']['title']); ?>&nbsp;</td>
-                                            <td><?php echo h($product['variant']); ?>&nbsp;</td>
-                                            <td><?php echo h($product['quantity']); ?>&nbsp;</td>
+                                            <td><?php echo h($product['variant'].' '.$product['metric']); ?>&nbsp;</td>
+                                            <td><?php echo h($product['quantity'].' '.$product['qty_type']. (($product['qty_type'] == 'Case') ? '/'.$product['qty'].' Unit' : '')); ?>&nbsp;</td>
+                                            <td><?php echo h($this->Util->getOrderQuantityByVarid($product['var_id']).' '.$product['qty_type']. (($product['qty_type'] == 'Case') ? '/'.$product['qty'].' Unit' : '')); ?>&nbsp;</td>
                                             <td><?php echo $this->Util->currencyFormat($product['price']); ?>&nbsp;</td>
                                             <td><?php echo h($product['sku']); ?>&nbsp;</td>
                                             <td><?php echo h($product['barcode']); ?>&nbsp;</td>

@@ -36,10 +36,16 @@
                              <li> <?php echo $this->Html->link('Invoice',array('controller'=>'invoices','action' => 'index'),array('class'=>trim($menuActive)=='Invoice'  ? 'menu-top-active dropdown-toggle' : 'dropdown-toggle','data-toggle'=>'dropdown','href'=>'#')); ?>
                              <ul class="dropdown-menu">
                                     <li><?php echo $this->Html->link('Invoice List',array('controller'=>'invoices','action' => 'index'),array('style'=>'color:#222;','href'=>'#')); ?></li>
-                                    <li><?php echo $this->Html->link('Create Invoice',array('controller'=>'invoices','action' => 'add'),array('style'=>'color:#222;','href'=>'#')); ?></li> 
+                                    <li><?php echo $this->Html->link('Invoice Entry',array('controller'=>'invoices','action' => 'add'),array('style'=>'color:#222;','href'=>'#')); ?></li> 
 							  </ul>
                              </li>
-                             <li> <?php echo $this->Html->link('Payment',array('controller'=>'payments','action' => 'index'),array('class'=>trim($menuActive)=='Payment'  ? 'menu-top-active' : '')); ?> </li>
+                             <li> <?php echo $this->Html->link('Payment',array('controller'=>'payments','action' => 'index'),array('class'=>trim($menuActive)=='Payment' ? 'menu-top-active dropdown-toggle' : 'dropdown-toggle','data-toggle'=>'dropdown','href'=>'#')); ?>
+                              <ul class="dropdown-menu">
+                                    <li><?php echo $this->Html->link('Payment List',array('controller'=>'payments','action' => 'index'),array('style'=>'color:#222;','href'=>'#')); ?></li>
+                                    <li><?php echo $this->Html->link('Payment Entry',array('controller'=>'payments','action' => 'add'),array('style'=>'color:#222;','href'=>'#')); ?></li> 
+							  </ul>
+                             
+                              </li>
                              <li> <?php echo $this->Html->link('Shipping',array('controller'=>'shippings','action' => 'index'),array('class'=>trim($menuActive)=='Shipping'  ? 'menu-top-active dropdown-toggle' : 'dropdown-toggle','data-toggle'=>'dropdown','href'=>'#')); ?>
                               <ul class="dropdown-menu">
                                     <li><?php echo $this->Html->link('Shipping List',array('controller'=>'shippings','action' => 'index'),array('style'=>'color:#222;','href'=>'#')); ?></li>

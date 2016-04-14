@@ -25,6 +25,9 @@ App::uses('User', 'Model');
 App::uses('Product', 'Model');
 App::uses('Vendor', 'Model');
 App::uses('Category', 'Model');
+App::uses('Order', 'Model');
+App::uses('Invoice', 'Model');
+App::uses('Vary', 'Model');
 
 /**
  * Application helper
@@ -79,6 +82,40 @@ class UtilHelper extends AppHelper {
 		 $model = new Vendor();
 		 if($pid != ''){ 
 		 	return $model->find("first",array('conditions'=>array('Vendor.id'=>$pid)));
+		 }else
+		     return '';
+	}
+	
+	public function getVendorNameAlone($pid){
+		 $model = new Vendor();
+		 if($pid != ''){ 
+		 	$vendor = $model->find("first",array('conditions'=>array('Vendor.id'=>$pid)));
+			return $vendor['Vendor']['name'];
+		 }else
+		     return '';
+	}
+	public function getOrderQuantity($pid){
+		 $model = new Order();
+		 if($pid != ''){ 
+		 	$order = $model->find("first",array('conditions'=>array('Order.po_no'=>$pid)));
+			return $order['Order']['total_quantity'];
+		 }else
+		     return '';
+	}
+	public function getOrderQuantityByVarid($pid){
+		 $model = new Vary();
+		 if($pid != ''){ 
+		 	$order = $model->find("first",array('conditions'=>array('Vary.id'=>$pid)));
+			return $order['Vary']['quantity'];
+		 }else
+		     return '';
+	}
+	
+	public function getInvoiceQuantity($pid){
+		 $model = new Invoice();
+		 if($pid != ''){ 
+		 	$invoice = $model->find("first",array('conditions'=>array('Invoice.invoice_no'=>$pid)));
+			return $invoice['Invoice']['total_quantity'];
 		 }else
 		     return '';
 	}
