@@ -200,9 +200,9 @@ class InvoicesController extends AppController {
 						$this->request->data['Vary']['po_no'] = $this->request->data['Invoice']['invoice_no'];   
 						$this->request->data['Vary']['quantity'] = $quan;
 						$this->request->data['Vary']['variant'] = $value['variant'][$i];
-						$this->request->data['Vary']['metric'] = $value['variant'][$i];
-						$this->request->data['Vary']['qty_type'] = $value['variant'][$i];
-						$this->request->data['Vary']['qty'] = $value['variant'][$i];
+						$this->request->data['Vary']['metric'] = $value['metric'][$i];
+						$this->request->data['Vary']['qty_type'] = $value['qty_type'][$i];
+						$this->request->data['Vary']['qty'] = $value['qty'][$i];
 						$this->request->data['Vary']['sku'] = $value['sku'][$i];
 						$this->request->data['Vary']['barcode'] = $value['barcode'][$i];
 						$this->request->data['Vary']['price'] = $value['price'][$i];
