@@ -253,12 +253,21 @@ shopping.controller('cartController',['$scope','$routeParams','$http','$cookies'
 		 $http({method: 'POST',url: $scope.url,data :$scope.postdata,cache: false}).success(function (data, status, headers, config) {
 			 console.log(data);
 			 if(data.responseCart.response !== 'E'){
-				 console.log(data.responseCart.message);
+				 console.log(data.responseCart);
+				// return false;
 				 cartService.unSetCartItems();
-				 if($rootScope.server)
-					 window.location = "/inventory/orders";
-				 else
-					 window.location = "/orders";
+				 if(data.responseCart.status == 0){
+					 if($rootScope.server)
+						 window.location = "/inventory/orders";
+					 else
+						 window.location = "/orders";
+				 }else{
+					 var po = data.responseCart.orderID;
+					 if($rootScope.server)
+						 window.location = "/inventory/orders/report/"+po+"/email";
+					 else
+						 window.location = "/orders/report/"+po+"/email";
+				 }
 			 }else{
 				 console.log(data);
 			 }

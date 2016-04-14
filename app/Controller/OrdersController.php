@@ -58,10 +58,14 @@ class OrdersController extends AppController {
 				$this->request->data['Order']['vendor_id'] = $value['items'][0]['vendor_id'];
 				$this->request->data['Order']['vendor'] = $value['vendor'];
 				$this->request->data['Order']['po_no']=$po;
-				if($value['type']=='pending')
 				$this->request->data['Order']['status']=0;
+				
+				if($value['type']=='pending')
+				$responseStatus = 0;
 				else
-				$this->request->data['Order']['status']=1;
+				$responseStatus = 1;
+				
+				
 				if ($this->Order->save($this->request->data)) {
 					$i=0;
 				  foreach ($value['items'] as $items){
@@ -102,7 +106,7 @@ class OrdersController extends AppController {
 						$i++;
 					  }
 				 }
-				    $responseCart = array('orderID'=>$po,'message'=>'Purchase Order Posted Successfully','response'=>'S');
+				    $responseCart = array('status'=>$responseStatus,'orderID'=>$po,'message'=>'Purchase Order Posted Successfully','response'=>'S');
 				}else {
 					$responseCart = array('message'=>'Unable To save Order','response'=>'E');
 				}

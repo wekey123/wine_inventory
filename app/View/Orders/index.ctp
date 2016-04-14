@@ -100,7 +100,7 @@
                                         <td><?php  echo $this->Util->dateFormat($order['Order']['created']); ?>&nbsp;</td>
                                         <td><?php  echo ($order['Order']['status'] == 0) ? 'Email Not Sent' : (($order['Order']['status'] == 1) ? 'Email Sent' : (($order['Order']['status'] == 2) ? 'Invoice Received' : (($order['Order']['status'] == 3) ? 'Partially Paid' : (($order['Order']['status'] == 4) ? 'Fully Paid' : '' ) ))); ?>&nbsp;</td>
                                         <td class="actions">
-                                            <?php if($order['Order']['status'] == 0){
+                                            <?php if($order['Order']['status'] == 0 || $order['Order']['status'] == 1){
                                               echo $this->Html->link(__('Edit'), array('action' => 'addproduct/#edit/', $order['Order']['po_no'],''));  
                                               echo ' |';}
 											?>
@@ -128,10 +128,10 @@ function format ( d) {
 	console.log(d);
  var toReturn; 
 			
-     toReturn =  '<table class="table table-hover"><thead><tr><th>#</th><th>Product Name</th><th>Variant</th><th>Quantity</th><th>Price</th><th>SKU</th><th>Bar Code</th></tr></thead><tbody>';
+     toReturn =  '<table class="table table-hover"><thead><tr><th>#</th><th>Product Name</th><th>Quantity</th><th>Price</th><th>SKU</th><th>Bar Code</th></tr></thead><tbody>';
 		$(jQuery.parseJSON(d)).each(function(i) {
 			var itemQuantityVal;   
-	 		toReturn += '<tr><td>'+parseInt(i+1)+'</td><td>'+this.product_title+'</td><td>'+this.variant+'</td><td>'+this.quantity+'</td><td>'+this.price+'</td><td>'+this.sku+'</td><td>'+this.barcode+'</td></tr>';
+	 		toReturn += '<tr><td>'+parseInt(i+1)+'</td><td>'+this.product_title+' ('+this.variant+this.metric+' '+this.qty+'/'+this.qty_type+') '+'</td><td>'+this.quantity+'</td><td>'+this.price+'</td><td>'+this.sku+'</td><td>'+this.barcode+'</td></tr>';
 		});
 		toReturn += ' <tr></tr></tbody></table>';
 		return toReturn;
