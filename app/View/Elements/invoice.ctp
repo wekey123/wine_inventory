@@ -37,6 +37,11 @@
                                        <input type="hidden" name="Vary[sku][<?php echo $i; ?>]" value="<?php echo h($product['sku']); ?>"   id="itemSKU" />
                                        <input type="hidden" name="Vary[barcode][<?php echo $i; ?>]" value="<?php echo h($product['barcode']); ?>" />
                                         <input type="hidden" name="Vary[var_id][<?php echo $i; ?>]" value="<?php echo h($product['id']); ?>" />
+                                        <input type="hidden" name="Vary[metric][<?php echo $i; ?>]" value="<?php echo h($product['metric']); ?>" />
+                                        <input type="hidden" name="Vary[qty_type][<?php echo $i; ?>]" value="<?php echo h($product['qty_type']); ?>" />
+                                        <input type="hidden" name="Vary[qty][<?php echo $i; ?>]" value="<?php echo h($product['qty']); ?>" />
+                                        
+                                        
                                       
                                         <input type="hidden" name="Vary[product_id][<?php echo $i; ?>]" value="<?php echo h($product['product_id']); ?>"  />
                                         <?php if(isset($product['inv_id'])) { ?>

@@ -29,7 +29,8 @@
         <div class="col-md-5" style="margin-right:10%;">         
 	<?php
 		echo  $this->Form->input('id');
-		echo $this->Form->input('vendor_name',array('div'=>false,'error'=>false,'type'=>'text','readonly' => 'readonly', 'before' => '<div class="form-group">', 'after' => '</div>', 'class'=>'validate[required] form-control')); ?>
+		echo  $this->Form->input('vendor_id',array('type'=>'hidden'));
+		echo $this->Form->input('vendor_name',array('div'=>false,'error'=>false,'type'=>'text','readonly' => 'readonly', 'value'=>$this->Util->getVendorNameAlone($this->request->data['Invoice']['vendor_id']), 'before' => '<div class="form-group">', 'after' => '</div>', 'class'=>'validate[required] form-control')); ?>
         </div>
         <div class="col-md-5" >   
 	<?php	echo $this->Form->input('po_no',array('div'=>false,'error'=>false,'type'=>'text','readonly' => 'readonly', 'before' => '<div class="form-group">', 'after' => '</div>', 'class'=>'validate[required] form-control poVal','id'=>'tags','between'=>'<label> Order Number</label>','label'=>false));

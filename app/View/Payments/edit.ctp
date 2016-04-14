@@ -100,7 +100,8 @@ $(function() {
 		?>
     </div>
 	</div>
-	<?php $i++; $j++; } ?>
+	<?php $i++; $j++; } $due= $this->Util->getAmountDue();?>
+    <input type="hidden" name="dueAmount" value="<?php echo $due;?>"  /><input type="hidden" name="totalAmount" value="<?php echo $invoice['Invoice']['total_price'];?>"  /><input type="hidden" name="po_no" value="<?php echo $invoice['Invoice']['po_no'];?>"  />
  	<div class="row">
         <div class="col-md-12">
         	 <?php echo $this->Form->submit(__('Submit'),array('div'=>false, 'class'=>'btn btn-lg btn-success btn-block' ,'id' => 'submitButton1')); echo $this->Form->end();	?>

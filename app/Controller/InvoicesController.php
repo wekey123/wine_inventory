@@ -25,8 +25,10 @@ class InvoicesController extends AppController {
  */
 	public function index() {
 		$this->Invoice->recursive = 0;
+		//$this->Paginator->settings = array('fields' => array(''),'conditions'=>array(''),'order' => array('Invoice.created' => 'desc'));
 		//debug($this->Paginator->paginate());
-		$this->set('invoices', $this->Paginator->paginate());
+		$this->set('invoices', $this->Paginator->paginate(array(''),array('Invoice.created' => 'asc')));
+		self::categoryList();
 	}
 
 /**
@@ -104,6 +106,9 @@ class InvoicesController extends AppController {
 						$this->request->data['Vary']['po_no'] = $this->request->data['Invoice']['invoice_no'];   
 						$this->request->data['Vary']['quantity'] = $quan;
 						$this->request->data['Vary']['variant'] = $value['variant'][$i];
+						$this->request->data['Vary']['metric'] = $value['metric'][$i];
+						$this->request->data['Vary']['qty_type'] = $value['qty_type'][$i];
+						$this->request->data['Vary']['qty'] = $value['qty'][$i];						
 						$this->request->data['Vary']['sku'] = $value['sku'][$i];
 						$this->request->data['Vary']['barcode'] = $value['barcode'][$i];
 						$this->request->data['Vary']['price'] = $value['price'][$i];
@@ -152,7 +157,7 @@ class InvoicesController extends AppController {
 		//$vendor[0] = 'Select Vendor';
 		foreach($vendors1 as $key => $vendors) {
 			if(isset($vendors['Category'][0]))
-			$vendor[$vendors['Vendor']['name']]= $vendors['Vendor']['name'];
+			$vendor[$vendors['Vendor']['id']]= $vendors['Vendor']['name'];
 		}
 		$this->set('vendor', $vendor);
 		
@@ -170,6 +175,8 @@ class InvoicesController extends AppController {
 			throw new NotFoundException(__('Invalid invoice'));
 		}
 		if ($this->request->is(array('post', 'put'))) {
+			$this->request->data['Invoice']['invoice_date'] = date("Y-m-d", strtotime($this->request->data['Invoice']['invoice_date']));
+			$this->request->data['Invoice']['estimated_shipping_date'] = date("Y-m-d", strtotime($this->request->data['Invoice']['estimated_shipping_date']));
 			//echo '<pre>';print_r($this->request->data);exit;
 			if ($this->Invoice->save($this->request->data)) {
 				if(isset($this->request->data['col'])){
@@ -193,6 +200,9 @@ class InvoicesController extends AppController {
 						$this->request->data['Vary']['po_no'] = $this->request->data['Invoice']['invoice_no'];   
 						$this->request->data['Vary']['quantity'] = $quan;
 						$this->request->data['Vary']['variant'] = $value['variant'][$i];
+						$this->request->data['Vary']['metric'] = $value['variant'][$i];
+						$this->request->data['Vary']['qty_type'] = $value['variant'][$i];
+						$this->request->data['Vary']['qty'] = $value['variant'][$i];
 						$this->request->data['Vary']['sku'] = $value['sku'][$i];
 						$this->request->data['Vary']['barcode'] = $value['barcode'][$i];
 						$this->request->data['Vary']['price'] = $value['price'][$i];
@@ -337,7 +347,7 @@ class InvoicesController extends AppController {
 		 $this->layout = '';
 		 $this->autoRender = false ;
 		 $no=$_POST['label'];
-		 $options = array('conditions' => array('Order.vendor' => $no,'Order.status' => array(0,1)),'fields'=> array('Order.id','Order.po_no'));
+		 $options = array('conditions' => array('Order.vendor_id' => $no,'Order.status' => 1),'fields'=> array('Order.id','Order.po_no'));
 		 $cat= $this->Order->find('all', $options);
 		 if(!empty($cat)){
 		 $val='<option value="">Select the Order</option>';
@@ -370,7 +380,10 @@ class InvoicesController extends AppController {
 			//debug($Invoice); exit;
 			foreach($Invoice['Vary'] as $vary){
 				$result[$vary['po_no']][$i]['SNO'] = $i+1;
-				$result[$vary['po_no']][$i]['VENDOR NAME'] = $Invoice['Invoice']['vendor_name'];
+				$ve_options = array('conditions' => array('Vendor.id' => $Invoice['Invoice']['vendor_id']));
+				$vendor_array = $this->Vendor->find('first',$ve_options);
+				//echo '<pre>';print_r($vendor_array);exit;
+				$result[$vary['po_no']][$i]['VENDOR NAME'] = $vendor_array['Vendor']['name'];
 				$result[$vary['po_no']][$i]['INVOICE NUMBER'] = $vary['po_no'];
 				$result[$vary['po_no']][$i]['PO NUMBER'] = $Invoice['Invoice']['po_no'];
 				$options = array('conditions' => array('Product.id' => $vary['product_id']));

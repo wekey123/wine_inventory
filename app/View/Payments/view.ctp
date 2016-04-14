@@ -4,7 +4,7 @@
             <div class="row">
                   <div class="col-md-12">
                   <?php echo $this->Html->link('Edit Payment', array('action' => 'edit',$invoice['Invoice']['invoice_no']),array('class'=>'btn btn-primary','style'=>'margin-bottom:20px; float:right')); ?>
-                    <h4 class="page-head-line"><?php echo __('Payment View'); ?></h4>
+                    <h4 class="page-head-line"><?php echo __(' View Payment List'); ?></h4>
                   </div>
                   <?php if(!empty($this->Flash->render())){ ?>
               	  <div class="col-md-12">
@@ -51,8 +51,8 @@
                                   <strong><?php echo __('Created On'); ?></strong> <span> : </span> <span><?php
 							   echo $this->Util->dateFormat(strtotime($invoice['Invoice']['created'])); 
 							   //echo h($invoice['Invoice']['created']); ?></span> <br />
-                               <strong><?php echo __('Vendor Name'); ?></strong> <span> : </span> <span><?php echo h($invoice['Invoice']['vendor_name']); ?></span> <br />
-                               <strong><?php echo __('Vendor Address'); ?></strong> <span> : </span> <span><?php echo h($invoice['Invoice']['vendor_address']); ?></span> <br />
+                               <strong><?php echo __('Vendor Name'); ?></strong> <span> : </span> <span><?php echo $this->Util->getVendorNameAlone($invoice['Invoice']['vendor_id']); ?></span> <br />
+                              <?php /*?> <strong><?php echo __('Vendor Address'); ?></strong> <span> : </span> <span><?php echo h($invoice['Invoice']['vendor_address']); ?></span> <br /><?php */?>
                            <strong><?php echo __('Shipping Method'); ?></strong> <span> : </span> <span><?php  echo $invoice['Invoice']['shipping_method'];  ?></span> <br />
                                <strong><?php echo __('Payment Terms'); ?></strong> <span> : </span> <span><?php echo h($invoice['Invoice']['payment_terms']); ?></span> <br />
                                 <strong><?php echo __('Invoice Date'); ?></strong> <span> : </span> <span><?php echo $this->Util->dateOnlyFormat($invoice['Invoice']['invoice_date']); ?></span> <br />
@@ -129,10 +129,12 @@
                                             <th><?php echo $this->Paginator->sort('po_no','P.O.No'); ?></th>
                                             <th><?php echo $this->Paginator->sort('invoice_no'); ?></th>
                                             <th><?php echo $this->Paginator->sort('payment_no'); ?></th>
-                                            <th><?php echo $this->Paginator->sort('payment_quantity'); ?></th>
-											<th><?php echo $this->Paginator->sort('payment_amount'); ?></th>
-                                            <th><?php echo $this->Paginator->sort('payment_date'); ?></th>
-                                            <th><?php echo $this->Paginator->sort('payment_method'); ?></th>
+                                            <th><?php echo $this->Paginator->sort('order_qty'); ?></th>
+                                            <th><?php echo $this->Paginator->sort('inv_qty'); ?></th>
+                                            <th><?php echo $this->Paginator->sort('pay_qty'); ?></th>
+											<th><?php echo $this->Paginator->sort('pay_amt'); ?></th>
+                                            <th><?php echo $this->Paginator->sort('pay_date'); ?></th>
+                                            <th><?php echo $this->Paginator->sort('pay_method'); ?></th>
                                             <th><?php echo $this->Paginator->sort('user_id','Created By'); ?></th>
                                             <th><?php echo $this->Paginator->sort('created'); ?></th>
                                             <th><?php echo $this->Paginator->sort('modified'); ?></th>
@@ -149,6 +151,8 @@
                                                 <?php echo $this->Html->link($Payment['invoice_no'], array('controller' => 'invoices', 'action' => 'view', $Payment['invoice_no'])); ?>
                                             </td>
                                             <td><?php echo $Payment['payment_no']; ?>&nbsp;</td>
+                                            <td><?php echo $this->Util->getOrderQuantity($Payment['po_no']); ?>&nbsp;</td>
+        									<td><?php echo $this->Util->getInvoiceQuantity($Payment['invoice_no']); ?>&nbsp;</td>
                                             <td><?php echo $Payment['payment_qty']; ?>&nbsp;</td>
                                             <td><?php echo $this->Util->currencyFormat($Payment['payment_amount']); ?>&nbsp;</td>
                                             <td><?php echo $this->Util->dateOnlyFormat($Payment['payment_date']); ?>&nbsp;</td>

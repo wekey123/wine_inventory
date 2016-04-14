@@ -31,6 +31,7 @@ class PaymentsController extends AppController {
 		'SUM(Payment.payment_qty) as total_quantity',
         'Payment.id',
 		'Payment.po_no',
+		'Payment.vendor_id',
 		'Payment.invoice_no',
 		'Payment.payment_no',
 		'Payment.payment_amount',
@@ -43,6 +44,7 @@ class PaymentsController extends AppController {
 		'User.id'),'group' => 'Payment.invoice_no', 'order' => array('Payment.created' => 'desc'));
 		//debug($this->Paginator->paginate()); exit;
 		$this->set('payments', $this->Paginator->paginate());
+		self::vendorList();
 	}
 
 /**
@@ -93,11 +95,12 @@ class PaymentsController extends AppController {
 			if ($this->Payment->save($this->request->data)) {
 				if(($this->request->data['dueAmount']-str_replace(array( ',','$'), '', $this->request->data['Payment']['payment_amount'])) <= 0){
 					$this->Invoice->updateAll(array('Invoice.status' => 2),array('Invoice.invoice_no' => $this->request->data['Payment']['invoice_no']));
-					$this->Order->updateAll(array('Order.status' => 2),array('Order.po_no' => $this->request->data['Payment']['po_no']));
+					$this->Order->updateAll(array('Order.status' => 4),array('Order.po_no' => $this->request->data['Payment']['po_no']));
 				}
-				else
+				else{
 					$this->Invoice->updateAll(array('Invoice.status' => 1),array('Invoice.invoice_no' => $this->request->data['Payment']['invoice_no']));
-				
+					$this->Order->updateAll(array('Order.status' => 3),array('Order.po_no' => $this->request->data['Payment']['po_no']));
+				}
 				$this->Flash->success(__('The payment has been saved.'));
 				return $this->redirect(array('action' => 'index'));
 			} else {
@@ -134,6 +137,16 @@ class PaymentsController extends AppController {
 				$this->Payment->id = $this->request->data['Payment']['id'];
 				$this->Payment->save($this->request->data);
 			}
+			$total = $this->Payment->find('all', array('fields' => array('SUM(Payment.payment_amount) AS total'),'conditions' => array('Payment.po_no'=>$this->request->data['po_no'])
+));//echo $total[0][0]['total'];
+			if($total[0][0]['total'] == $this->request->data['totalAmount']){
+				$this->Invoice->updateAll(array('Invoice.status' => 2),array('Invoice.po_no' => $this->request->data['po_no']));
+				$this->Order->updateAll(array('Order.status' => 4),array('Order.po_no' => $this->request->data['po_no']));
+			}else{
+				$this->Invoice->updateAll(array('Invoice.status' => 1),array('Invoice.po_no' => $this->request->data['po_no']));
+				$this->Order->updateAll(array('Order.status' => 3),array('Order.po_no' => $this->request->data['po_no']));
+			}
+			
 			$this->Flash->success(__('The payment has been saved.'));
 			return $this->redirect(array('action' => 'index'));
 		} else {
@@ -235,7 +248,7 @@ class PaymentsController extends AppController {
 		//$vendor[0] = 'Select Vendor';
 		foreach($vendors1 as $key => $vendors) {
 			if(isset($vendors['Category'][0]))
-			$vendor[$vendors['Vendor']['name']]= $vendors['Vendor']['name'];
+			$vendor[$vendors['Vendor']['id']]= $vendors['Vendor']['name'];
 		}
 		$this->set('vendor', $vendor);
 		
@@ -244,7 +257,7 @@ class PaymentsController extends AppController {
 		 $this->layout = '';
 		 $this->autoRender = false ;
 		 $no=$_POST['label'];
-		 $options = array('conditions' => array('Invoice.vendor_name' => $no,'Invoice.status' => array(0,1)),'fields'=> array('Invoice.id','Invoice.invoice_no'));
+		 $options = array('conditions' => array('Invoice.vendor_id' => $no,'Invoice.status' => array(0,1)),'fields'=> array('Invoice.id','Invoice.invoice_no'));
 		 $cat= $this->Invoice->find('all', $options);
 		 if(!empty($cat)){
 		 $val='<option value="">Select the Invoice</option>';
