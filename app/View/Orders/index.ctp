@@ -53,9 +53,9 @@
                                             <th><?php echo $this->Paginator->sort('No'); ?></th>
                                             <th><?php echo $this->Paginator->sort('vendor'); ?></th>
                                             <th><?php echo $this->Paginator->sort('po_no', 'Purchase Order Number'); ?></th>
-                                            <th><?php echo $this->Paginator->sort('total_quantity'); ?></th>
-                                            <th><?php echo $this->Paginator->sort('total_price'); ?></th>
-                                            <th><?php echo $this->Paginator->sort('user_id', 'Created By'); ?></th>
+                                            <th><?php echo $this->Paginator->sort('total_quantity', 'PO Quantity'); ?></th>
+                                            <th><?php echo $this->Paginator->sort('total_price', 'PO Amount'); ?></th>
+                                            <?php /*?><th><?php echo $this->Paginator->sort('user_id', 'Created By'); ?></th><?php */?>
                                             <th><?php echo $this->Paginator->sort('created'); ?></th>
                                             <th><?php echo $this->Paginator->sort('status'); ?></th>
                                             <?php /*?><th><?php echo $this->Paginator->sort('modified'); ?></th><?php */?>
@@ -96,15 +96,21 @@
                                         </td>
                                         <td><?php echo h($order[0]['total_quantity']); ?>&nbsp;</td>
                                         <td><?php echo $this->Util->currencyFormat($order[0]['total_price'], 'USD');  ?>&nbsp;</td>
-                                        <td><?php echo h($order['User']['username']); ?>&nbsp;</td>
+                                        <?php /*?><td><?php echo h($order['User']['username']); ?>&nbsp;</td><?php */?>
                                         <td><?php  echo $this->Util->dateFormat($order['Order']['created']); ?>&nbsp;</td>
                                         <td><?php  echo ($order['Order']['status'] == 0) ? 'Email Not Sent' : (($order['Order']['status'] == 1) ? 'Email Sent' : (($order['Order']['status'] == 2) ? 'Invoice Received' : (($order['Order']['status'] == 3) ? 'Partially Paid' : (($order['Order']['status'] == 4) ? 'Fully Paid' : '' ) ))); ?>&nbsp;</td>
                                         <td class="actions">
+                                        
                                             <?php if($order['Order']['status'] == 0 || $order['Order']['status'] == 1){
                                               echo $this->Html->link(__('Edit'), array('action' => 'addproduct/#edit/', $order['Order']['po_no'],''));  
                                               echo ' |';}
 											?>
-                                            <?php echo $this->Html->link(__('Email'), array('action' => 'report',$order['Order']['po_no'],'email')); ?> |
+    
+                                            <?php if($order['Order']['status'] == 0 || $order['Order']['status'] == 1){ 
+										    echo $this->Html->link(__('Email'), array('action' => 'report',$order['Order']['po_no'],'email')); 
+										    echo ' |';}
+										    ?>
+                                            
                                             <?php echo $this->Html->link(__('Download'), array('action' => 'report',$order['Order']['po_no'])); ?> 
                                         </td>
                                     </tr>

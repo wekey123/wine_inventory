@@ -161,8 +161,7 @@ shopping.controller("editPoController", ["$scope","$log","$timeout","$http",'$ro
 	    if (typeof object.quantity != 'undefined'){
 			if(object.quantity  != '' && object.price != ''){	
 			
-				$scope.addData = {vendor_id: parseInt(object.vendor_id),vendor: object.vendor,category_id: parseInt(object.vendor_type),category: object.category, id: parseInt(object.pv_id), p_id: parseInt(object.id), title: object.title, size: object.variant, metric: object.metric, qty_type: object.qty_type, qty: object.qty, price: parseFloat(object.price), quantity: parseInt(object.quantity), img: object.image, sum: parseFloat(object.sum),ov_id: parseInt(object.ov_id), po_no: object.po_no};
-				
+				$scope.addData = {vendor_id: parseInt(object.vendor_id),vendor: object.vendor,category_id: parseInt(object.vendor_type),category: object.category, id: parseInt(object.pv_id), p_id: parseInt(object.id), title: object.title, size: object.variant, metric: object.metric, qty_type: object.qty_type, qty: object.qty, price: parseFloat(object.price), quantity: parseInt(object.quantity), old_quantity: parseInt(object.quantity), img: object.image, sum: parseFloat(object.sum),ov_id: parseInt(object.ov_id), po_no: object.po_no};
 				
 				cartService.addCart($scope.addData);
 				$scope.validationError = "";
@@ -212,8 +211,7 @@ shopping.controller('editcartController',['$scope','$routeParams','$http','$cook
 		  console.log(object);
 	    if (typeof object.quantity != 'undefined'){
 			if(object.quantity  != '' && object.price != ''){	
-				// $scope.addData = {vendor: object.vendor, category: object.category, id: parseInt(object.id), title: object.title, price: parseFloat(object.price), quantity: parseInt(object.quantity), img: object.img, sum: parseFloat(object.sum)};
-				$scope.addData = object;
+				// $scope.addData = {vendor_id: parseInt(object.vendor_id),vendor: object.vendor,category_id: parseInt(object.vendor_type),category: object.category, id: parseInt(object.pv_id), p_id: parseInt(object.id), title: object.title, size: object.variant, metric: object.metric, qty_type: object.qty_type, qty: object.qty, price: parseFloat(object.price), quantity: parseInt(object.quantity), old_quantity: parseInt(object.quantity), img: object.image, sum: parseFloat(object.sum)};
 				cartService.addCart($scope.addData);
 				$scope.validationError = "";
 			 }else{
@@ -283,12 +281,21 @@ shopping.controller('editcartController',['$scope','$routeParams','$http','$cook
 		 $http({method: 'POST',url: $scope.url,data :$scope.postdata,cache: false}).success(function (data, status, headers, config) {
 			 console.log(data);
 			 if(data.responseCart.response !== 'E'){
-				 console.log(data.responseCart.message);
+				 console.log(data.responseCart);
+				 //return false;
 				 cartService.unSetCartItems();
-				 if($rootScope.server)
-					 window.location = "/inventory/orders";
-				 else
-					 window.location = "/orders";
+				 if(data.responseCart.status == 0){
+					 if($rootScope.server)
+						 window.location = "/inventory/orders";
+					 else
+						 window.location = "/orders";
+				 }else{
+					 var po = data.responseCart.orderID;
+					 if($rootScope.server)
+						 window.location = "/inventory/orders/report/"+po+"/email";
+					 else
+						 window.location = "/orders/report/"+po+"/email";
+				 }
 			 }else{
 				 console.log(data);
 			 }

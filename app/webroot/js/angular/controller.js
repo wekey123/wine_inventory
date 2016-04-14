@@ -140,7 +140,7 @@ shopping.controller("addPoController", ["$scope","$log","$timeout","$http",'$roo
 	    if (typeof object.quantity != 'undefined'){
 			if(object.quantity  != '' && object.price != ''){	
 			
-				$scope.addData = {vendor_id: parseInt(object.vendor_id),vendor: object.vendor,category_id: parseInt(object.vendor_type),category: object.category, id: parseInt(object.pv_id), p_id: parseInt(object.id), title: object.title, size: object.variant, metric: object.metric, qty_type: object.qty_type, qty: object.qty, price: parseFloat(object.price), quantity: parseInt(object.quantity), img: object.image, sum: parseFloat(object.sum)};
+				$scope.addData = {vendor_id: parseInt(object.vendor_id),vendor: object.vendor,category_id: parseInt(object.vendor_type),category: object.category, id: parseInt(object.pv_id), p_id: parseInt(object.id), title: object.title, size: object.variant, metric: object.metric, qty_type: object.qty_type, qty: object.qty, price: parseFloat(object.price), quantity: parseInt(object.quantity), old_quantity: parseInt(object.quantity), img: object.image, sum: parseFloat(object.sum)};
 				console.log($scope.addData);
 				cartService.addCart($scope.addData);
 				$scope.validationError = "";
@@ -182,8 +182,7 @@ shopping.controller('cartController',['$scope','$routeParams','$http','$cookies'
 		  console.log(object);
 	    if (typeof object.quantity != 'undefined'){
 			if(object.quantity  != '' && object.price != ''){	
-				// $scope.addData = {vendor: object.vendor, category: object.category, id: parseInt(object.id), title: object.title, price: parseFloat(object.price), quantity: parseInt(object.quantity), img: object.img, sum: parseFloat(object.sum)};
-				$scope.addData = object;
+				// $scope.addData = {vendor_id: parseInt(object.vendor_id),vendor: object.vendor,category_id: parseInt(object.vendor_type),category: object.category, id: parseInt(object.pv_id), p_id: parseInt(object.id), title: object.title, size: object.variant, metric: object.metric, qty_type: object.qty_type, qty: object.qty, price: parseFloat(object.price), quantity: parseInt(object.quantity), old_quantity: parseInt(object.quantity), img: object.image, sum: parseFloat(object.sum)};
 				cartService.addCart($scope.addData);
 				$scope.validationError = "";
 			 }else{
@@ -254,7 +253,7 @@ shopping.controller('cartController',['$scope','$routeParams','$http','$cookies'
 			 console.log(data);
 			 if(data.responseCart.response !== 'E'){
 				 console.log(data.responseCart);
-				// return false;
+				 //return false;
 				 cartService.unSetCartItems();
 				 if(data.responseCart.status == 0){
 					 if($rootScope.server)

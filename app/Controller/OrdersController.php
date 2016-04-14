@@ -79,9 +79,12 @@ class OrdersController extends AppController {
 							$this->request->data['Vary']['id'] = '';
 							
 						$this->request->data['Vary']['product_id'] = $product['Vary']['product_id'];
+						$this->request->data['Vary']['vendor_id'] = $items['vendor_id'];
+						$this->request->data['Vary']['category_id'] = $items['category_id'];
 						$this->request->data['Vary']['vendor'] = $items['vendor'];
 						$this->request->data['Vary']['po_no'] = $po;   
 						$this->request->data['Vary']['quantity'] = $items['quantity'];
+						//$this->request->data['Vary']['old_quantity'] = $items['old_quantity'];
 						$this->request->data['Vary']['price'] = $items['price'];
 						$this->request->data['Vary']['price_total'] = $items['price'] * $items['quantity'];
 						$this->request->data['Vary']['type'] = 'order';	
@@ -98,10 +101,12 @@ class OrdersController extends AppController {
 						
 						//debug($this->Vary->validationErrors); //show validationErrors 
 						//exit;
-						if(!empty($items['ov_id'])){
-						$this->Vary->updateAll(array('Vary.po_qty' => $this->request->data['Vary']['quantity']),array('Vary.product_id' => $this->request->data['Vary']['product_id'],'Vary.type' => 'product'));
-						}else{
-						$this->Vary->updateAll(array('Vary.po_qty' => $product['Vary']['po_qty']+$this->request->data['Vary']['quantity']),array('Vary.product_id' => $this->request->data['Vary']['product_id'],'Vary.type' => 'product'));
+						if(!empty($items['ov_id'])){  // EDIT
+						 $po_qty = ($product['Vary']['po_qty']-$items['old_quantity'])+$this->request->data['Vary']['quantity'];
+						$this->Vary->updateAll(array('Vary.po_qty' => $po_qty),array('Vary.product_id' => $this->request->data['Vary']['product_id'],'Vary.type' => 'product'));
+						}else{ // ADD
+							$po_qty = $product['Vary']['po_qty']+$this->request->data['Vary']['quantity'];
+						 $this->Vary->updateAll(array('Vary.po_qty' => $po_qty),array('Vary.product_id' => $this->request->data['Vary']['product_id'],'Vary.type' => 'product'));
 						}
 						$i++;
 					  }
@@ -518,7 +523,7 @@ public function in_array_r($needle, $haystack, $strict = false) {
 				$options = array('conditions' => array('Product.id' => $vary['product_id']));
 				$product_array = $this->Product->find('first',$options);
 				$result[$vary['po_no']][$i]['PRODUCT NAME'] = $product_array['Product']['title'];
-				$result[$vary['po_no']][$i]['CATEGORY NAME'] = $product_array['Product']['category_name'];
+				$result[$vary['po_no']][$i]['CATEGORY ID'] = $vary['category_id'];
 				$result[$vary['po_no']][$i]['SIZE'] = $vary['variant'];
 				$result[$vary['po_no']][$i]['SKU'] = $vary['sku'];
 				$result[$vary['po_no']][$i]['BARCODE'] = $vary['barcode'];
@@ -539,6 +544,7 @@ public function in_array_r($needle, $haystack, $strict = false) {
 		$this->autoLayout = false;
 		Configure::write('debug', '0');
 	}
+	
 	public function report($orderId = null,$page = null){
 		$this->layout = null;
 		$this->Order->bindModel(array('hasMany' => array('Vary' => array('foreignKey' => false,'conditions' => array('Vary.type' => 'order','Vary.po_no'=>$orderId)))),false);
@@ -563,7 +569,8 @@ public function in_array_r($needle, $haystack, $strict = false) {
 				$options = array('conditions' => array('Product.id' => $vary['product_id']));
 				$product_array = $this->Product->find('first',$options);
 				$result[$vary['po_no']][$i]['PRODUCT NAME'] = $product_array['Product']['title'];
-				$result[$vary['po_no']][$i]['CATEGORY NAME'] = $product_array['Product']['category_name'];
+				//$result[$vary['po_no']][$i]['CATEGORY NAME'] = $product_array['Product']['category_name'];
+				$result[$vary['po_no']][$i]['CATEGORY ID'] = $vary['category_id'];
 				$result[$vary['po_no']][$i]['SIZE'] = $vary['variant'];
 				$result[$vary['po_no']][$i]['SKU'] = $vary['sku'];
 				$result[$vary['po_no']][$i]['BARCODE'] = $vary['barcode'];
@@ -598,9 +605,10 @@ public function in_array_r($needle, $haystack, $strict = false) {
 			$filename = 'PurchaseOrder_'.$pono.'.xlsx';
 			$pathwithfilename = WWW_ROOT.'mailpo'.DS.$filename;
 			$Email->attachments(array($filename => array('file' => $pathwithfilename)));
-			if($Email->send($this->request->data['Order']['message']))
+			if($Email->send($this->request->data['Order']['message'])){
+			$this->Order->updateAll(array('Order.status' => 1),array('Order.po_no' => $pono));
 			$this->Flash->success(__('Your message has been sent.'));
-			else
+			}else
 			$this->Flash->error(__('Message Sent failed.'));
 			return $this->redirect(array('action' => 'index'));
 		}else{

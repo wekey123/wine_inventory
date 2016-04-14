@@ -21,7 +21,8 @@
 		foreach ($data as $res) {
 			 foreach ($res as $d)
 			{
-			$this->PhpExcel->addTableRow(array($d['SNO'],$d['PO NUMBER'],$d['PRODUCT NAME'],$d['CATEGORY NAME'],$d['SIZE'],$d['SKU'],$d['BARCODE'],$d['QTY'],$d['PRICE'],$d['EXTENDED PRICE']));
+				$category = $this->Util->getCategoryDetails($d['CATEGORY ID']);
+			$this->PhpExcel->addTableRow(array($d['SNO'],$d['PO NUMBER'],$d['PRODUCT NAME'],$category['Category']['name'],$d['SIZE'],$d['SKU'],$d['BARCODE'],$d['QTY'],$d['PRICE'],$d['EXTENDED PRICE']));
 			}
 		}
 		$this->PhpExcel->addTableRow();

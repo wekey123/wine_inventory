@@ -21,8 +21,8 @@
     <div class="row">
         <div class="col-md-5" style="margin-right:10%;">    
 	<?php echo $this->Form->create('Order',array('url'=>'/orders/emailCheck/'.$po_no)); ?>
-	<?php
-		echo $this->Form->input('to',array('div'=>false,'error'=>false,'type'=>'text', 'before' => '<div class="form-group">', 'after' => '</div>', 'class'=>'validate[required] form-control'));
+	<?php $vendor  = $this->Util->getVendorDetails($order['Order']['vendor_id']);
+		echo $this->Form->input('to',array('div'=>false,'error'=>false,'type'=>'text', 'before' => '<div class="form-group">', 'after' => '</div>', 'class'=>'validate[required] form-control','value'=>$vendor['Vendor']['email']));
 		echo $this->Form->input('subject',array('div'=>false,'error'=>false,'before' => '<div class="form-group">', 'after' => '</div>', 'class'=>'validate[required] form-control'));
 		echo $this->Form->input('message',array('div'=>false,'error'=>false,'type'=>'textarea','before' => '<div class="form-group">', 'after' => '</div>', 'class'=>'validate[required] form-control'));
 	?>
@@ -37,7 +37,7 @@
                         </div>
                         <div class="panel-body">
                             <div class="table-responsive">
-                             <strong><?php echo __('Vendor Name'); ?></strong> <span class="colon"> : </span> <span><?php echo $this->Util->getVendorNameAlone($order['Order']['vendor_id']); ?></span> <br />
+                             <strong><?php echo __('Vendor Name'); ?></strong> <span class="colon"> : </span> <span><?php echo $vendor['Vendor']['name']; ?></span> <br />
                              
                                <strong><?php echo __('PO Number'); ?></strong> <span class="colon"> : </span> <span><?php echo h($order['Order']['po_no']); ?></span> <br />
                               

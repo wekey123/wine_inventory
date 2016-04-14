@@ -94,6 +94,23 @@ class UtilHelper extends AppHelper {
 		 }else
 		     return '';
 	}
+	
+	 public function getVendorDetails($pid){
+		 $model = new Vendor();
+		 if($pid != ''){ 
+			return $model->find("first",array('conditions'=>array('Vendor.id'=>$pid)));
+		 }else
+		     return '';
+	}
+	
+	public function getCategoryDetails($pid){
+		 $model = new Category();
+		 if($pid != ''){ 
+			return $model->find("first",array('conditions'=>array('Category.id'=>$pid)));
+		 }else
+		     return '';
+	}
+	
 	public function getOrderQuantity($pid){
 		 $model = new Order();
 		 if($pid != ''){ 
