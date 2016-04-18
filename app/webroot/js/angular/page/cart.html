@@ -77,7 +77,8 @@
 
     
     <div class="row"  style="margin:0 0 0 25px; border-top-color:#0000FF;">
-        <div class="col-xs-12 col-lg-12" style="text-align:center"><span style="font-weight:bold;">Order Total:</span> ${{ cartTotalSum() }}</div>
+        <div class="col-lg-7" style="text-align:right"><span style="font-weight:bold;">Order Total:</span> ${{ cartTotalSum() }}</div>
+        <div class="col-lg-5" style="text-align:center"><input type="checkbox"  ng-model="storepo" />  No Purchase Order (Only For Invoice)</div>
     </div>
     
     <div class="row"  style="margin:0 0 0 25px; border-top-color:#0000FF;">
@@ -85,7 +86,7 @@
           <a ng-href="#po" class="btn btn-primary btn-sm">ADD MORE SHOPPING</a> 
         </div>
         <div class="col-lg-4" style="text-align:center;">
-         <button type="button" class="btn btn-primary btn-sm" ng-click="submitCart('pending');">SAVE CART</button>
+         <button type="button" ng-disabled="storepo" class="btn btn-primary btn-sm" ng-click="submitCart('pending');">SAVE CART</button>
         </div>
          <div class="col-lg-4" style="text-align:center;">
          <button type="button" class="btn btn-primary btn-sm" ng-click="submitCart('submit');">SUBMIT CART</button>

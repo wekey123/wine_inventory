@@ -16,7 +16,7 @@ class OrdersController extends AppController {
  *
  * @var array
  */
- 	public $uses = array('Order','Product','Vary','Category','User','Vendor');
+ 	public $uses = array('Order','Invoice','Product','Vary','Category','User','Vendor');
 	public $components = array('Paginator', 'Flash', 'Session','RequestHandler');
 	public $layout = 'admin';
 
@@ -50,6 +50,7 @@ class OrdersController extends AppController {
 					}
 				}else{
 					$po='ORD'.rand('111111','999999');
+					$inv_no='INV'.rand('111111','999999');
 					$this->Order->create();
 				}
 				$this->request->data['Order']['total_quantity']=$value['cartQty'];
@@ -58,60 +59,87 @@ class OrdersController extends AppController {
 				$this->request->data['Order']['vendor_id'] = $value['items'][0]['vendor_id'];
 				$this->request->data['Order']['vendor'] = $value['vendor'];
 				$this->request->data['Order']['po_no']=$po;
-				$this->request->data['Order']['status']=0;
-				
 				if($value['type']=='pending')
-				$responseStatus = 0;
-				else
-				$responseStatus = 1;
+					$responseStatus = 0;
+				else{
+					$responseStatus = 1;
+				}
+				$this->request->data['Order']['status']= $responseStatus;	
 				
+				if($value['poCopy'] == true){
+					$responseStatus = 10;	
+					$this->request->data['Order']['status']= $responseStatus;	
+					$this->request->data['Invoice']['total_quantity']=$value['cartQty'];
+					$this->request->data['Invoice']['total_price']=$value['cartSum'];
+					$this->request->data['Invoice']['user_id']= $user['id'];
+					$this->request->data['Invoice']['vendor_id'] = $value['items'][0]['vendor_id'];
+					$this->request->data['Invoice']['vendor'] = $value['vendor'];
+					$this->request->data['Invoice']['po_no']=$po;
+					$this->request->data['Invoice']['invoice_no']=$inv_no;
+					$this->request->data['Invoice']['status']= 0;
+					$this->Invoice->create();
+					$this->Invoice->save($this->request->data);
+					$invoice_id = $this->Invoice->getInsertID();
+				}
 				
 				if ($this->Order->save($this->request->data)) {
-					$i=0;
-				  foreach ($value['items'] as $items){
-					  if(!empty($items)){
-						$options = array('conditions' => array('Vary.id' => $items['id']));
-						$product = $this->Vary->find('first',$options);
-						
-						if(!empty($items['ov_id']))
-							$this->request->data['Vary']['id'] = $items['ov_id'];
-						else
-							$this->request->data['Vary']['id'] = '';
+					  $i=0;
+					  
+					  foreach ($value['items'] as $items){
+						  if(!empty($items)){
+							$options = array('conditions' => array('Vary.id' => $items['id']));
+							$product = $this->Vary->find('first',$options);
 							
-						$this->request->data['Vary']['product_id'] = $product['Vary']['product_id'];
-						$this->request->data['Vary']['vendor_id'] = $items['vendor_id'];
-						$this->request->data['Vary']['category_id'] = $items['category_id'];
-						$this->request->data['Vary']['vendor'] = $items['vendor'];
-						$this->request->data['Vary']['po_no'] = $po;   
-						$this->request->data['Vary']['quantity'] = $items['quantity'];
-						//$this->request->data['Vary']['old_quantity'] = $items['old_quantity'];
-						$this->request->data['Vary']['price'] = $items['price'];
-						$this->request->data['Vary']['price_total'] = $items['price'] * $items['quantity'];
-						$this->request->data['Vary']['type'] = 'order';	
-						$this->request->data['Vary']['variant'] = $product['Vary']['variant'];
-						$this->request->data['Vary']['sku'] = $product['Vary']['sku'];
-						$this->request->data['Vary']['metric'] = $product['Vary']['metric'];
-						$this->request->data['Vary']['qty_type'] = $product['Vary']['qty_type'];
-						$this->request->data['Vary']['qty'] = $product['Vary']['qty'];
-						$this->request->data['Vary']['barcode'] = $product['Vary']['barcode'];
-						$this->request->data['Vary']['var_id'] =$product['Vary']['id'];
-						unset($this->Vary->validate);
-						$this->Vary->create();
-						$this->Vary->save($this->request->data);
-						
-						//debug($this->Vary->validationErrors); //show validationErrors 
-						//exit;
-						if(!empty($items['ov_id'])){  // EDIT
-						 $po_qty = ($product['Vary']['po_qty']-$items['old_quantity'])+$this->request->data['Vary']['quantity'];
-						$this->Vary->updateAll(array('Vary.po_qty' => $po_qty),array('Vary.product_id' => $this->request->data['Vary']['product_id'],'Vary.type' => 'product'));
-						}else{ // ADD
-							$po_qty = $product['Vary']['po_qty']+$this->request->data['Vary']['quantity'];
-						 $this->Vary->updateAll(array('Vary.po_qty' => $po_qty),array('Vary.product_id' => $this->request->data['Vary']['product_id'],'Vary.type' => 'product'));
-						}
-						$i++;
-					  }
-				 }
-				    $responseCart = array('status'=>$responseStatus,'orderID'=>$po,'message'=>'Purchase Order Posted Successfully','response'=>'S');
+							if(!empty($items['ov_id']))
+								$this->request->data['Vary']['id'] = $items['ov_id'];
+							else
+								$this->request->data['Vary']['id'] = '';
+								
+							$this->request->data['Vary']['product_id'] = $product['Vary']['product_id'];
+							$this->request->data['Vary']['vendor_id'] = $items['vendor_id'];
+							$this->request->data['Vary']['category_id'] = $items['category_id'];
+							$this->request->data['Vary']['vendor'] = $items['vendor'];
+							$this->request->data['Vary']['quantity'] = $items['quantity'];
+							$this->request->data['Vary']['price'] = $items['price'];
+							$this->request->data['Vary']['price_total'] = $items['price'] * $items['quantity'];	
+							$this->request->data['Vary']['variant'] = $product['Vary']['variant'];
+							$this->request->data['Vary']['sku'] = $product['Vary']['sku'];
+							$this->request->data['Vary']['metric'] = $product['Vary']['metric'];
+							$this->request->data['Vary']['qty_type'] = $product['Vary']['qty_type'];
+							$this->request->data['Vary']['qty'] = $product['Vary']['qty'];
+							$this->request->data['Vary']['barcode'] = $product['Vary']['barcode'];
+							$this->request->data['Vary']['var_id'] =$product['Vary']['id'];
+							$this->request->data['Vary']['type'] = 'order';
+							$this->request->data['Vary']['po_no'] = $po;  
+							$this->Vary->create();
+							$this->Vary->save($this->request->data); 
+								
+							if($value['poCopy'] == true){
+								$this->request->data['Vary']['var_id'] = $this->Vary->getInsertID();
+								$this->request->data['Vary']['type'] = 'invoice';
+								$this->request->data['Vary']['po_no'] = $inv_no; //dummy invoice no
+								$this->Vary->create();
+								$this->Vary->save($this->request->data);
+						  	}
+							
+	 
+							if(!empty($items['ov_id'])){  // EDIT
+							 $po_qty = ($product['Vary']['po_qty']-$items['old_quantity'])+$this->request->data['Vary']['quantity'];
+							$this->Vary->updateAll(array('Vary.po_qty' => $po_qty),array('Vary.product_id' => $this->request->data['Vary']['product_id'],'Vary.type' => 'product'));
+							}else{ // ADD
+								$po_qty = $product['Vary']['po_qty']+$this->request->data['Vary']['quantity'];
+							$this->Vary->updateAll(array('Vary.po_qty' => $po_qty),array('Vary.product_id' => $this->request->data['Vary']['product_id'],'Vary.type' => 'product'));							
+								if($value['poCopy'] == true){
+									$this->Vary->updateAll(array('Vary.invoice_qty' => $po_qty),array('Vary.product_id' => $this->request->data['Vary']['product_id'],'Vary.type' => 'product'));				}
+							}
+							$i++;
+						  }
+					 }
+					 if($value['poCopy'] == true){
+				   		 $responseCart = array('status'=>$responseStatus,'orderID'=>$invoice_id,'message'=>'Purchase Order Posted Successfully','response'=>'S');
+					 }else{
+						 $responseCart = array('status'=>$responseStatus,'orderID'=>$po,'message'=>'Purchase Order Posted Successfully','response'=>'S');
+					 }
 				}else {
 					$responseCart = array('message'=>'Unable To save Order','response'=>'E');
 				}

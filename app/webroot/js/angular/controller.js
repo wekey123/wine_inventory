@@ -237,9 +237,14 @@ shopping.controller('cartController',['$scope','$routeParams','$http','$cookies'
          $scope.postdata.cartSum = $scope.cartTotalSum();
 		 $scope.postdata.vendor = cartService.getVendorName();
 		 $scope.postdata.poNo = $cookies.getObject('cart').items[0].po_no;
-		 if(type == 'submit')
+		 $scope.postdata.poCopy = $scope.storepo;
+		 //console.log($scope.postdata); return false;
+		 if(type == 'submit'){
 		 $scope.postdata.type = '1'; //submitted
-		 else
+			 if($scope.postdata.poOrder == true){
+				 $scope.postdata.type = '10';
+			 }
+		 }else
 		  $scope.postdata.type = 'pending';//  pending
 		  console.log($scope.postdata);
 		  console.log($scope.postdata.poNo);
@@ -248,18 +253,22 @@ shopping.controller('cartController',['$scope','$routeParams','$http','$cookies'
 		else
 	  		$scope.url = $rootScope.filePath.location+'orders/addcart.json';
 			console.log($scope.url);
-		 //return false;
+
 		 $http({method: 'POST',url: $scope.url,data :$scope.postdata,cache: false}).success(function (data, status, headers, config) {
-			 console.log(data);
 			 if(data.responseCart.response !== 'E'){
 				 console.log(data.responseCart);
-				 //return false;
 				 cartService.unSetCartItems();
 				 if(data.responseCart.status == 0){
 					 if($rootScope.server)
 						 window.location = "/inventory/orders";
 					 else
 						 window.location = "/orders";
+				 }if(data.responseCart.status == 10){
+					  var po = data.responseCart.orderID;
+					 if($rootScope.server)
+						 window.location = "/inventory/invoices/edit/"+po;
+					 else
+						 window.location = "/invoices/edit/"+po;
 				 }else{
 					 var po = data.responseCart.orderID;
 					 if($rootScope.server)

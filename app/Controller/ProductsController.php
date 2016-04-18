@@ -118,6 +118,9 @@ class ProductsController extends AppController {
 				if(isset($this->request->data['Vary']['val'])){
 				  foreach($this->request->data['Vary']['val']  as  $value){					  
 					$this->request->data['Vary']['product_id'] = $product_id; 
+					$this->request->data['Vary']['user_id'] = $user['id'];
+					$this->request->data['Vary']['vendor_id'] = $this->request->data['Product']['vendor_id'];
+					$this->request->data['Vary']['category_id'] = $this->request->data['Product']['vendor_type'];
 					$this->request->data['Vary']['variant'] = $value['variant'];
 					$this->request->data['Vary']['type'] = 'product';
 					$this->request->data['Vary']['price'] = $value['price'];
