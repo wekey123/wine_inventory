@@ -36,10 +36,10 @@
                             <div class="alert alert-warning">
                                <strong><?php echo __('PO Number'); ?></strong> <span> : </span> <span><?php echo h($invoice['Invoice']['po_no']); ?></span> <br />
                                <strong><?php echo __('Invoice Number'); ?></strong> <span> : </span> <span><?php echo h($invoice['Invoice']['invoice_no']); ?></span> <br />
-                               <strong><?php echo __('Total Quantity'); ?></strong> <span> : </span> <span><?php echo h($invoice['Invoice']['total_quantity']); ?></span> <br />
-                               <strong><?php echo __('Quantity Left'); ?></strong> <span> : </span> <span><?php echo $this->Util->getQtyLeft(); ?></span> <br />
+                               <strong><?php echo __('Invoice Quantity'); ?></strong> <span> : </span> <span><?php echo h($invoice['Invoice']['total_quantity']); ?></span> <br />
+                               <strong><?php echo __('Invoice Quantity Left'); ?></strong> <span> : </span> <span><?php echo $this->Util->getQtyLeft(); ?></span> <br />
                                
-                               <strong><?php echo __('Total Amount'); ?></strong> <span> : </span> <span><?php  echo $this->Util->currencyFormat($invoice['Invoice']['total_price']);  ?></span> <br />
+                               <strong><?php echo __('Invoice Amount'); ?></strong> <span> : </span> <span><?php  echo $this->Util->currencyFormat($invoice['Invoice']['total_price']);  ?></span> <br />
                                <strong><?php echo __('Amount Due'); ?></strong> <span> : </span> <span><?php  echo $this->Util->currencyFormat($this->Util->getAmountDue());  ?></span> <br />
                                <strong><?php echo __('Created By'); ?></strong> <span> : </span> <span><?php echo h($invoice['User']['username']); ?></span> <br />
                             
@@ -126,15 +126,15 @@
                                     <thead>
                                         <tr>
                                             <th>#</th>
-                                            <th><?php echo $this->Paginator->sort('po_no','P.O.No'); ?></th>
-                                            <th><?php echo $this->Paginator->sort('invoice_no'); ?></th>
+                                           <?php /*?> <th><?php echo $this->Paginator->sort('po_no','P.O.No'); ?></th>
+                                            <th><?php echo $this->Paginator->sort('invoice_no'); ?></th><?php */?>
                                             <th><?php echo $this->Paginator->sort('payment_no'); ?></th>
-                                            <th><?php echo $this->Paginator->sort('order_qty'); ?></th>
+                                            <th><?php echo $this->Paginator->sort('po_qty'); ?></th>
                                             <th><?php echo $this->Paginator->sort('inv_qty'); ?></th>
-                                            <th><?php echo $this->Paginator->sort('pay_qty'); ?></th>
-											<th><?php echo $this->Paginator->sort('pay_amt'); ?></th>
-                                            <th><?php echo $this->Paginator->sort('pay_date'); ?></th>
-                                            <th><?php echo $this->Paginator->sort('pay_method'); ?></th>
+                                            <th><?php echo $this->Paginator->sort('paid_qty'); ?></th>
+											<th><?php echo $this->Paginator->sort('paid_amt'); ?></th>
+                                            <th><?php echo $this->Paginator->sort('paid_date'); ?></th>
+                                            <th><?php echo $this->Paginator->sort('paid_method'); ?></th>
                                             <th><?php echo $this->Paginator->sort('user_id','Created By'); ?></th>
                                             <th><?php echo $this->Paginator->sort('created'); ?></th>
                                             <th><?php echo $this->Paginator->sort('modified'); ?></th>
@@ -144,12 +144,12 @@
                                      <?php $j = 1; foreach ($invoice['Payment'] as $Payment): ?>
                                         <tr>
                                             <td><?php echo h($j); ?></td>
-                                            <td>
+                                            <?php /*?><td>
 												<?php echo $this->Html->link($Payment['po_no'], array('controller' => 'orders', 'action' => 'view', $Payment['po_no'])); ?>
                                             </td>
                                             <td>
                                                 <?php echo $this->Html->link($Payment['invoice_no'], array('controller' => 'invoices', 'action' => 'view', $Payment['invoice_no'])); ?>
-                                            </td>
+                                            </td><?php */?>
                                             <td><?php echo $Payment['payment_no']; ?>&nbsp;</td>
                                             <td><?php echo $this->Util->getOrderQuantity($Payment['po_no']); ?>&nbsp;</td>
         									<td><?php echo $this->Util->getInvoiceQuantity($Payment['invoice_no']); ?>&nbsp;</td>

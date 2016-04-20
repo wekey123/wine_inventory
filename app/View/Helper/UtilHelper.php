@@ -123,7 +123,7 @@ class UtilHelper extends AppHelper {
 		 $model = new Vary();
 		 if($pid != ''){ 
 		 	$order = $model->find("first",array('conditions'=>array('Vary.id'=>$pid)));
-			return $order['Vary']['quantity'];
+			return $order;
 		 }else
 		     return '';
 	}

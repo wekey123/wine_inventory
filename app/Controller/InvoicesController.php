@@ -112,11 +112,16 @@ class InvoicesController extends AppController {
 						$this->request->data['Vary']['sku'] = $value['sku'][$i];
 						$this->request->data['Vary']['barcode'] = $value['barcode'][$i];
 						$this->request->data['Vary']['price'] = $value['price'][$i];
+						$this->request->data['Vary']['vendor_id'] = $value['vendor_id'][$i];
+						$this->request->data['Vary']['category_id'] = $value['category_id'][$i];
 						$this->request->data['Vary']['price_total'] = $value['price'][$i] * $quan;
 						$this->request->data['Vary']['type'] = 'invoice';
 						$this->request->data['Vary']['var_id'] = $value['var_id'][$i];
 						$this->Vary->create();
 						$this->Vary->save($this->request->data);
+						$varoptions = array('conditions' => array('Vary.id' => $value['ord_var_id'][$i]));
+						$varproduct = $this->Vary->find('first',$varoptions);
+						$this->Vary->updateAll(array('Vary.invoice_qty' => $varproduct['Vary']['invoice_qty']+$this->request->data['Vary']['quantity']),array('Vary.id' => $value['ord_var_id'][$i],'Vary.type' => 'product'));
 						$i++;
 					}
 				 
@@ -204,6 +209,8 @@ class InvoicesController extends AppController {
 						$this->request->data['Vary']['qty_type'] = $value['qty_type'][$i];
 						$this->request->data['Vary']['qty'] = $value['qty'][$i];
 						$this->request->data['Vary']['sku'] = $value['sku'][$i];
+						$this->request->data['Vary']['vendor_id'] = $value['vendor_id'][$i];
+						$this->request->data['Vary']['category_id'] = $value['category_id'][$i];
 						$this->request->data['Vary']['barcode'] = $value['barcode'][$i];
 						$this->request->data['Vary']['price'] = $value['price'][$i];
 						$this->request->data['Vary']['price_total'] = $value['price'][$i] * $quan;
@@ -214,6 +221,10 @@ class InvoicesController extends AppController {
 						$this->request->data['Vary']['id'] = isset($value['inv_id']) ? $value['inv_id'][$i] : '';
 						$this->Vary->create();
 						$this->Vary->save($this->request->data);
+						
+						$varoptions = array('conditions' => array('Vary.id' => $value['ord_var_id'][$i]));
+						$varproduct = $this->Vary->find('first',$varoptions);
+						$this->Vary->updateAll(array('Vary.invoice_qty' => ($varproduct['Vary']['invoice_qty']-$value['quantity_old'][$i]) + $this->request->data['Vary']['quantity']),array('Vary.id' => $value['ord_var_id'][$i],'Vary.type' => 'product'));
 						$i++;
 					}
 				 

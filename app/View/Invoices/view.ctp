@@ -77,7 +77,6 @@
                                         <tr>
                                             <th>#</th>
                                             <th><?php echo $this->Paginator->sort('Product Name'); ?></th>
-                                            <th><?php echo $this->Paginator->sort('Size'); ?></th>
                                             <th><?php echo $this->Paginator->sort('Invoice Quantity'); ?></th>
                                             <th><?php echo $this->Paginator->sort('Order Quantity'); ?></th>
                                             <th><?php echo $this->Paginator->sort('Price'); ?></th>
@@ -90,10 +89,9 @@
                                      <?php $i =1;foreach ($invoice['Vary'] as $product): ?>
                                         <tr>
                                             <td><?php echo $i; ?>&nbsp;</td>
-                                            <td><?php echo h($product['Product']['title']); ?>&nbsp;</td>
-                                            <td><?php echo h($product['variant'].' '.$product['metric']); ?>&nbsp;</td>
-                                            <td><?php echo h($product['quantity'].' '.$product['qty_type']. (($product['qty_type'] == 'Case') ? '/'.$product['qty'].' Unit' : '')); ?>&nbsp;</td>
-                                            <td><?php echo h($this->Util->getOrderQuantityByVarid($product['var_id']).' '.$product['qty_type']. (($product['qty_type'] == 'Case') ? '/'.$product['qty'].' Unit' : '')); ?>&nbsp;</td>
+                                            <td><?php echo h($product['Product']['title'].' ('.$product['variant'].' '.$product['metric'].' '.$product['qty'].'/'.$product['qty_type'].')'); ?>&nbsp;</td>
+                                            <td><?php echo h($product['quantity']); ?>&nbsp;</td>
+                                            <td><?php $ord=$this->Util->getOrderQuantityByVarid($product['var_id']); echo h($ord['Vary']['quantity']); ?>&nbsp;</td>
                                             <td><?php echo $this->Util->currencyFormat($product['price']); ?>&nbsp;</td>
                                             <td><?php echo h($product['sku']); ?>&nbsp;</td>
                                             <td><?php echo h($product['barcode']); ?>&nbsp;</td>
