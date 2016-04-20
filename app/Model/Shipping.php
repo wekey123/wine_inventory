@@ -22,9 +22,6 @@ class Shipping extends AppModel {
 		'shipping_no' => array(
             'rule' => 'notBlank',
         ),
-		'shipping_quantity' => array(
-           'rule' => 'notBlank',
-        ),
 		'received_date' => array(
 			'rule' => 'notBlank',
 		)
@@ -36,6 +33,21 @@ class Shipping extends AppModel {
 			'conditions' => '',
 			'fields' => '',
 			'order' => ''
+		)
+	);
+	public $hasMany = array(
+		'Vary' => array(
+			'className' => 'Vary',
+			'foreignKey' => 'product_id',
+			'dependent' => false,
+			'conditions' => '',
+			'fields' => '',
+			'order' => '',
+			'limit' => '',
+			'offset' => '',
+			'exclusive' => '',
+			'finderQuery' => '',
+			'counterQuery' => ''
 		)
 	);
 }

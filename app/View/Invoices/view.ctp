@@ -91,7 +91,7 @@
                                             <td><?php echo $i; ?>&nbsp;</td>
                                             <td><?php echo h($product['Product']['title'].' ('.$product['variant'].' '.$product['metric'].' '.$product['qty'].'/'.$product['qty_type'].')'); ?>&nbsp;</td>
                                             <td><?php echo h($product['quantity']); ?>&nbsp;</td>
-                                            <td><?php echo h($this->Util->getOrderQuantityByVarid($product['var_id'])); ?>&nbsp;</td>
+                                            <td><?php $ord=$this->Util->getOrderQuantityByVarid($product['var_id']); echo h($ord['Vary']['quantity']); ?>&nbsp;</td>
                                             <td><?php echo $this->Util->currencyFormat($product['price']); ?>&nbsp;</td>
                                             <td><?php echo h($product['sku']); ?>&nbsp;</td>
                                             <td><?php echo h($product['barcode']); ?>&nbsp;</td>
