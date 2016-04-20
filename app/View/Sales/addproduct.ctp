@@ -7,6 +7,7 @@
 	echo $this->Html->script('angular/lib/js/angular-local-storage.js'); 
 	echo $this->Html->script('angular/lib/js/simplePagination.js');
 	echo $this->Html->script('angular/lib/js/ui-bootstrap-tpls.min.js'); 
+
 	//echo $this->Html->script('angular/lib/js/angular-aside.min.js');
 	//echo $this->Html->script('angular/lib/js/angular-touch.min.js');
 	//echo $this->Html->script('angular/lib/js/services/authentication.service.js'); 
@@ -22,9 +23,7 @@
 	echo $this->Html->script('angular/app.js'); 
 	echo $this->Html->script('angular/controller.js'); 
 	echo $this->Html->script('angular/editcontroller.js'); 
-	echo $this->Html->script('angular/service.js');
+	echo $this->Html->script('angular/sales_controller.js');
+	echo $this->Html->script('angular/sales_service.js');
 	echo $this->Html->script('angular/filter.js'); 
-	//echo $this->Html->script('angular/directives.js'); 
-	
-	//echo $this->Html->script('angular/script.js'); 
 ?>

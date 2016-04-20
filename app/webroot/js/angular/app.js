@@ -1,4 +1,4 @@
-var shopping = angular.module('shopping', ['ngRoute','ngResource','ngCookies','angular.filter','simplePagination','ui.bootstrap']);
+var shopping = angular.module('shopping', ['ngRoute','ngResource','ngCookies','angular.filter','simplePagination','ui.bootstrap','LocalStorageModule']);
 
 
 shopping.config(function($routeProvider,$locationProvider){console.log('Function: config');
@@ -12,6 +12,8 @@ shopping.config(function($routeProvider,$locationProvider){console.log('Function
 		.when("/cart",{templateUrl: '/inventory/app/webroot/js/angular/page/cart.html',controller:'cartController'})
 		.when("/edit/:id",{templateUrl: '/inventory/app/webroot/js/angular/page/po.html',controller:'editPoController'})
 		.when("/editcart/:id",{templateUrl: '/inventory/app/webroot/js/angular/page/cart.html',controller:'cartController'})
+		.when("/salesadd",{templateUrl: '/inventory/app/webroot/js/angular/page/salesadd.html',controller:'salesAddController'})
+		.when("/salesedit",{templateUrl: '/inventory/app/webroot/js/angular/page/salesadd.html',controller:'salesEditController'})
 		.otherwise({ redirectTo: "/po" });
 	}else{
 	console.log('B');
@@ -20,6 +22,8 @@ shopping.config(function($routeProvider,$locationProvider){console.log('Function
 		.when("/cart",{templateUrl: '/app/webroot/js/angular/page/cart.html',controller:'cartController'})
 		.when("/edit/:id",{templateUrl: '/app/webroot/js/angular/page/po.html',controller:'editPoController'})
 		.when("/editcart/:id",{templateUrl: '/app/webroot/js/angular/page/cart.html',controller:'editcartController'})
+		.when("/salesadd",{templateUrl: '/app/webroot/js/angular/page/salesadd.html',controller:'salesAddController'})
+		.when("/salesedit",{templateUrl: '/app/webroot/js/angular/page/salesadd.html',controller:'salesEditController'})
 		.otherwise({ redirectTo: "/po" });
 	}
 		

@@ -16,6 +16,7 @@ class DashboardController extends AppController {
  *
  * @var array
  */
+ 	public $uses = array('Vary');
 	public $components = array('Paginator', 'Flash', 'Session');
 	public $layout = 'admin';
 /**
@@ -28,7 +29,12 @@ class DashboardController extends AppController {
     }
 
 	public function index() {
-		
+		$count = array();
+		$count['Product'] = $this->Vary->find('count',array('conditions'=>array('Vary.type'=>'product')));
+		$count['Order'] = $this->Vary->find('count',array('conditions'=>array('Vary.type'=>'order'),'group'=> array('Vary.po_no')));
+		$count['Invoice'] = $this->Vary->find('count',array('conditions'=>array('Vary.type'=>'invoice'),'group'=> array('Vary.po_no')));
+		$count['Inventory'] = $this->Vary->find('count',array('conditions'=>array('Vary.type'=>'inventory')));
+		$this->set('Count',$count);
 	}
 
 
