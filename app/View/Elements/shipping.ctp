@@ -139,7 +139,7 @@
      </div>
      <div class="col-md-6"> 
      <?php
-	 echo $this->Form->submit(__('Save and Add to Sale'),array('div'=>false, 'class'=>'btn btn-lg btn-success btn-block' ,'id' => 'submitButton2','name'=>'submit'));
+	 echo $this->Form->submit(__('Save for Sale'),array('div'=>false, 'class'=>'btn btn-lg btn-success btn-block' ,'id' => 'submitButton2','name'=>'submit'));
 	  echo $this->Form->end();	?>
       </div>
      </div>
@@ -181,7 +181,7 @@
 		}});
 		
 		$("#submitButton2").on("click",function () {
-			var r = confirm("Press 'OK' will make Shippment products available for sale then you can't edit shippment details. Are you Sure want to save and add for sale ?!");
+			var r = confirm("Are you sure want to move the products for Sale. Please note that you cannot edit the shipment details once you have moved the products for sale?");
 			if (r == true)
 			$('#ShippingForm').submit();
 			else
