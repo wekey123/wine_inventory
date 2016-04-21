@@ -22,50 +22,12 @@
                 
     
 				<div id="preloadForm" style="position:relative; top:75px; margin-left:45%; display:none"><img src="<?php echo $ServerBaseURL; ?>/img/preloader.gif" width=""  /></div>
-    			
+    			<?php  echo $this->Html->css('jquery-ui.css');echo $this->Html->script('jquery-1.10.2');echo $this->Html->script('jquery-ui');	?>
                 <div id="invoiceForm"></div>
             
         
 </div>
 </div>
-<script>
-$('#VendorType').on('change',function(e){
-		$('#VendorCatType').html('');
-		$.ajax({
-			  type: 'POST',
-			  url: '<?php echo $ServerBaseURL.'/shippings/invoicelist'; ?>',//whatever any url
-			  data: {label: $(this).val()},
-			  success: function(message) {
-				  if(message != 'no'){
-					  console.log(message);
-					  $('#VendorCatType').html(message);
-				  }else{
-					   $('.invoiceFormAll').hide();
-		 			   $('#invoiceForm').html('');
-					   $('#error_msg_no').html('Currently the vendor has no Invoice.');
-					 	console.log(message);
-				  }
-			   }
-		   });
-	 });
-
-$('#VendorCatType').on('change',function(e){
-	$('#preloadForm').show();
-	 if($(this).val()){
-		 
-		 $('.invoiceFormAll').show();
-	 $('#invoiceForm').html('');$('#error_msg_no').html('');
-		$.ajax({
-		  type: 'POST',
-		  url: '<?php echo $ServerBaseURL.'/shippings/ajax'; ?>',//whatever any url
-		  data: {label: $(this).val()},
-		  success: function(message) {
-			  $('#preloadForm').hide();
-			  $('#invoiceForm').append(message);
-		   }
-	   });
-	    }else{
-		 $('#error_msg_no').html('');$('.invoiceFormAll').hide();$('#invoiceForm').html('');
-		}
- });
-</script>
+<input type="hidden" value="<?php echo $ServerBaseURL.'/shippings/invoicelist'; ?>" id="vendorListURL"  />
+<input type="hidden" value="<?php echo $ServerBaseURL.'/shippings/ajax'; ?>" id="ajaxURL"  />
+<?php echo $this->Html->script('inventory');?>

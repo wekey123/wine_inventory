@@ -99,3 +99,47 @@
 		   });
     });
 	 
+	 
+	 //  SHipping Section
+	 
+		var VendorListURL =  $('#vendorListURL').val();
+		var ajaxURL =  $('#ajaxURL').val();
+	 $('#VendorType').on('change',function(e){
+		$('#VendorCatType').html('');
+		$.ajax({
+			  type: 'POST',
+			  url: VendorListURL,//whatever any url
+			  data: {label: $(this).val()},
+			  success: function(message) {
+				  if(message != 'no'){
+					  console.log(message);
+					  $('#VendorCatType').html(message);
+				  }else{
+					   $('.invoiceFormAll').hide();
+		 			   $('#invoiceForm').html('');
+					   $('#error_msg_no').html('Currently the vendor has no Invoice.');
+					 	console.log(message);
+				  }
+			   }
+		   });
+	 });
+
+$('#VendorCatType').on('change',function(e){
+	$('#preloadForm').show();
+	 if($(this).val()){
+	 $('.invoiceFormAll').show();
+	 $('#invoiceForm').html('');$('#error_msg_no').html('');
+		$.ajax({
+		  type: 'POST',
+		  url: ajaxURL,//whatever any url
+		  data: {label: $(this).val()},
+		  success: function(message) {
+			  $('#preloadForm').hide();
+			  $('#invoiceForm').append(message);
+		   }
+	   });
+	    }else{
+		 $('#error_msg_no').html('');$('.invoiceFormAll').hide();$('#invoiceForm').html('');
+		}
+ });
+	 

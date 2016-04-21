@@ -1,19 +1,4 @@
-					<?php  echo $this->Html->css('jquery-ui.css');echo $this->Html->script('jquery-1.10.2');echo $this->Html->script('jquery-ui');
-						  $totalAmountPayed = array();
-						  $paymentqty = array();
-				          $this->Util->setInvoiceTotalPrice($invoice['Invoice']['total_price']);
-						  $this->Util->setInvoiceTotalQty($invoice['Invoice']['total_quantity']);
-				   		  foreach ($invoice['Payment'] as $Payment):
-					      $totalAmountPayed[] = $Payment['payment_amount'];
-						  $paymentqty[] = $Payment['payment_qty'];
-					      endforeach; 
-					      $TotalAmountPayed = array_sum($totalAmountPayed);
-					      $this->Util->setTotalAmountPayed($TotalAmountPayed);
-						  
-						  $paymentqty = array_sum($paymentqty);
-						  $this->Util->setPayedQty($paymentqty);	  
-					?>
-                    <script>
+				<script>
 						  $(function() {
 							$('.datepicker').datepicker({
 								format: 'mm/dd/yyyy',
@@ -132,12 +117,8 @@
                                                                       
                                                                      </td>
                                                                      <td><input type="checkbox" <?php echo $product['ship_qty'] > 0 ? ($product['ship_qty'] == $product['inb_qty'] ? 'checked="checked"' : '') : '';?> rel="<?php echo $product['quantity'];?>" name="" id="<?php echo $i ?>" class="varchk"  />&nbsp;
-                                                         
-                                                         <?php /*?> <input type="hidden" value="" name="Vary[<?php echo $i; ?>][unshipping_quantity]"   />
-                                                          <input type="hidden" value="" name="Vary[<?php echo $i; ?>][INB_missing_quantity]"  />
-                                                          <input type="hidden" value="" name="Vary[<?php echo $i; ?>][sellable_quantity]"  /><?php */?>
-                                            
-                                                          <input type="hidden" name="Vary[<?php echo $i; ?>][sku]" value="<?php echo h($product['sku']); ?>"  />
+                                                         			
+                                                                    <input type="hidden" name="Vary[<?php echo $i; ?>][sku]" value="<?php echo h($product['sku']); ?>"  />
                                                           <input type="hidden" name="Vary[<?php echo $i; ?>][product_id]" value="<?php echo h($product['product_id']); ?>"   />
                                                           <input type="hidden" name="Vary[<?php echo $i; ?>][vendor_id]" value="<?php echo h($product['vendor_id']); ?>" />
                                                           <input type="hidden" name="Vary[<?php echo $i; ?>][category_id]" value="<?php echo h($product['category_id']); ?>"  />
@@ -166,11 +147,9 @@
                                                             <input type="hidden" value="<?php echo isset($product['inb_qty']) ? $product['inb_qty'] : '';?>" name="Vary[<?php echo $i; ?>][old_inb_qty]"  />
                                                             <input type="hidden" value="<?php echo isset($product['inb_ship_missing_qty']) ? $product['inb_ship_missing_qty'] : '';?>" name="Vary[<?php echo $i; ?>][old_inb_ship_missing_qty]"  />
                                                             <input type="hidden" value="<?php echo isset($product['defect_qty']) ? $product['defect_qty'] : '';?>" name="Vary[<?php echo $i; ?>][old_defect_qty]"  />
-                                                            <input type="hidden" value="<?php echo isset($product['sellable_qty']) ? $product['sellable_qty'] : '';?>" name="Vary[<?php echo $i; ?>][old_sellable_qty]"  />         
-                                                                     
-                                                                     
-                                                                     
-                                                                     
+                                                            <input type="hidden" value="<?php echo isset($product['sellable_qty']) ? $product['sellable_qty'] : '';?>" name="Vary[<?php echo $i; ?>][old_sellable_qty]"  />        
+                                                         
+                                                          
                                                                     </td>
                                                                 </tr>
                                                             <?php $i++; ?> <input type="hidden" class="Allchk" value="<?php echo isset($product['inv_count']) ? ($product['inv_count'] == $product['quantity'] ? $j++ : $j--) : $j--;?>" rel="<?php echo $j == $i ? true : false; ?>" rel2="<?php echo $j; ?>"  rel3="<?php echo $i; ?>"/><?php } endforeach; ?>
@@ -190,7 +169,7 @@
      </div>
      <div class="col-md-6"> 
      <?php
-	 echo $this->Form->submit(__('Save and Add to Sale'),array('div'=>false, 'class'=>'btn btn-lg btn-success btn-block' ,'id' => 'submitButton2','name'=>'submit'));
+	 echo $this->Form->submit(__('Save for Sale'),array('div'=>false, 'class'=>'btn btn-lg btn-success btn-block' ,'id' => 'submitButton2','name'=>'submit'));
 	  echo $this->Form->end();	?>
       </div>
      </div>
@@ -232,7 +211,7 @@
 		}});
 		
 		$("#submitButton2").on("click",function () {
-			var r = confirm("Press 'OK' will make Shippment products available for sale then you can't edit shippment details. Are you Sure want to save and add for sale ?!");
+			var r = confirm("Are you sure want to move the products for Sale. Please note that you cannot edit the shipment details once you have moved the products for sale?");
 			if (r == true)
 			$('#ShippingForm').submit();
 			else
