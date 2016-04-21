@@ -97,6 +97,7 @@ class ProductsController extends AppController {
  * @return void
  */
 	public function add() {
+		Configure::write('debug', 0);
 		//Access Check Starts
 		$user = $this->Auth->user();
 		if(parent::isDeny($user)){

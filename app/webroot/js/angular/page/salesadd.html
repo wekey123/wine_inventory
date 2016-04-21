@@ -9,7 +9,7 @@
             <h4 class="page-head-line">Edit Sales Order</h4>
         </div>-->
         
-        <div class="col-md-12" ng-if="addCart">
+        <div class="col-md-12">
                      <a class="btn btn-primary"  style="margin-bottom:20px; float:right; background-color: #F0677C; border: 2px solid #F0677C;" ng-click="submitSales()">
                      <span style="padding:2px;" class="glyphicon glyphicon-shopping-cart"></span>{{ getTotalQty() }} Cart
                      <span style="padding:2px;">${{ getTotalSum() }} </span>
@@ -75,11 +75,10 @@
                                 <th>Image</th>
                                 <th style="width: 10%;">Sold Price</th>
                                 <th style="width: 10%;">Sold Quantity</th>
-                                <th style="width: 10%;">Total Price</th>
-                                <th>Quantity Left</th>
                                 <th style="width: 10%;">CR Quantity</th>
                                 <th style="width: 10%;">MFG Quantity</th>
-                                
+                                <th style="width: 10%;">Total Price</th>
+                                <th>Sellable QTY</th>
                                 <th>Add items</th>
                             </tr>
                         </thead>
@@ -92,17 +91,18 @@
                                      <td><img style="height:50px;" ng-src="/img/product/small/{{result.image}}" /></td>
                                      <td><input type="text"  class="form-control"  ng-model="result.price"/></td>
                                      <td><input type="text"  class="form-control"  ng-model="result.sold_qty" /></td>
-                                     <td> ${{  result.sum = roundOfValue(result.sold_qty * result.price) }} </td>
-                                     <td>{{result.invoice_qty}}</td>
                                      <td><input type="text"  class="form-control"  ng-model="result.cr_qty" /></td>
                                      <td><input type="text"  class="form-control"  ng-model="result.mfg_qty" /></td>
-                                    
-                                     <td><a style="float:right; background-color: #F0677C; border: 2px solid #F0677C;" ng-click="addToCart(result,'add')" class="btn btn-primary">Added to Sale</a></td>
+                                     <td> ${{  result.sum = roundOfValue(result.sold_qty * result.price) }} </td>
+                                     <td>{{result.sellable_qty = ( result.invoice_qty -(result.db_sold_qty -- result.db_cr_qty -- result.db_mfg_qty)) -(result.sold_qty -- result.cr_qty -- result.mfg_qty) }}</td>
+                                     <td><a ng-if="result.sellable_qty >=0" style="float:right; background-color: #F0677C; border: 2px solid #F0677C;" ng-click="addToCart(result,'add')" class="btn btn-primary">Added to Sale</a>
+                                     <p ng-if="result.sellable_qty <0" style="color:red; width: 80px;">Out of Stock</p>
+                                     </td>
                                     </tr>
                                     
                         </tbody>
                     </table>
-                    <p><pre>{{ cookieCartItems | json}}</pre></p>
+                  <!--  <p><pre>{{ cookieCartItems | json}}</pre></p>-->
                     <ul class="pager">
                       <li><a href="javascript:void(0)" ng-hide="currentPage == 0" ng-click="currentPage=currentPage-1">Previous</a></li>
                       <li> <span ng-cloak>{{currentPage+1}}/{{numberOfPages()}}</span></li>

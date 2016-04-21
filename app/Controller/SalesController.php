@@ -16,7 +16,7 @@ class SalesController extends AppController {
  *
  * @var array
  */
-	public $uses = array('Sale','Order','Invoice','Product','Vary','Category','User','Vendor');
+	public $uses = array('Sale','Product','Vary','Order','Invoice','Shipping','Payment','Category','User','Vendor');
 	public $components = array('Paginator', 'Flash', 'Session','RequestHandler');
 	public $layout = 'admin';
 
@@ -28,6 +28,7 @@ class SalesController extends AppController {
 	public function index() {
 		$this->Sale->recursive = 0;
 		$this->set('sales', $this->Paginator->paginate());
+		self::categoryList();
 	}
 
 /**
@@ -37,12 +38,47 @@ class SalesController extends AppController {
  * @param string $id
  * @return void
  */
-	public function view($id = null) {
+	/*public function view($id = null) {
 		if (!$this->Sale->exists($id)) {
 			throw new NotFoundException(__('Invalid sale'));
 		}
 		$options = array('conditions' => array('Sale.' . $this->Sale->primaryKey => $id));
 		$this->set('sale', $this->Sale->find('first', $options));
+	}*/
+	
+	public function view($no = null) {
+		
+		 $this->Sale->bindModel(array('hasMany' => array('Vary' => array('foreignKey' => false,'conditions' => array('Vary.type' => 'sales','Vary.po_no'=>$no)))),false);
+		 $options = array('conditions' => array('Sale.sales_no' => $no));
+		 $salesView = $this->Sale->find('first', $options);
+	     if(!empty($salesView)){
+		 $this->set('sale', $salesView);
+		 }else{
+		 $this->Flash->success(__('Invalid Sales Number.'));
+		 return $this->redirect(array('action' => 'index'));
+		 }
+		 
+		$total=array('');
+		$total=array('sold_qty'=>0,'cr_qty'=>0,'mfg_return_qty'=>0);
+		foreach($salesView['Vary'] as $prod){
+			$total['sold_qty']+=$prod['sold_qty'];
+			$total['cr_qty']+=$prod['cr_qty'];
+			$total['mfg_return_qty']+=$prod['mfg_return_qty'];
+		}
+		$this->set('prodTotal', $total);
+
+	}
+	
+	
+	private function categoryList(){
+		$vendors1= $this->Vendor->find('all');
+		//$vendor[0] = 'Select Vendor';
+		foreach($vendors1 as $key => $vendors) {
+			if(isset($vendors['Category'][0]))
+			$vendor[$vendors['Vendor']['id']]= $vendors['Vendor']['name'];
+		}
+		$this->set('vendor', $vendor);
+		
 	}
 
 /**
@@ -72,42 +108,48 @@ class SalesController extends AppController {
    		header("Access-Control-Allow-Origin: *");
 		header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept");
 		$products = $this->Product->find('all');
+		//debug($products); exit;
 		$i =0;
 		foreach($products as $product){
 			foreach($product['Vary'] as $key => $vary){
-				$result[$product['Vendor']['name']][$product['Category']['name']]['Product'][$i] = $product['Product'];
-				$result[$product['Vendor']['name']][$product['Category']['name']]['Product'][$i]['pv_id'] = $vary['id']; // pv_id variantID
-				$result[$product['Vendor']['name']][$product['Category']['name']]['Product'][$i]['variant'] = $vary['variant'];
-				$result[$product['Vendor']['name']][$product['Category']['name']]['Product'][$i]['sku'] = $vary['sku'];
-				$result[$product['Vendor']['name']][$product['Category']['name']]['Product'][$i]['barcode'] = $vary['barcode'];
-				$result[$product['Vendor']['name']][$product['Category']['name']]['Product'][$i]['price'] = $vary['price'];
-				$result[$product['Vendor']['name']][$product['Category']['name']]['Product'][$i]['metric'] = $vary['metric'];
-				$result[$product['Vendor']['name']][$product['Category']['name']]['Product'][$i]['size'] = $vary['variant'];
-				$result[$product['Vendor']['name']][$product['Category']['name']]['Product'][$i]['qty_type'] = $vary['qty_type'];
-				$result[$product['Vendor']['name']][$product['Category']['name']]['Product'][$i]['qty'] = $vary['qty'];
-				$result[$product['Vendor']['name']][$product['Category']['name']]['Product'][$i]['po_qty'] = $vary['po_qty'];
-				$result[$product['Vendor']['name']][$product['Category']['name']]['Product'][$i]['invoice_qty'] = $vary['invoice_qty'];
-				$result[$product['Vendor']['name']][$product['Category']['name']]['Product'][$i]['vendor'] = $product['Vendor']['name'];
-				$result[$product['Vendor']['name']][$product['Category']['name']]['Product'][$i]['category'] = $product['Category']['name'];
-				if(isset($value)){
-					$orderVar = $this->Vary->find('first',array('conditions' => array('Vary.var_id'=> $vary['id'],'Vary.po_no'=>$value),'fields' => array('Vary.id', 'Vary.price', 'Vary.quantity','Vary.price_total','Vary.po_no')));
-						if(!empty($orderVar)){
-							$result[$product['Vendor']['name']][$product['Category']['name']]['Product'][$i]['price'] = !empty($orderVar) ? $orderVar['Vary']['price'] : '';
-							$result[$product['Vendor']['name']][$product['Category']['name']]['Product'][$i]['quantity'] = !empty($orderVar) ? $orderVar['Vary']['quantity'] : '';							//$result[$product['Vendor']['name']][$product['Category']['name']]['Product'][$i]['qty'] = !empty($orderVar) ? $orderVar['Vary']['quantity'] : '';
-							$result[$product['Vendor']['name']][$product['Category']['name']]['Product'][$i]['sum'] = !empty($orderVar) ? $orderVar['Vary']['price_total'] : '';
-							$result[$product['Vendor']['name']][$product['Category']['name']]['Product'][$i]['po_no'] = !empty($orderVar) ? $orderVar['Vary']['po_no'] : '';
-							$result[$product['Vendor']['name']][$product['Category']['name']]['Product'][$i]['ov_id'] = !empty($orderVar) ? $orderVar['Vary']['id'] : '';
-							
-							$result['totalQty']  += !empty($orderVar) ? $orderVar['Vary']['quantity'] : 0;
-							$result['totalSum']  += !empty($orderVar) ? $orderVar['Vary']['price_total'] : 0.00;
-							$result['editVendor'] = $product['Vendor']['name'];
+				if($vary['sellable_qty'] != 0){
+					$result[$product['Vendor']['name']][$product['Category']['name']]['Product'][$i] = $product['Product'];
+					$result[$product['Vendor']['name']][$product['Category']['name']]['Product'][$i]['pv_id'] = $vary['id']; // pv_id variantID
+					$result[$product['Vendor']['name']][$product['Category']['name']]['Product'][$i]['variant'] = $vary['variant'];
+					$result[$product['Vendor']['name']][$product['Category']['name']]['Product'][$i]['sku'] = $vary['sku'];
+					$result[$product['Vendor']['name']][$product['Category']['name']]['Product'][$i]['barcode'] = $vary['barcode'];
+					$result[$product['Vendor']['name']][$product['Category']['name']]['Product'][$i]['price'] = $vary['price'];
+					$result[$product['Vendor']['name']][$product['Category']['name']]['Product'][$i]['metric'] = $vary['metric'];
+					$result[$product['Vendor']['name']][$product['Category']['name']]['Product'][$i]['size'] = $vary['variant'];
+					$result[$product['Vendor']['name']][$product['Category']['name']]['Product'][$i]['qty_type'] = $vary['qty_type'];
+					$result[$product['Vendor']['name']][$product['Category']['name']]['Product'][$i]['qty'] = $vary['qty'];
+					$result[$product['Vendor']['name']][$product['Category']['name']]['Product'][$i]['po_qty'] = $vary['po_qty'];
+					$result[$product['Vendor']['name']][$product['Category']['name']]['Product'][$i]['invoice_qty'] = $vary['sellable_qty'];
+					$result[$product['Vendor']['name']][$product['Category']['name']]['Product'][$i]['db_sold_qty'] = $vary['sold_qty'];
+					$result[$product['Vendor']['name']][$product['Category']['name']]['Product'][$i]['db_mfg_qty'] = $vary['mfg_return_qty'];
+					$result[$product['Vendor']['name']][$product['Category']['name']]['Product'][$i]['db_cr_qty'] = $vary['cr_qty'];
+					$result[$product['Vendor']['name']][$product['Category']['name']]['Product'][$i]['vendor'] = $product['Vendor']['name'];
+					$result[$product['Vendor']['name']][$product['Category']['name']]['Product'][$i]['category'] = $product['Category']['name'];
+					if(isset($value)){
+						$orderVar = $this->Vary->find('first',array('conditions' => array('Vary.var_id'=> $vary['id'],'Vary.po_no'=>$value),'fields' => array('Vary.id', 'Vary.price', 'Vary.quantity','Vary.price_total','Vary.po_no')));
+							if(!empty($orderVar)){
+								$result[$product['Vendor']['name']][$product['Category']['name']]['Product'][$i]['price'] = !empty($orderVar) ? $orderVar['Vary']['price'] : '';
+								$result[$product['Vendor']['name']][$product['Category']['name']]['Product'][$i]['quantity'] = !empty($orderVar) ? $orderVar['Vary']['quantity'] : '';							//$result[$product['Vendor']['name']][$product['Category']['name']]['Product'][$i]['qty'] = !empty($orderVar) ? $orderVar['Vary']['quantity'] : '';
+								$result[$product['Vendor']['name']][$product['Category']['name']]['Product'][$i]['sum'] = !empty($orderVar) ? $orderVar['Vary']['price_total'] : '';
+								$result[$product['Vendor']['name']][$product['Category']['name']]['Product'][$i]['po_no'] = !empty($orderVar) ? $orderVar['Vary']['po_no'] : '';
+								$result[$product['Vendor']['name']][$product['Category']['name']]['Product'][$i]['ov_id'] = !empty($orderVar) ? $orderVar['Vary']['id'] : '';
+								
+								$result['totalQty']  += !empty($orderVar) ? $orderVar['Vary']['quantity'] : 0;
+								$result['totalSum']  += !empty($orderVar) ? $orderVar['Vary']['price_total'] : 0.00;
+								//$result['editVendor'] = $product['Vendor']['name'];
+							}
 						}
-					}
-			$i++;
+				$i++;
+				}
 			}
 			
 		}
-		//debug($result); exit;
+		
 		$this->set('products', $result);
 		$this->set('_serialize', array('products'));
 	}
@@ -212,4 +254,23 @@ class SalesController extends AppController {
 		}
 		return $this->redirect(array('action' => 'index'));
 	}
+	
+	
+	public function cleartable(){
+		$this->Order->query('TRUNCATE orders;');
+		$this->Invoice->query('TRUNCATE invoices;');
+		$this->Payment->query('TRUNCATE payments;');
+		$this->Shipping->query('TRUNCATE shippings;');
+		$this->Sale->query('TRUNCATE sales;');
+		$this->Vary->unbindModel(array('belongsTo' => array('Product','Order')));
+		$varies = $this->Vary->find('all',array('conditions'=>array('Vary.type !='=>'product'),'fields'=>'Vary.id'));
+		foreach($varies as $vary){
+			$this->Vary->id = $vary['Vary']['id'];
+			$this->Vary->delete();
+		}
+		
+		$this->Vary->updateAll(array('Vary.po_qty' => 0,'Vary.invoice_qty' => 0,'Vary.ship_qty' => 0,'Vary.unship_qty' => 0,'Vary.inb_qty' => 0,'Vary.inb_missing_qty' => 0,'Vary.inb_ship_missing_qty' => 0,'Vary.defect_qty' => 0,'Vary.sellable_qty' => 0,'Vary.sold_qty' => 0,'Vary.cr_qty' => 0,'Vary.mfg_return_qty' => 0,'Vary.unsellable_qty' => 0,'Vary.qty_lost' => 0),array('Vary.type' => 'product'));
+
+		echo "Success"; exit;
+ 	}
 }
