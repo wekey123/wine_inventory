@@ -64,6 +64,9 @@
 
 </div>
 </div>
+<input type="hidden" value="<?php echo $ServerBaseURL.'/payments/invoicelist'; ?>" id="vendorListURL"  />
+<input type="hidden" value="<?php echo $ServerBaseURL.'/payments/ajax'; ?>" id="ajaxURL"  />
+<?php echo $this->Html->script('inventory'); ?>
 <script>
  $( ".PaymentValue" ).change(function() {
 	 console.log($(this).val());
@@ -99,41 +102,4 @@ $( "#PaymentPaymentQty" ).change(function() {
 		$('.btn-block').prop('disabled', true);
 	}
 });
-
-$('#VendorType').on('change',function(e){
-		$('#VendorCatType').html('');
-		$.ajax({
-			  type: 'POST',
-			  url: '<?php echo $ServerBaseURL.'/payments/invoicelist'; ?>',//whatever any url
-			  data: {label: $(this).val()},
-			  success: function(message) {
-				  if(message != 'no'){
-					  console.log(message);
-					  $('#VendorCatType').html(message);
-				  }else{
-					   $('.invoiceFormAll').hide();
-		 			   $('#invoiceForm').html('');
-					   $('#error_msg_no').html('Currently the vendor has no Invoice.');
-					 	console.log(message);
-				  }
-			   }
-		   });
-	 });
-
-$('#VendorCatType').on('change',function(e){
-	 if($(this).val()){
-		 $('.invoiceFormAll').show();
-	 $('#invoiceForm').html('');$('#error_msg_no').html('');
-		$.ajax({
-		  type: 'POST',
-		  url: '<?php echo $ServerBaseURL.'/payments/ajax'; ?>',//whatever any url
-		  data: {label: $(this).val()},
-		  success: function(message) {
-			  $('#invoiceForm').append(message);
-		   }
-	   });
-	    }else{
-		 $('#error_msg_no').html('');$('.invoiceFormAll').hide();$('#invoiceForm').html('');
-		}
- });
 </script>

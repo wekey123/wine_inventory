@@ -102,10 +102,10 @@
 	 
 	 //  SHipping Section
 	 
-		var VendorListURL =  $('#vendorListURL').val();
-		var ajaxURL =  $('#ajaxURL').val();
-	 $('#VendorType').on('change',function(e){
-		$('#VendorCatType').html('');
+var VendorListURL =  $('#vendorListURL').val();
+var ajaxURL =  $('#ajaxURL').val();
+$('#VendorType').on('change',function(e){
+		$('#VendorCatType').html('');$('#error_msg_no').html('');
 		$.ajax({
 			  type: 'POST',
 			  url: VendorListURL,//whatever any url
@@ -122,8 +122,7 @@
 				  }
 			   }
 		   });
-	 });
-
+});
 $('#VendorCatType').on('change',function(e){
 	$('#preloadForm').show();
 	 if($(this).val()){

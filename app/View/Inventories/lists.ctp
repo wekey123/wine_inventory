@@ -18,14 +18,14 @@
        			 </div>
          </div>
           		  <div class="row">	
- 	 <div class="col-md-12">
+ 	 				<div class="col-md-12">
                      <!--    Hover Rows  -->
                     <div class="panel panel-default">
                         <div class="panel-heading">
                             Products List
                         </div>
                         <div class="panel-body">
-                            <div class="table-responsive" style="overflow-x:hidden;">
+                            <div class="table-responsive" style="overflow-x:scroll;">
                                 <table id="example" class="table table-striped table-bordered" cellspacing="0" width="100%">
                                     <thead>
                                         <tr>
@@ -39,7 +39,15 @@
                                             <th><?php echo $this->Paginator->sort('Location'); ?></th>
                                             <th><?php echo $this->Paginator->sort('flavor'); ?></th>
                                             <th><?php echo $this->Paginator->sort('label'); ?></th>
-                                            <th class="actions"><?php echo __('Actions'); ?></th>
+                                            
+                                            <th><?php echo $this->Paginator->sort('Total Order Quantity'); ?></th>
+                                            <th><?php echo $this->Paginator->sort('Total Invoice Quantity'); ?></th>
+                                            <th><?php echo $this->Paginator->sort('Total Shipped Quantity'); ?></th>
+                                            <th><?php echo $this->Paginator->sort('Total Unshipped Quantity'); ?></th>
+                                            <th><?php echo $this->Paginator->sort('Total Inbound Quantity'); ?></th>
+                                            <th><?php echo $this->Paginator->sort('Total Inbound Missing Quantity'); ?></th>
+                                            <th><?php echo $this->Paginator->sort('Total Defect Quantity'); ?></th>
+                                            <th><?php echo $this->Paginator->sort('Total Sellable Quantity'); ?></th>
                                         </tr>
                                     </thead>
                                     <tbody class="searchable" id="exampleBody">
@@ -55,31 +63,17 @@
                                             <td><?php echo h($product['Product']['location']); ?>&nbsp;</td>
                                             <td><?php echo h($product['Product']['flavor']); ?>&nbsp;</td>
                                             <td><?php echo h($product['Product']['label']); ?>&nbsp;</td>
-                                            <td class="actions">
-                                                <?php //echo $this->Html->link(__('View'), array('action' => 'view', $product['Product']['id'])); ?>
-                                                <?php //echo $this->Html->link(__('Edit'), array('action' => 'edit', $product['Product']['id'])); ?>
-                                                <?php /*?><?php echo $this->Form->postLink(__('Delete'), array('action' => 'delete', $product['Product']['id']), array('confirm' => __('Are you sure you want to delete # %s?', $product['Product']['id']))); ?><?php */?>
-                                                <a class="childTr" rel="<?php echo $i; ?>">Details</a>
-                                            </td>
+                                            
+                                            <td><?php echo h($product['Vary'][0]['po_qty']); ?>&nbsp;</td>
+                                            <td><?php echo h($product['Vary'][0]['invoice_qty']); ?>&nbsp;</td>
+                                            <td><?php echo h($product['Vary'][0]['ship_qty']); ?>&nbsp;</td>
+                                            <td><?php echo h($product['Vary'][0]['unship_qty']); ?>&nbsp;</td>
+                                            <td><?php echo h($product['Vary'][0]['inb_qty']); ?>&nbsp;</td>
+                                            <td><?php echo h($product['Vary'][0]['inb_ship_missing_qty']); ?>&nbsp;</td>
+                                            <td><?php echo h($product['Vary'][0]['defect_qty']); ?>&nbsp;</td>
+                                            <td><?php echo h($product['Vary'][0]['sellable_qty']); ?>&nbsp;</td>
                                         </tr>
-                                        <tr id="shows<?php echo $i; ?>" style="display:none">
-                                        	<td colspan="11">
-                                             <div class="row">
-                                                <div class="col-md-12">
-                                                    <div class="alert alert-warning">
-                                                       <strong><?php echo __('Total Order Quantity'); ?></strong> <span> : </span> <span><?php echo h($product['Vary'][0]['po_qty']); ?></span> <br />
-                                                       <strong><?php echo __('Total Invoice Quantity'); ?></strong> <span> : </span> <span><?php echo h($product['Vary'][0]['invoice_qty']); ?></span> <br />
-                                                     <strong><?php echo __('Total Shipped Quantity'); ?></strong> <span> : </span> <span><?php echo h($product['Vary'][0]['ship_qty']); ?></span> <br />
-                                                       <strong><?php echo __('Total Unshipped Quantity'); ?></strong> <span> : </span> <span><?php echo h($product['Vary'][0]['unship_qty']); ?></span> <br />
-                                                       <strong><?php echo __('Total Inbound Quantity'); ?></strong> <span> : </span> <span><?php echo h($product['Vary'][0]['inb_qty']); ?></span> <br />
-                                                       <strong><?php echo __('Total Inbound Missing Quantity'); ?></strong> <span> : </span> <span><?php echo h($product['Vary'][0]['inb_ship_missing_qty']); ?></span> <br />
-                                                       <strong><?php echo __('Total Defect Quantity'); ?></strong> <span> : </span> <span><?php echo h($product['Vary'][0]['defect_qty']); ?></span> <br />
-                                                       <strong><?php echo __('Total Sellable Quantity'); ?></strong> <span> : </span> <span><?php echo h($product['Vary'][0]['sellable_qty']); ?></span> <br />
-                                                    </div>
-                                                </div>
-                                            </div>	                                    
-                                        	</td>
-                                        </tr>
+                                        
                                     <?php $i++; endforeach; ?>
                                     </tbody>
                                 </table>
@@ -87,8 +81,8 @@
                         </div>
                     </div>
                     <!-- End  Hover Rows  -->
-                </div>
-    </div>
+                	</div>
+    			 </div>
                     
                     
             </div>
