@@ -133,7 +133,7 @@ class ShippingsController extends AppController {
 						$this->Vary->create();
 						$this->Vary->save($value);
 						
-						if($this->request->data['submit'] == 'Save and Add to Sale'){
+						if($this->request->data['submit'] == 'Save for Sale'){
 						$this->Vary->updateAll(array('Vary.ship_qty' => $ship_qty+$sq,'Vary.unship_qty' => $unship_qty+($iq-$sq),'Vary.inb_qty' => $inb_qty+$inbq,'Vary.inb_ship_missing_qty' => $inb_ship_missing_qty+($sq-$inbq),'Vary.defect_qty' => $defect_qty+$dq,'Vary.sellable_qty' => $sellable_qty+($inbq-$dq)),array('Vary.id' => $value['prod_var_id'],'Vary.type' => 'product'));
 						$this->request->data['Shipping']['status'] = 1;
 						}else
@@ -230,7 +230,7 @@ class ShippingsController extends AppController {
 					 $inbq= $value['inb_qty'];
 					 $dq=$value['defect_qty'];
 					
-						if($this->request->data['submit'] == 'Save and Add to Sale'){
+						if($this->request->data['submit'] == 'Save for Sale'){
 						$this->Vary->updateAll(array('Vary.ship_qty' => $ship_qty+$sq,'Vary.unship_qty' => $unship_qty+($iq-$sq),'Vary.inb_qty' => $inb_qty+$inbq,'Vary.inb_ship_missing_qty' => $inb_ship_missing_qty+($sq-$inbq),'Vary.defect_qty' => $defect_qty+$dq,'Vary.sellable_qty' => $sellable_qty+($inbq-$dq)),array('Vary.id' => $type_ids,'Vary.type' => 'product'));
 						$this->request->data['Shipping']['status'] = 1;
 						}else
