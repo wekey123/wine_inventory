@@ -237,7 +237,7 @@ shopping.controller('cartController',['$scope','$routeParams','$http','$cookies'
          $scope.postdata.cartSum = $scope.cartTotalSum();
 		 $scope.postdata.vendor = cartService.getVendorName();
 		 $scope.postdata.poNo = $cookies.getObject('cart').items[0].po_no;
-		 $scope.postdata.poCopy = $scope.storepo;
+		 $scope.postdata.poCopy = $scope.storepo | false;
 		 //console.log($scope.postdata); return false;
 		 if(type == 'submit'){
 		 $scope.postdata.type = '1'; //submitted

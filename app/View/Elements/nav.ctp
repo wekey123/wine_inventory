@@ -53,7 +53,7 @@
 							  </ul>
                              
                              </li>
-                             <li> <?php echo $this->Html->link('Inventory',array('controller'=>'inventories','action' => 'index'),array('class'=>trim($menuActive)=='Inventory'  ? 'menu-top-active' : '')); ?> </li>
+                             <li> <?php echo $this->Html->link('Inventory',array('controller'=>'inventories','action' => 'lists'),array('class'=>trim($menuActive)=='Inventory'  ? 'menu-top-active' : '')); ?> </li>
                              <?php /*?><li> <?php echo $this->Html->link('Settings',array('controller'=>'categories','action' => 'index'),array('class'=>trim($menuActive)=='Settings'  ? 'menu-top-active' : '')); ?> </li><?php */?>
                              <li> <?php echo $this->Html->link('Logout',array('controller'=>'users','action' => 'logout')); ?> </li>
                         </ul>

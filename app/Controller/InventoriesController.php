@@ -15,7 +15,7 @@ class InventoriesController extends AppController {
  *
  * @var array
  */
-	public $uses = array('Inventory','Payment','Invoice','Product','Vary','Category','Order','Shipping','User');
+	public $uses = array('Inventory','Payment','Invoice','Product','Vary','Category','Order','Shipping','User','Vendor');
 	public $components = array('Paginator', 'Flash', 'Session' ,'Image','Auth');
 	public $layout = 'admin';
 
@@ -29,6 +29,24 @@ class InventoriesController extends AppController {
 		$this->set('inventories', $this->Paginator->paginate());
 	}
 
+
+	public function lists(){
+		$product = $this->Product->find('all');
+		self::categoryList();
+		$this->set('products', $product);
+		//echo '<pre>';print_r($product);exit;
+	}
+
+	private function categoryList(){
+		$vendors1= $this->Vendor->find('all');
+		//$vendor[0] = 'Select Vendor';
+		foreach($vendors1 as $key => $vendors) {
+			if(isset($vendors['Category'][0]))
+			$vendor[$vendors['Vendor']['id']]= $vendors['Vendor']['name'];
+		}
+		$this->set('vendor', $vendor);
+		
+	}
 /**
  * view method
  *
