@@ -59,12 +59,12 @@ class OrdersController extends AppController {
 				$this->request->data['Order']['vendor_id'] = $value['items'][0]['vendor_id'];
 				$this->request->data['Order']['vendor'] = $value['vendor'];
 				$this->request->data['Order']['po_no']=$po;
-				if($value['type']=='pending')
+				if($value['type']==0)
 					$responseStatus = 0;
 				else{
 					$responseStatus = 1;
 				}
-				$this->request->data['Order']['status']= $responseStatus;	
+				$this->request->data['Order']['status']= 0;
 				
 				if($value['poCopy'] == true){
 					$responseStatus = 10;	

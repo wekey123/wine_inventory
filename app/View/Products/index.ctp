@@ -52,8 +52,8 @@
                                             <td><?php  $cat = $this->Util->getVendorType($product['Product']['vendor_type']); echo isset($cat['Category']['name']) ? $cat['Category']['name'] : '';?>&nbsp;</td>
                                             <td><?php echo h($product['Product']['title']); ?>&nbsp;</td>
                                             <td><?php echo $this->Html->image('product/small/'.$product['Product']['image']);?>&nbsp;</td>
-                                            <td><?php echo h($product['Product']['brand']); ?>&nbsp;</td>
                                             <td><?php echo h($product['Product']['country']); ?>&nbsp;</td>
+                                            <td><?php echo h($product['Product']['brand']); ?>&nbsp;</td>
                                             <td><?php echo h($product['Product']['location']); ?>&nbsp;</td>
                                             <td><?php echo h($product['Product']['flavor']); ?>&nbsp;</td>
                                             <td><?php echo h($product['Product']['label']); ?>&nbsp;</td>

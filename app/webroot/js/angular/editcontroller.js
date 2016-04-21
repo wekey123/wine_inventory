@@ -28,21 +28,11 @@ shopping.controller("editPoController", ["$scope","$log","$timeout","$http",'$ro
 		$scope.product = [];
 		$scope.allProducts = data.products;
 		console.log($scope.allProducts);
-		/*		$rootScope.getTotalQty = function(){
-			return $scope.allProducts.totalQty | 0;
-		}
-		$rootScope.getTotalSum = function(){
-			return $scope.allProducts.totalSum | 0.00;
-		}*/
-		$scope.selectedVendor = $scope.allProducts.editVendor | '';
-		
 		angular.forEach($scope.allProducts, function(category, vendorkey) {
 			if(vendorkey !== 'editVendor' && vendorkey !== 'totalQty' && vendorkey !== 'totalSum' && vendorkey !== ''){
 			$scope.vendor.push({'vendorName':vendorkey});
 			}
-			console.log('------Vednor--------');
 			console.log($scope.vendor);
-			$scope.selectedVendor = category;
 			angular.forEach(category, function(productObj, categoryKey) {
 				if(isNaN(categoryKey))
 				$scope.category.push({'categoryName':categoryKey,'vendorName':vendorkey});
@@ -66,6 +56,12 @@ shopping.controller("editPoController", ["$scope","$log","$timeout","$http",'$ro
 			});
 		});
 
+		
+		if(!$scope.cartVendorName)
+		$scope.selectedVendor = $scope.allProducts.editVendor | '';
+		else
+		$scope.selectedVendor = $scope.cartVendorName;
+		
 		
 		console.log($scope.vendor);
 		console.log($scope.category);
@@ -266,12 +262,18 @@ shopping.controller('editcartController',['$scope','$routeParams','$http','$cook
          $scope.postdata.cartSum = $scope.cartTotalSum();
 		 $scope.postdata.vendor = cartService.getVendorName();
 		 $scope.postdata.poNo = $cookies.getObject('cart').items[0].po_no;
-		 if(type == 'submit')
-		 $scope.postdata.type = '1'; //submitted
-		 else
-		  $scope.postdata.type = 'pending';//  pending
+		$scope.postdata.poCopy = $scope.storepo | false;
+		 if(type == 'submit'){
+			 $scope.postdata.type = 1; //submitted
+			 if($scope.postdata.poOrder == true){
+				 $scope.postdata.type = 10;
+			 }
+		 }else
+			  $scope.postdata.type = 0;//  pending
+		  
 		  console.log($scope.postdata);
 		  console.log($scope.postdata.poNo);
+		  
 		if($scope.postdata.poNo)
 			$scope.url = $rootScope.filePath.location+'orders/addcart/'+$scope.postdata.poNo+'.json';
 		else
@@ -279,22 +281,39 @@ shopping.controller('editcartController',['$scope','$routeParams','$http','$cook
 			console.log($scope.url);
 		 //return false;
 		 $http({method: 'POST',url: $scope.url,data :$scope.postdata,cache: false}).success(function (data, status, headers, config) {
-			 console.log(data);
-			 if(data.responseCart.response !== 'E'){
+ 
+			  if(data.responseCart.response !== 'E'){
 				 console.log(data.responseCart);
-				 //return false;
 				 cartService.unSetCartItems();
-				 if(data.responseCart.status == 0){
+				 if(data.responseCart.status === 0){
+					 console.log("PO Page");
 					 if($rootScope.server)
 						 window.location = "/inventory/orders";
 					 else
 						 window.location = "/orders";
-				 }else{
-					 var po = data.responseCart.orderID;
+						 return false;
+				 }else if(data.responseCart.status === 1){
+					 console.log("Report Page");
+					  var po = data.responseCart.orderID;
 					 if($rootScope.server)
 						 window.location = "/inventory/orders/report/"+po+"/email";
 					 else
 						 window.location = "/orders/report/"+po+"/email";
+						 return false;
+				 }else if(data.responseCart.status === 10){
+					 console.log("Invoice Edit Page");
+					  var po = data.responseCart.orderID;
+					 if($rootScope.server)
+						 window.location = "/inventory/invoices/edit/"+po;
+					 else
+						 window.location = "/invoices/edit/"+po;
+						 return false;
+				 }else{
+					if($rootScope.server)
+						 window.location = "/inventory/orders";
+					 else
+						 window.location = "/orders";
+						 return false;
 				 }
 			 }else{
 				 console.log(data);
