@@ -1,19 +1,4 @@
-					<?php  echo $this->Html->css('jquery-ui.css');echo $this->Html->script('jquery-1.10.2');echo $this->Html->script('jquery-ui');
-						  $totalAmountPayed = array();
-						  $paymentqty = array();
-				          $this->Util->setInvoiceTotalPrice($invoice['Invoice']['total_price']);
-						  $this->Util->setInvoiceTotalQty($invoice['Invoice']['total_quantity']);
-				   		  foreach ($invoice['Payment'] as $Payment):
-					      $totalAmountPayed[] = $Payment['payment_amount'];
-						  $paymentqty[] = $Payment['payment_qty'];
-					      endforeach; 
-					      $TotalAmountPayed = array_sum($totalAmountPayed);
-					      $this->Util->setTotalAmountPayed($TotalAmountPayed);
-						  
-						  $paymentqty = array_sum($paymentqty);
-						  $this->Util->setPayedQty($paymentqty);	  
-					?>
-                    <script>
+				<script>
 						  $(function() {
 							$('.datepicker').datepicker({
 								format: 'mm/dd/yyyy',
@@ -133,44 +118,8 @@
                                                                      </td>
                                                                      <td><input type="checkbox" <?php echo $product['ship_qty'] > 0 ? ($product['ship_qty'] == $product['inb_qty'] ? 'checked="checked"' : '') : '';?> rel="<?php echo $product['quantity'];?>" name="" id="<?php echo $i ?>" class="varchk"  />&nbsp;
                                                          
-                                                         <?php /*?> <input type="hidden" value="" name="Vary[<?php echo $i; ?>][unshipping_quantity]"   />
-                                                          <input type="hidden" value="" name="Vary[<?php echo $i; ?>][INB_missing_quantity]"  />
-                                                          <input type="hidden" value="" name="Vary[<?php echo $i; ?>][sellable_quantity]"  /><?php */?>
-                                            
-                                                          <input type="hidden" name="Vary[<?php echo $i; ?>][sku]" value="<?php echo h($product['sku']); ?>"  />
-                                                          <input type="hidden" name="Vary[<?php echo $i; ?>][product_id]" value="<?php echo h($product['product_id']); ?>"   />
-                                                          <input type="hidden" name="Vary[<?php echo $i; ?>][vendor_id]" value="<?php echo h($product['vendor_id']); ?>" />
-                                                          <input type="hidden" name="Vary[<?php echo $i; ?>][category_id]" value="<?php echo h($product['category_id']); ?>"  />
-                                                          <input type="hidden" name="Vary[<?php echo $i; ?>][variant]" value="<?php echo h($product['variant']); ?>"  />
                                                          
                                                           
-                         								 <input type="hidden" name="Vary[<?php echo $i; ?>][metric]" value="<?php echo h($product['metric']); ?>"  />
-                                                          <input type="hidden" name="Vary[<?php echo $i; ?>][qty_type]" value="<?php echo h($product['qty_type']); ?>"   />
-                                                          <input type="hidden" name="Vary[<?php echo $i; ?>][qty]" value="<?php echo h($product['qty']); ?>" />
-                                                          <input type="hidden" name="Vary[<?php echo $i; ?>][barcode]" value="<?php echo h($product['barcode']); ?>"  />
-                                                          <input type="hidden" name="Vary[<?php echo $i; ?>][price]" value="<?php echo h($product['price']); ?>"  />
-                                                          <input type="hidden" name="Vary[<?php echo $i; ?>][price_total]" value="<?php echo h($product['price_total']); ?>"  />
-                                                          <input type="hidden" name="Vary[<?php echo $i; ?>][po_qty]" value="<?php echo h($product['po_qty']); ?>"  />                                  
-                                                           <input type="hidden" name="Vary[<?php echo $i; ?>][invoice_quantity]" value="<?php echo h($product['quantity']); ?>"  />
-                                                            <input type="hidden" name="Vary[<?php echo $i; ?>][type]" value="shipping"  />
-                                                            
-                                                             <input type="hidden" name="Vary[<?php echo $i; ?>][po_no]" value="<?php echo h($product['po_no']); ?>"  />
-                                                            
-                                                           <input type="hidden" name="Vary[<?php echo $i; ?>][var_id]" value="<?php echo h($product['id']); ?>"   />
-                                                           <input type="hidden" name="Vary[<?php echo $i; ?>][prod_var_id]" value="<?php echo h($ordDetails['Vary']['var_id']); ?>"   />
-                                                           
-                                                            <input type="hidden" name="Vary[<?php echo $i; ?>][edit_var_id]" value="<?php echo isset($product['inv_id']) ? h($product['inv_id']) : ''; ?>"   />
-                                                                     
-                                                            <input type="hidden" value="<?php echo isset($product['ship_qty']) ? $product['ship_qty'] : '';?>" name="Vary[<?php echo $i; ?>][old_ship_qty]"  />
-                                                            <input type="hidden" value="<?php echo isset($product['unship_qty']) ? $product['unship_qty'] : '';?>" name="Vary[<?php echo $i; ?>][old_unship_qty]"  />
-                                                            <input type="hidden" value="<?php echo isset($product['inb_qty']) ? $product['inb_qty'] : '';?>" name="Vary[<?php echo $i; ?>][old_inb_qty]"  />
-                                                            <input type="hidden" value="<?php echo isset($product['inb_ship_missing_qty']) ? $product['inb_ship_missing_qty'] : '';?>" name="Vary[<?php echo $i; ?>][old_inb_ship_missing_qty]"  />
-                                                            <input type="hidden" value="<?php echo isset($product['defect_qty']) ? $product['defect_qty'] : '';?>" name="Vary[<?php echo $i; ?>][old_defect_qty]"  />
-                                                            <input type="hidden" value="<?php echo isset($product['sellable_qty']) ? $product['sellable_qty'] : '';?>" name="Vary[<?php echo $i; ?>][old_sellable_qty]"  />         
-                                                                     
-                                                                     
-                                                                     
-                                                                     
                                                                     </td>
                                                                 </tr>
                                                             <?php $i++; ?> <input type="hidden" class="Allchk" value="<?php echo isset($product['inv_count']) ? ($product['inv_count'] == $product['quantity'] ? $j++ : $j--) : $j--;?>" rel="<?php echo $j == $i ? true : false; ?>" rel2="<?php echo $j; ?>"  rel3="<?php echo $i; ?>"/><?php } endforeach; ?>
