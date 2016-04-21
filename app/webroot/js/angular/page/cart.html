@@ -13,8 +13,8 @@
                  <span style="padding:2px;">${{ getTotalSum() }} </span>
              </a>
                      
-      		<a ng-href="#edit/{{ordId}}" class="btn btn-primary" style="margin-bottom:20px; margin-right: 40px; float:right">ADD MORE SHOPPING</a>
-            <h4 class="page-head-line" style="color: #286090; border-bottom: 2px solid #286090;">Purchase Orders Cart List</h4>
+      		<a ng-href="#edit/{{ordId}}" class="btn btn-primary" style="margin-bottom:20px; margin-right: 40px; float:right">ADD MORE ITEMS</a>
+            <h4 class="page-head-line" style="color: #286090; border-bottom: 2px solid #286090;">P.O Cart List</h4>
         </div>
         
         <div class="col-md-12" ng-if="addCart">
@@ -23,8 +23,8 @@
                  <span style="padding:2px;">${{ getTotalSum() }} </span>
              </a>
                      
-      		<a ng-href="#po" class="btn btn-primary" style="margin-bottom:20px; margin-right: 40px; float:right">ADD MORE SHOPPING</a>
-            <h4 class="page-head-line" style="color: #286090; border-bottom: 2px solid #286090;">Purchase Orders Cart List</h4>
+      		<a ng-href="#po" class="btn btn-primary" style="margin-bottom:20px; margin-right: 40px; float:right">ADD MORE ITEMS</a>
+            <h4 class="page-head-line" style="color: #286090; border-bottom: 2px solid #286090;">P.O Cart List</h4>
         </div>
      </div>
      
@@ -83,13 +83,14 @@
     
     <div class="row"  style="margin:0 0 0 25px; border-top-color:#0000FF;">
         <div class="col-lg-4" style="text-align:center;">
-          <a ng-href="#po" class="btn btn-primary btn-sm">ADD MORE SHOPPING</a> 
+           <a ng-if="editCart" ng-href="#edit/{{ordId}}" class="btn btn-primary btn-sm">ADD MORE ITEMS</a> 
+           <a ng-if="addCart" ng-href="#po" class="btn btn-primary btn-sm">ADD MORE ITEMS</a> 
         </div>
         <div class="col-lg-4" style="text-align:center;">
-         <button type="button" ng-disabled="storepo" class="btn btn-primary btn-sm" ng-click="submitCart('pending');">SAVE CART</button>
+         <button type="button" ng-disabled="storepo" class="btn btn-primary btn-sm" ng-click="submitCart('pending');">SAVE PO</button>
         </div>
          <div class="col-lg-4" style="text-align:center;">
-         <button type="button" class="btn btn-primary btn-sm" ng-click="submitCart('submit');">SUBMIT CART</button>
+         <button type="button" class="btn btn-primary btn-sm" ng-click="submitCart('submit');">SUBMIT PO</button>
         </div>
      </div>
      

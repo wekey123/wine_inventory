@@ -3,8 +3,8 @@
    <div class="container">
      <div class="row">
         <div class="col-md-12">
-        <?php echo $this->Html->link('Add sale Entry', array('action' => 'add'),array('class'=>'btn btn-primary','style'=>'margin-bottom:20px; float:right')); ?>
-            <h4 class="page-head-line">Invoices Entry List</h4>
+        <?php echo $this->Html->link('Add sale Entry', array('action' => 'addproduct/#/salesadd'),array('class'=>'btn btn-primary','style'=>'margin-bottom:20px; float:right')); ?>
+            <h4 class="page-head-line">Sales List</h4>
             <div class="form-group">
                 <label>Select Vendor</label>
                 <select class="form-control" name="filterVendor" id="filterVendor">
@@ -24,7 +24,7 @@
                      <!--    Hover Rows  -->
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                           <?php echo __('Invoices Entry List'); ?>
+                           <?php echo __('Sales List'); ?>
                         </div>
                         <div class="panel-body">
                             <div class="table-responsive" style="overflow-x:hidden;">

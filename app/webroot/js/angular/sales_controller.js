@@ -181,13 +181,19 @@ shopping.controller("salesAddController", ["$scope","$log","$timeout","$http",'$
 			var r = confirm("Would you like to Post Sales Order ?");
 			if (r == true) {	
 				console.log('OK Success');
-				$scope.url = $rootScope.filePath.location+'sales/addSales.json';
-				 $scope.inputData= { items: $scope.cookieCartItems, cartQty: $scope.getTotalQty(),cartSum: $scope.getTotalSum()};
+				$scope.url = $rootScope.filePath.location+'sales/addSales.json';		
+				$scope.inputData= { items: salesService.getCartItems().items, cartQty: $scope.getTotalQty(),cartSum: $scope.getTotalSum()};
 				$http({method: 'POST',url: $scope.url,data :$scope.inputData,cache: false}).success(function (data, status, headers, config) {
 					console.log(data);
 					 if(data.responseCart.response !== 'E'){
 						 console.log(data.responseCart);
-						 localStorageService.clearAll('sales');
+							salesService.clearAll();
+						 if($rootScope.server)
+						 	window.location = "/inventory/sales";
+						 else
+							 window.location = "/sales";
+							 
+						 return false;
 					 }
 				}).error(function (data, status, headers, config) {
 					 console.log(data.responseSale);

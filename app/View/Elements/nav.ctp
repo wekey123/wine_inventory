@@ -1,5 +1,5 @@
 <?php
-	$menus=array('Dashboard'=>array('dashboard'),'Product'=>array('products'),'User'=>array('users'),'Order'=>array('orders'),'Invoice'=>array('invoices'),'Payment'=>array('payments'),'Shipping'=>array('shippings'),'Inventory'=>array('inventories'),'Vendor'=>array('vendors'));
+	$menus=array('Dashboard'=>array('dashboard'),'Product'=>array('products'),'User'=>array('users'),'Order'=>array('orders'),'Invoice'=>array('invoices'),'Payment'=>array('payments'),'Shipping'=>array('shippings'),'Inventory'=>array('inventories'),'Sale'=>array('sales'),'Vendor'=>array('vendors'));
 	function getPageName($name, $array){
 		foreach($array as $key => $value){
 			if(is_array($value) && in_array($name, $value))
@@ -55,6 +55,13 @@
                              </li>
                              <li> <?php echo $this->Html->link('Inventory',array('controller'=>'inventories','action' => 'index'),array('class'=>trim($menuActive)=='Inventory'  ? 'menu-top-active' : '')); ?> </li>
                              <?php /*?><li> <?php echo $this->Html->link('Settings',array('controller'=>'categories','action' => 'index'),array('class'=>trim($menuActive)=='Settings'  ? 'menu-top-active' : '')); ?> </li><?php */?>
+                             
+                             <li> <?php echo $this->Html->link('Sale',array('controller'=>'sales','action' => 'index'),array('class'=>trim($menuActive)=='Sale'  ? 'menu-top-active dropdown-toggle' : 'dropdown-toggle','data-toggle'=>'dropdown','href'=>'#')); ?>
+                              <ul class="dropdown-menu">
+                                    <li><?php echo $this->Html->link('Sales List',array('controller'=>'sales','action' => 'index'),array('style'=>'color:#222;','href'=>'#')); ?></li> 								<li><?php echo $this->Html->link('Sales Order',array('controller'=>'sales','action' => 'addproduct/#/salesadd'),array('style'=>'color:#222;','href'=>'#')); ?></li> 
+							  </ul>
+                              </li>
+                              
                              <li> <?php echo $this->Html->link('Logout',array('controller'=>'users','action' => 'logout')); ?> </li>
                         </ul>
                     </div>

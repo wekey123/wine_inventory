@@ -1,7 +1,7 @@
- <?php echo $this->Html->css('jquery-ui.css');echo $this->Html->script('jquery-1.10.2');echo $this->Html->script('jquery-ui');  ?>
+ <?php echo $this->Html->css('jquery-ui.css'); echo $this->Html->script('jquery-1.10.2'); echo $this->Html->script('jquery-ui');  ?>
 <div class="content-wrapper">
     <div class="container">
-    <?php echo $this->Form->create('Product',array('id'=>'userAdd','type' => 'file','role'=>'form')); ?>
+    <?php echo $this->Form->create('Product',array('id'=>'userAdd','type' => 'file','role'=>'form','method'=>'post')); ?>
       <div class="row">
             <div class="col-md-12">
                 <h1 class="page-head-line"><?php echo __('Add Product'); ?> </h1>

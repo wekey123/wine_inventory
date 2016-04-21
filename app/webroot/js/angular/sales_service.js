@@ -11,6 +11,12 @@ shopping.service('salesService',['$routeParams','$http','localStorageService','$
 		}
 	}
 	
+	this.clearAll = function(){
+		self.salesItem.items = [];
+		localStorageService.set('sales', self.salesItem);
+		return localStorageService.clearAll();
+	}
+	
 	this.addCart = function(singleObj){
 		console.log(singleObj); //return false;
 		var data = self.checkData(singleObj.id);
