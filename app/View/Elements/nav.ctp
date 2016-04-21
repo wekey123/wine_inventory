@@ -46,17 +46,17 @@
 							  </ul>
                              
                               </li>
-                             <li> <?php echo $this->Html->link('Shipping',array('controller'=>'shippings','action' => 'index'),array('class'=>trim($menuActive)=='Shipping'  ? 'menu-top-active dropdown-toggle' : 'dropdown-toggle','data-toggle'=>'dropdown','href'=>'#')); ?>
+                             <li> <?php echo $this->Html->link('Shipment',array('controller'=>'shippings','action' => 'index'),array('class'=>trim($menuActive)=='Shipping'  ? 'menu-top-active dropdown-toggle' : 'dropdown-toggle','data-toggle'=>'dropdown','href'=>'#')); ?>
                               <ul class="dropdown-menu">
-                                    <li><?php echo $this->Html->link('Shipping List',array('controller'=>'shippings','action' => 'index'),array('style'=>'color:#222;','href'=>'#')); ?></li>
-                                    <li><?php echo $this->Html->link('Create Shipping',array('controller'=>'shippings','action' => 'add'),array('style'=>'color:#222;','href'=>'#')); ?></li> 
+                                    <li><?php echo $this->Html->link('Shipment List',array('controller'=>'shippings','action' => 'index'),array('style'=>'color:#222;','href'=>'#')); ?></li>
+                                    <li><?php echo $this->Html->link('Create Shipment',array('controller'=>'shippings','action' => 'add'),array('style'=>'color:#222;','href'=>'#')); ?></li> 
 							  </ul>
                              
                              </li>
                              <li> <?php echo $this->Html->link('Inventory',array('controller'=>'inventories','action' => 'lists'),array('class'=>trim($menuActive)=='Inventory'  ? 'menu-top-active' : '')); ?> </li>
                              <?php /*?><li> <?php echo $this->Html->link('Settings',array('controller'=>'categories','action' => 'index'),array('class'=>trim($menuActive)=='Settings'  ? 'menu-top-active' : '')); ?> </li><?php */?>
                              
-                             <li> <?php echo $this->Html->link('Sale',array('controller'=>'sales','action' => 'index'),array('class'=>trim($menuActive)=='Sale'  ? 'menu-top-active dropdown-toggle' : 'dropdown-toggle','data-toggle'=>'dropdown','href'=>'#')); ?>
+                             <li> <?php echo $this->Html->link('Sales',array('controller'=>'sales','action' => 'index'),array('class'=>trim($menuActive)=='Sale'  ? 'menu-top-active dropdown-toggle' : 'dropdown-toggle','data-toggle'=>'dropdown','href'=>'#')); ?>
                               <ul class="dropdown-menu">
                                     <li><?php echo $this->Html->link('Sales List',array('controller'=>'sales','action' => 'index'),array('style'=>'color:#222;','href'=>'#')); ?></li> 								<li><?php echo $this->Html->link('Sales Order',array('controller'=>'sales','action' => 'addproduct/#/salesadd'),array('style'=>'color:#222;','href'=>'#')); ?></li> 
 							  </ul>

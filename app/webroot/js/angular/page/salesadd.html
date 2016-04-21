@@ -10,9 +10,9 @@
         </div>-->
         
         <div class="col-md-12">
-                     <a class="btn btn-primary"  style="margin-bottom:20px; float:right; background-color: #F0677C; border: 2px solid #F0677C;" ng-click="submitSales()">
-                     <span style="padding:2px;" class="glyphicon glyphicon-shopping-cart"></span>{{ getTotalQty() }} Cart
-                     <span style="padding:2px;">${{ getTotalSum() }} </span>
+                     <a class="btn btn-primary" ng-if="getTotalQty() >0"  style="margin-bottom:20px; float:right; background-color: #F0677C; border: 2px solid #F0677C;" ng-click="submitSales()">
+                     <span style="padding:2px;" class="glyphicon glyphicon-shopping-cart"></span>{{ getTotalQty() }} / <span style="padding:2px;">${{ getTotalSum() }} </span> Submit Sales Order
+                     
                      </a>
             <h4 class="page-head-line">Sales Order</h4>
         </div>
@@ -73,12 +73,12 @@
                                 <th>Category</th>
                                 <th style="width: 18%;">Title</th>
                                 <th>Image</th>
-                                <th style="width: 10%;">Sold Price</th>
-                                <th style="width: 10%;">Sold Quantity</th>
-                                <th style="width: 10%;">CR Quantity</th>
-                                <th style="width: 10%;">MFG Quantity</th>
+                                <th style="width: 10%;">Sales Price</th>
+                                <th style="width: 10%;">Sales Qty</th>
+                                <th style="width: 10%;">Cust Return Qty</th>
+                                <th style="width: 10%;">MFG Return Qty</th>
                                 <th style="width: 10%;">Total Price</th>
-                                <th>Sellable QTY</th>
+                                <th>Sellable Qty</th>
                                 <th>Add items</th>
                             </tr>
                         </thead>
@@ -95,7 +95,7 @@
                                      <td><input type="text"  class="form-control"  ng-model="result.mfg_qty" /></td>
                                      <td> ${{  result.sum = roundOfValue(result.sold_qty * result.price) }} </td>
                                      <td>{{result.sellable_qty = ( result.invoice_qty -(result.db_sold_qty -- result.db_cr_qty -- result.db_mfg_qty)) -(result.sold_qty -- result.cr_qty -- result.mfg_qty) }}</td>
-                                     <td><a ng-if="result.sellable_qty >=0" style="float:right; background-color: #F0677C; border: 2px solid #F0677C;" ng-click="addToCart(result,'add')" class="btn btn-primary">Added to Sale</a>
+                                     <td><a ng-if="result.sellable_qty >=0" style="float:right; background-color: #F0677C; border: 2px solid #F0677C;" ng-click="addToCart(result,'add')" class="btn btn-primary">Add to Sale</a>
                                      <p ng-if="result.sellable_qty <0" style="color:red; width: 80px;">Out of Stock</p>
                                      </td>
                                     </tr>

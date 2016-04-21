@@ -240,12 +240,13 @@ shopping.controller('cartController',['$scope','$routeParams','$http','$cookies'
 		 $scope.postdata.poCopy = $scope.storepo | false;
 		 //console.log($scope.postdata); return false;
 		 if(type == 'submit'){
-		 $scope.postdata.type = '1'; //submitted
+			 $scope.postdata.type = 1; //submitted
 			 if($scope.postdata.poOrder == true){
-				 $scope.postdata.type = '10';
+				 $scope.postdata.type = 10;
 			 }
 		 }else
-		  $scope.postdata.type = 'pending';//  pending
+			  $scope.postdata.type = 0;//  pending
+		  
 		  console.log($scope.postdata);
 		  console.log($scope.postdata.poNo);
 		if($scope.postdata.poNo)
@@ -255,27 +256,41 @@ shopping.controller('cartController',['$scope','$routeParams','$http','$cookies'
 			console.log($scope.url);
 
 		 $http({method: 'POST',url: $scope.url,data :$scope.postdata,cache: false}).success(function (data, status, headers, config) {
+			 
 			 if(data.responseCart.response !== 'E'){
 				 console.log(data.responseCart);
 				 cartService.unSetCartItems();
-				 if(data.responseCart.status == 0){
+				 if(data.responseCart.status === 0){
+					 console.log("PO Page");
 					 if($rootScope.server)
 						 window.location = "/inventory/orders";
 					 else
 						 window.location = "/orders";
-				 }if(data.responseCart.status == 10){
+						 return false;
+				 }else if(data.responseCart.status === 1){
+					 console.log("Report Page");
+					  var po = data.responseCart.orderID;
+					 if($rootScope.server)
+						 window.location = "/inventory/orders/report/"+po+"/email";
+					 else
+						 window.location = "/orders/report/"+po+"/email";
+						 return false;
+				 }else if(data.responseCart.status === 10){
+					 console.log("Invoice Edit Page");
 					  var po = data.responseCart.orderID;
 					 if($rootScope.server)
 						 window.location = "/inventory/invoices/edit/"+po;
 					 else
 						 window.location = "/invoices/edit/"+po;
+						 return false;
 				 }else{
-					 var po = data.responseCart.orderID;
-					 if($rootScope.server)
-						 window.location = "/inventory/orders/report/"+po+"/email";
+					if($rootScope.server)
+						 window.location = "/inventory/orders";
 					 else
-						 window.location = "/orders/report/"+po+"/email";
+						 window.location = "/orders";
+						 return false;
 				 }
+				 
 			 }else{
 				 console.log(data);
 			 }
