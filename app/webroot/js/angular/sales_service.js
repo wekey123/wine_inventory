@@ -4,27 +4,27 @@ shopping.service('salesService',['$routeParams','$http','localStorageService','$
 	this.salesItem = {};
 	this.salesItem.items = [];
 
-	this.getCartItems = function(){
-		if(localStorageService.get('sales')){
-		   self.salesItem = localStorageService.get('sales');
+	this.getCartItems = function(keyname){
+		if(localStorageService.get(keyname)){
+		   self.salesItem = localStorageService.get(keyname);
 		   return self.salesItem;
 		}
 	}
 	
-	this.clearAll = function(){
+	this.clearAll = function(keyname){
 		self.salesItem.items = [];
-		localStorageService.set('sales', self.salesItem);
+		localStorageService.set(keyname, self.salesItem);
 		return localStorageService.clearAll();
 	}
 	
-	this.addCart = function(singleObj){
+	this.addCart = function(singleObj,keyname){
 		console.log(singleObj); //return false;
 		var data = self.checkData(singleObj.id);
 		if(data){
 	  	  self.salesItem.items.push(singleObj);
-		  self.cartTotalQty('addCart');
+		  self.cartTotalQty('addCart',keyname);
 		}else{
-		  self.updateMoreQty(singleObj,singleObj.id);	
+		  self.updateMoreQty(singleObj,singleObj.id,keyname);	
 		  $log.debug('Fucntion Name : addCart - Product already available in the cart');
 		  //return false;
 		}
@@ -42,7 +42,7 @@ shopping.service('salesService',['$routeParams','$http','localStorageService','$
 		}
 	}
 	
-	this.updateMoreQty = function(input,id) {
+	this.updateMoreQty = function(input,id,keyname) {
 		   var salesItem = self.salesItem.items;
 		   var foundItem = $filter('filter')(salesItem, { id: id  }, true)[0];
 		   var arrayIndex = salesItem.indexOf(foundItem)
@@ -52,7 +52,7 @@ shopping.service('salesService',['$routeParams','$http','localStorageService','$
 			   self.salesItem.items[arrayIndex].sum = parseFloat(input.sum);
 			   self.salesItem.items[arrayIndex].cr_qty = parseInt(input.cr_qty);
 			   self.salesItem.items[arrayIndex].mfg_qty = parseInt(input.mfg_qty);
-			   localStorageService.set('sales', self.salesItem);
+			   localStorageService.set(keyname, self.salesItem);
 			   self.cartTotalQty('updateMoreQty');
 		   }else{
 			    console.log('luck');
@@ -60,7 +60,7 @@ shopping.service('salesService',['$routeParams','$http','localStorageService','$
 			 
 	 }
 	 
-	this.cartTotalQty = function(page){
+	this.cartTotalQty = function(page,keyname){
 		if(self.salesItem.items.length >0){
 			var totalQty = 0;
 			for(var i=0; i<self.salesItem.items.length; i++){
@@ -68,14 +68,14 @@ shopping.service('salesService',['$routeParams','$http','localStorageService','$
 				totalQty += parseInt(items.sold_qty);
 			}
 			$log.debug("cartTotalQty: "+totalQty+ " Fucntion Name :"+page);
-			localStorageService.set('sales', self.salesItem);
+			localStorageService.set(keyname, self.salesItem);
 			return totalQty;
 		}else{
 			return 0;
 		}
 	}
 	
-	this.cartTotalSum = function(page){
+	this.cartTotalSum = function(page,keyname){
 		if(self.salesItem.items.length >0){
 			var totalSum = 0;
 			for(var i=0; i<self.salesItem.items.length; i++){
@@ -93,29 +93,6 @@ shopping.service('salesService',['$routeParams','$http','localStorageService','$
 		}
 	}
 
-	
-
-	this.updateCart = function(quantity,sum){
-		self.cartItem["qtyTotal"] = quantity;
-		self.cartItem["sumTotal"] = sum;
-		console.log('a');
-		console.log(self.cartTotalQty())
-		$cookies.putObject('cart', self.cartItem,{ expires:self.expiresTime() });
-		console.log(self.cartItem);
-	}
-	
-
-	
-	this.removeCart = function(removeId){
-		self.cartItem.items.splice(removeId, 1);
-		self.cartTotalQty();
-		console.log(self.cartItem);
-		$cookies.putObject('cart', self.cartItem,{ expires:self.expiresTime() });
-		console.log("remove Cart:"+ self.cartItem.items.length)
-		if(self.cartItem.items.length == 0){
-			 self.unSetCartItems();
-		}
-	}
 	
  	this.roundOfValue = function(value){
 	 if(isNaN(value)){

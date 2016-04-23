@@ -246,49 +246,12 @@ class OrdersController extends AppController {
 	}
 
 	
-	public function apiEditProducts($value = null) {
-      header("Access-Control-Allow-Origin: *");
-	  header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept");
-	  $products = $this->Product->find('all');
-	  $i =0;
-	  foreach($products as $product){
-	   foreach($product['Vary'] as $key => $vary){
-		$result[$product['Vendor']['name']][$product['Category']['name']]['Product'][$i] = $product['Product'];
-		$result[$product['Vendor']['name']][$product['Category']['name']]['Product'][$i]['vid'] = $vary['id'];
-		$result[$product['Vendor']['name']][$product['Category']['name']]['Product'][$i]['variant'] = $vary['variant'];
-		$result[$product['Vendor']['name']][$product['Category']['name']]['Product'][$i]['sku'] = $vary['sku'];
-		$result[$product['Vendor']['name']][$product['Category']['name']]['Product'][$i]['barcode'] = $vary['barcode'];
-		$result[$product['Vendor']['name']][$product['Category']['name']]['Product'][$i]['price'] = $vary['price'];
-		$result[$product['Vendor']['name']][$product['Category']['name']]['Product'][$i]['vendor'] = $product['Vendor']['name'];
-		$result[$product['Vendor']['name']][$product['Category']['name']]['Product'][$i]['category'] = $product['Category']['name'];
-			if(isset($value)){
-			$orderVar = $this->Vary->find('first',array('conditions' => array('Vary.var_id'=> $vary['id'],'Vary.po_no'=>$value),'fields' => array('Vary.id', 'Vary.price', 'Vary.quantity','Vary.price_total','Vary.po_no')));
-				if(!empty($orderVar)){
-					$result[$product['Vendor']['name']][$product['Category']['name']]['Product'][$i]['price'] = !empty($orderVar) ? $orderVar['Vary']['price'] : '';
-					$result[$product['Vendor']['name']][$product['Category']['name']]['Product'][$i]['qty'] = !empty($orderVar) ? $orderVar['Vary']['quantity'] : '';
-					$result[$product['Vendor']['name']][$product['Category']['name']]['Product'][$i]['sum'] = !empty($orderVar) ? $orderVar['Vary']['price_total'] : '';
-					$result[$product['Vendor']['name']][$product['Category']['name']]['Product'][$i]['po_no'] = !empty($orderVar) ? $orderVar['Vary']['po_no'] : '';
-					$result[$product['Vendor']['name']][$product['Category']['name']]['Product'][$i]['cv_id'] = !empty($orderVar) ? $orderVar['Vary']['id'] : '';
-				}
-			}
-		$i++;
-	   }
-	   
-		
-	  }
-	  $this->set('products', $result);
-	  $this->set('_serialize', array('products'));
- }
-	
 	
 	public function addproduct() {
 
 
 	}
 	
- 	public function editproduct($id = null) {
-	 
- 	}
 
 /**
  * view method
