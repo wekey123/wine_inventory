@@ -130,6 +130,7 @@ class ProductsController extends AppController {
 					$this->request->data['Vary']['metric'] = $value['metric'];
 					$this->request->data['Vary']['qty_type'] = $value['qty_type'];
 					$this->request->data['Vary']['qty'] = $value['qty'];
+					$this->request->data['Vary']['sellable_price'] = $value['sellable_price'];
 					$this->Vary->create();
 					$this->Vary->save($this->request->data);
 				  }
@@ -205,7 +206,8 @@ class ProductsController extends AppController {
 					$this->request->data['Vary']['barcode'] = $value['barcode'];
 					$this->request->data['Vary']['metric'] = $value['metric'];
 					$this->request->data['Vary']['qty_type'] = $value['qty_type'];
-					$this->request->data['Vary']['qty'] = $value['qty'];					
+					$this->request->data['Vary']['qty'] = $value['qty'];
+					$this->request->data['Vary']['sellable_price'] = $value['sellable_price'];					
 					$this->Vary->create();
 					$this->Vary->save($this->request->data);
 				  }

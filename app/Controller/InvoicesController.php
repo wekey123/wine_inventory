@@ -269,6 +269,7 @@ class InvoicesController extends AppController {
 				if($invCount['type']=='order'){
 					$pall= self::in_array_r($invCount['id'], $ordInv['Vary']);
 					 $ordInv['Vary'][$i]['inv_count']= $pall['quantity'];
+					 $ordInv['Vary'][$i]['inv_price']= $pall['price'];
 					 $ordInv['Vary'][$i]['inv_id']= $pall['id'];
 				}
 			$i++;

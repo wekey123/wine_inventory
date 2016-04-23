@@ -31,50 +31,57 @@
                                         <tr>
                                             <th>#</th>
                                             <th><?php echo $this->Paginator->sort('vendor'); ?></th>
-                                            <th><?php echo $this->Paginator->sort('category'); ?></th>
                                             <th><?php echo $this->Paginator->sort('title'); ?></th>
                                             <th><?php echo $this->Paginator->sort('image'); ?></th>
-                                            <th><?php echo $this->Paginator->sort('country'); ?></th>
-                                            <th><?php echo $this->Paginator->sort('brand'); ?></th>
-                                            <th><?php echo $this->Paginator->sort('Location'); ?></th>
-                                            <th><?php echo $this->Paginator->sort('flavor'); ?></th>
-                                            <th><?php echo $this->Paginator->sort('label'); ?></th>
                                             
                                             <th><?php echo $this->Paginator->sort('Total Order Quantity'); ?></th>
                                             <th><?php echo $this->Paginator->sort('Total Invoice Quantity'); ?></th>
+                                            <th><?php echo $this->Paginator->sort('Total Paid Quantity'); ?></th>
                                             <th><?php echo $this->Paginator->sort('Total Shipped Quantity'); ?></th>
                                             <th><?php echo $this->Paginator->sort('Total Unshipped Quantity'); ?></th>
                                             <th><?php echo $this->Paginator->sort('Total Inbound Quantity'); ?></th>
                                             <th><?php echo $this->Paginator->sort('Total Inbound Missing Quantity'); ?></th>
                                             <th><?php echo $this->Paginator->sort('Total Defect Quantity'); ?></th>
+                                            <th><?php echo $this->Paginator->sort('Total Inventory Missing Quantity'); ?></th>
                                             <th><?php echo $this->Paginator->sort('Total Sellable Quantity'); ?></th>
+                                            
+                                            <th><?php echo $this->Paginator->sort('Total Sold Quantity'); ?></th>
+                                            <th><?php echo $this->Paginator->sort('Total Customer Return Quantity'); ?></th>
+                                            <th><?php echo $this->Paginator->sort('Return to MFG Quantity'); ?></th>
+                                            <th><?php echo $this->Paginator->sort('Unsellable Quantity'); ?></th>
+                                            <th><?php echo $this->Paginator->sort('Lost Quantity'); ?></th>
+                                            <!--<th>Actions</th>-->
                                         </tr>
                                     </thead>
                                     <tbody class="searchable" id="exampleBody">
-                                     <?php $i =1; foreach ($products as $product): ?>
+                                     <?php $i =1; foreach ($products as $product):
+									 if($product['Vary'][0]['sellable_qty'] > 0) { ?>
                                         <tr>
                                             <td><?php echo $i; ?><input type="hidden" value="<?php echo h($product['Product']['vendor_id']); ?>" /></td>
                                             <td><?php  $users = $this->Util->getVendorName($product['Product']['vendor_id']); echo isset($users['Vendor']['name']) ? $users['Vendor']['name'] : '';?></td>
-                                            <td><?php  $cat = $this->Util->getVendorType($product['Product']['vendor_type']); echo isset($cat['Category']['name']) ? $cat['Category']['name'] : '';?>&nbsp;</td>
                                             <td><?php echo h($product['Product']['title']); ?>&nbsp;</td>
                                             <td><?php echo $this->Html->image('product/small/'.$product['Product']['image']);?>&nbsp;</td>
-                                            <td><?php echo h($product['Product']['brand']); ?>&nbsp;</td>
-                                            <td><?php echo h($product['Product']['country']); ?>&nbsp;</td>
-                                            <td><?php echo h($product['Product']['location']); ?>&nbsp;</td>
-                                            <td><?php echo h($product['Product']['flavor']); ?>&nbsp;</td>
-                                            <td><?php echo h($product['Product']['label']); ?>&nbsp;</td>
                                             
                                             <td><?php echo h($product['Vary'][0]['po_qty']); ?>&nbsp;</td>
                                             <td><?php echo h($product['Vary'][0]['invoice_qty']); ?>&nbsp;</td>
+                                            <td>NULL</td>
                                             <td><?php echo h($product['Vary'][0]['ship_qty']); ?>&nbsp;</td>
                                             <td><?php echo h($product['Vary'][0]['unship_qty']); ?>&nbsp;</td>
                                             <td><?php echo h($product['Vary'][0]['inb_qty']); ?>&nbsp;</td>
                                             <td><?php echo h($product['Vary'][0]['inb_ship_missing_qty']); ?>&nbsp;</td>
                                             <td><?php echo h($product['Vary'][0]['defect_qty']); ?>&nbsp;</td>
+                                            <td>NULL</td>
                                             <td><?php echo h($product['Vary'][0]['sellable_qty']); ?>&nbsp;</td>
+                                            
+                                            <td><?php echo h($product['Vary'][0]['sold_qty']); ?>&nbsp;</td>
+                                            <td><?php echo h($product['Vary'][0]['cr_qty']); ?>&nbsp;</td>
+                                            <td><?php echo h($product['Vary'][0]['mfg_return_qty']); ?>&nbsp;</td>
+                                            <td><?php echo h($product['Vary'][0]['unsellable_qty']); ?>&nbsp;</td>
+                                            <td><?php echo h($product['Vary'][0]['qty_lost']); ?>&nbsp;</td>
+                                           <?php /*?> <td class="actions"><?php echo $this->Html->link(__('View'), array('action' => 'listview', $product['Product']['id'])); ?></td><?php */?>
                                         </tr>
                                         
-                                    <?php $i++; endforeach; ?>
+                                    <?php $i++;} endforeach; ?>
                                     </tbody>
                                 </table>
                             </div>

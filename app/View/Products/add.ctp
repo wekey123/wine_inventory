@@ -1,4 +1,4 @@
- <?php echo $this->Html->css('jquery-ui.css'); echo $this->Html->script('jquery-1.10.2'); echo $this->Html->script('jquery-ui');  ?>
+ <?php echo $this->Html->css('jquery-ui.css'); echo $this->Html->script('jquery-1.10.2'); echo $this->Html->script('jquery-ui');  $ServerBaseURL = Configure::read('ServerBaseURL'); ?>
 <div class="content-wrapper">
     <div class="container">
     <?php echo $this->Form->create('Product',array('id'=>'userAdd','type' => 'file','role'=>'form','method'=>'post')); ?>
@@ -21,20 +21,19 @@
 		echo $this->Form->input('title',array('div'=>false,'error'=>false,'type'=>'text', 'before' => '<div class="form-group">', 'after' => '</div>', 'class'=>'validate[required] form-control','between'=>'<label><span class="mandatory">*</span> Title</label>','label'=>false));
 		echo $this->Form->input('description',array('div'=>false,'error'=>false,'type'=>'textarea', 'before' => '<div class="form-group">', 'after' => '</div>', 'class'=>'validate[required] form-control'));
 		
-		echo $this->Form->input('expiry',array('div'=>false,'error'=>false,'type'=>'text', 'before' => '<div class="form-group">', 'after' => '</div>', 'class'=>'validate[required] form-control datepicker','between'=>'<label> Expiry Date</label>','label'=>false));
-		
-		
-		
 	?>
 	</div>
     <div class="col-md-5"> 
     <?php 
 	echo $this->Form->input('image',array('div'=>false,'error'=>false,'type'=>'file', 'before' => '<div class="form-group">', 'after' => '</div>', 'class'=>'validate[required] form-control','between'=>'<label><span class="mandatory">*</span> Image</label>','label'=>false));
+	//echo $this->Form->input('Vary.sellable_price',array('div'=>false,'error'=>false,'type'=>'text', 'before' => '<div class="form-group">', 'after' => '</div>', 'class'=>'validate[required] form-control','between'=>'<label><span class="mandatory">*</span>Price (Retail)</label>','label'=>false));
+	echo $this->Form->input('expiry',array('div'=>false,'error'=>false,'type'=>'text', 'before' => '<div class="form-group">', 'after' => '</div>', 'class'=>'validate[required] form-control datepicker','between'=>'<label> Expiry Date</label>','label'=>false));
+		
 	echo $this->Form->input('country',array('div'=>false,'error'=>false,'type'=>'text', 'before' => '<div class="form-group">', 'after' => '</div>', 'class'=>'validate[required] form-control'));
 	echo $this->Form->input('brand',array('div'=>false,'error'=>false,'type'=>'text', 'before' => '<div class="form-group">', 'after' => '</div>', 'class'=>'validate[required] form-control'));
 	echo $this->Form->input('location',array('div'=>false,'error'=>false,'type'=>'text', 'before' => '<div class="form-group">', 'after' => '</div>', 'class'=>'validate[required] form-control'));
-		echo $this->Form->input('flavor',array('div'=>false,'error'=>false,'type'=>'text', 'before' => '<div class="form-group">', 'after' => '</div>', 'class'=>'validate[required] form-control'));
-		echo $this->Form->input('label',array('div'=>false,'error'=>false,'type'=>'text', 'before' => '<div class="form-group">', 'after' => '</div>', 'class'=>'validate[required] form-control'));
+		echo $this->Form->input('flavor',array('div'=>false,'error'=>false,'type'=>'hidden'));
+		echo $this->Form->input('label',array('div'=>false,'error'=>false,'type'=>'hidden'));
 		?>
     </div>
 </div>
@@ -59,13 +58,15 @@
 				 
 				 echo $this->Form->input('Vary.qty_type',array('div'=>false,'error'=>false, 'type'=>'select', 'options'=>$type, 'id'=>'VarientrQtyType', 'before' => '<div class="form-group col-md-1">', 'after' => '</div>' , 'class'=>'validate[required] form-control varHead','between'=>'<label>Qty Type</label>','label'=>false,"empty" => "Select the Size",'name'=>'data[Vary][val][0][qty_type]','rel'=>0));
 				 
-				 echo $this->Form->input('Vary.qty',array('div'=>false,'error'=>false,'label'=>false,'type'=>'text', 'before' => '<div class="form-group varHead col-md-2">', 'after' => '</div>', 'class'=>'validate[required] form-control','between'=>'<label>No of Qty</label>','label'=>false,'name'=>'data[Vary][val][0][qty]','id'=>'qty0','value'=>1));
+				 echo $this->Form->input('Vary.qty',array('div'=>false,'error'=>false,'label'=>false,'type'=>'text', 'before' => '<div class="form-group varHead col-md-1">', 'after' => '</div>', 'class'=>'validate[required] form-control','between'=>'<label>No of Qty</label>','label'=>false,'name'=>'data[Vary][val][0][qty]','id'=>'qty0','value'=>1));
 				 
 				 echo $this->Form->input('Vary.sku',array('div'=>false,'error'=>false,'label'=>false,'type'=>'text', 'before' => '<div class="form-group varHead col-md-2">', 'after' => '</div>', 'class'=>'validate[required] form-control','between'=>'<label>SKU</label>','label'=>false,'name'=>'data[Vary][val][0][sku]','id'=>'sku0'));
 				 
 				 echo $this->Form->input('Vary.barcode',array('div'=>false,'error'=>false,'label'=>false,'type'=>'text', 'before' => '<div class="form-group varHead col-md-2">', 'after' => '</div>', 'class'=>'validate[required] form-control','between'=>'<label>Bar Code</label>','label'=>false,'name'=>'data[Vary][val][0][barcode]','id'=>'barcode0'));
 				 
-				 echo $this->Form->input('Vary.price',array('div'=>false,'error'=>false,'label'=>false,'type'=>'text', 'before' => '<div class="form-group varHead  col-md-2">', 'after' => '</div>', 'class'=>'validate[required] form-control','between'=>'<label>Price</label>','label'=>false,'name'=>'data[Vary][val][0][price]','id'=>'price0'));
+				 echo $this->Form->input('Vary.price',array('div'=>false,'error'=>false,'label'=>false,'type'=>'text', 'before' => '<div class="form-group varHead  col-md-1" style="width:13%">', 'after' => '</div>', 'class'=>'validate[required] form-control','between'=>'<label>Price (Wholesale)</label>','label'=>false,'name'=>'data[Vary][val][0][price]','id'=>'price0'));
+				 
+				  echo $this->Form->input('Vary.sellable_price',array('div'=>false,'error'=>false,'label'=>false,'type'=>'text', 'before' => '<div class="form-group varHead  col-md-1" style="width:11%">', 'after' => '</div>', 'class'=>'validate[required] form-control','between'=>'<label>Price (Retail)</label>','label'=>false,'name'=>'data[Vary][val][0][sellable_price]','id'=>'price0'));
 				?>
                  
                  </div>
@@ -79,7 +80,8 @@
 </div>
 </div>
 <input type="hidden" name="" id="countValues" value="1" />
-<?php echo $this->Html->script('inventory'); $ServerBaseURL = Configure::read('ServerBaseURL'); ?>
+<input type="hidden" name="" id="vendorListURL" value="<?php echo $ServerBaseURL.'/products/ajax'; ?>" />
+<?php echo $this->Html->script('inventory'); ?>
 <script>
 	$('#VarientrQtyType').on('change',function(e){
 		if($(this).val()== 'Case')
@@ -88,21 +90,4 @@
 		$('#qty'+$(this).attr('rel')).val(1);
 		 
 	});
-	
-	$('#VendorType').on('change',function(e){
-		$('#VendorCatType').html('');
-		$.ajax({
-			  type: 'POST',
-			  url: '<?php echo $ServerBaseURL.'/products/ajax'; ?>',//whatever any url
-			  data: {label: $(this).val()},
-			  success: function(message) {
-				  if(message){
-					  console.log(message);
-					  $('#VendorCatType').html(message);
-				  }else{
-					 console.log(message);
-				  }
-			   }
-		   });
-	 });
 </script>

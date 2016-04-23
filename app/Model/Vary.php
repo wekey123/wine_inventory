@@ -44,6 +44,9 @@ class Vary extends AppModel {
 		'price' => array(
            'rule' => 'notBlank',
         ),
+		'sellable_price' => array(
+			'rule' => 'notBlank',
+		)
     );
 
 	// The Associations below have been created with all possible keys, those that are not needed can be removed
