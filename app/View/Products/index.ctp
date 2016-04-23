@@ -39,8 +39,8 @@
                                             <th><?php echo $this->Paginator->sort('country'); ?></th>
                                             <th><?php echo $this->Paginator->sort('brand'); ?></th>
                                             <th><?php echo $this->Paginator->sort('Location'); ?></th>
-                                            <th><?php echo $this->Paginator->sort('flavor'); ?></th>
-                                            <th><?php echo $this->Paginator->sort('label'); ?></th>
+                                            <?php /*?><th><?php echo $this->Paginator->sort('flavor'); ?></th>
+                                            <th><?php echo $this->Paginator->sort('label'); ?></th><?php */?>
                                             <th class="actions"><?php echo __('Actions'); ?></th>
                                         </tr>
                                     </thead>
@@ -55,8 +55,8 @@
                                             <td><?php echo h($product['Product']['country']); ?>&nbsp;</td>
                                             <td><?php echo h($product['Product']['brand']); ?>&nbsp;</td>
                                             <td><?php echo h($product['Product']['location']); ?>&nbsp;</td>
-                                            <td><?php echo h($product['Product']['flavor']); ?>&nbsp;</td>
-                                            <td><?php echo h($product['Product']['label']); ?>&nbsp;</td>
+                                            <?php /*?><td><?php echo h($product['Product']['flavor']); ?>&nbsp;</td>
+                                            <td><?php echo h($product['Product']['label']); ?>&nbsp;</td><?php */?>
                                             <td class="actions">
                                                 <?php echo $this->Html->link(__('View'), array('action' => 'view', $product['Product']['id'])); ?>
                                                 <?php echo $this->Html->link(__('Edit'), array('action' => 'edit', $product['Product']['id'])); ?>

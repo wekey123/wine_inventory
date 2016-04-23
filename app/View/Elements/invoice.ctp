@@ -15,6 +15,7 @@
                                             <th><?php echo $this->Paginator->sort('Product Name'); ?></th>
                                             <th><?php echo $this->Paginator->sort('Varient'); ?></th>
                                             <th><?php echo $this->Paginator->sort('PO QTY'); ?></th>
+                                            <th><?php echo $this->Paginator->sort('PO price'); ?></th>
                                             <th><?php echo $this->Paginator->sort('Invoice Quantity'); ?></th>
                                             <th><?php echo $this->Paginator->sort('Price'); ?></th>
                                             <th><?php echo $this->Paginator->sort('SKU'); ?></th>
@@ -30,12 +31,13 @@
                                             <td><?php echo h($product['Product']['title']); ?>&nbsp;</td>
                                             <td><?php echo h($product['variant']); ?>&nbsp;</td>
                                             <td><?php echo h($product['quantity']); ?>&nbsp;</td>
+                                            <td><?php echo $this->Util->currencyFormat($product['price']); ?>&nbsp;</td>
                                             <td>
-                                            <input type="text" value="<?php echo isset($product['inv_count']) ? $product['inv_count'] : '';?>" name="Vary[quantity][<?php echo $i; ?>]" class="invoiceQuantitychk"  />
+                                            <input type="text" value="<?php echo isset($product['inv_count']) ? $product['inv_count'] : '';?>" name="Vary[quantity][<?php echo $i; ?>]" class="invoiceQuantitychk invquan"  />
                                             <?php if(isset($product['inv_count'])) { ?>
                                             <input type="hidden" name="Vary[quantity_old][<?php echo $i; ?>]" value="<?php echo h($product['inv_count']); ?>"  />
                                             <?php } ?>
-                                      <input type="hidden" name="Vary[price][<?php echo $i; ?>]" value="<?php echo h($product['price']); ?>" id="itemPrice" />
+                                      <?php /*?><input type="hidden" name="Vary[price][<?php echo $i; ?>]" value="<?php echo h($product['price']); ?>" id="itemPrice" /><?php */?>
                                        <input type="hidden" name="Vary[variant][<?php echo $i; ?>]" value="<?php echo h($product['variant']); ?>"  />
                                        <input type="hidden" name="Vary[sku][<?php echo $i; ?>]" value="<?php echo h($product['sku']); ?>"   id="itemSKU" />
                                        <input type="hidden" name="Vary[barcode][<?php echo $i; ?>]" value="<?php echo h($product['barcode']); ?>" />
@@ -53,10 +55,11 @@
                                         <input type="hidden" name="Vary[inv_id][<?php echo $i; ?>]" value="<?php echo h($product['inv_id']); ?>"  />
                                         <?php } ?>
                                             </td>
-                                            <td><?php echo $this->Util->currencyFormat($product['price']); ?>&nbsp;</td>
+                                           <?php /*?> <td><?php echo $this->Util->currencyFormat($product['price']); ?>&nbsp;</td><?php */?>
+                                           <td><input type="text" value="<?php echo isset($product['inv_price']) ? $product['inv_price'] : '';?>" name="Vary[price][<?php echo $i; ?>]" class="invoicePricechk invprice"  /></td>
                                             <td><?php echo h($product['sku']); ?>&nbsp;</td>
                                             <td><?php echo h($product['barcode']); ?>&nbsp;</td>
-                                            <td><?php //echo h($product['po_no']); ?> <input type="checkbox" <?php echo isset($product['inv_count']) ? ($product['inv_count'] == $product['quantity'] ? 'checked="checked"' : '') : '';?> rel="<?php echo $product['quantity'];?>" name="" id="<?php echo $i ?>" class="varchk"  />&nbsp;
+                                            <td><?php //echo h($product['po_no']); ?> <input type="checkbox" <?php echo isset($product['inv_count']) ? ($product['inv_count'] == $product['quantity'] ? 'checked="checked"' : '') : '';?> rel="<?php echo $product['quantity'];?>"  rel2="<?php echo $product['price'];?>" name="" id="<?php echo $i ?>" class="varchk"  />&nbsp;
                                             </td>
                                         </tr>
                                     <?php $i++; ?> <input type="hidden" class="Allchk" value="<?php echo isset($product['inv_count']) ? ($product['inv_count'] == $product['quantity'] ? $j++ : $j--) : $j--;?>" rel="<?php echo $j == $i ? true : false; ?>" rel2="<?php echo $j; ?>"  rel3="<?php echo $i; ?>"/><?php } endforeach; ?>
@@ -77,17 +80,19 @@
 		$('.all').prop("checked", $('.Allchk').attr("rel"));
 	} );
 
-$('document').ready(function(){
+$(document).ready(function(){
 		$(".all").on("change",function () {//alert('');
-			if($(this).is(":checked")){
+			if($(this).is(":checked")){console.log('a');
 				$(".varchk").prop("checked", true);
 					$('input[type=checkbox]').each(function () {
 						$(this).parent().parent().find('.invoiceQuantitychk').val($(this).attr('rel'));
+						$(this).parent().parent().find('.invprice').val($(this).attr('rel2'));
 					});
 			}else{console.log('b');
 				$(".varchk").prop("checked", false);
 				$('input[type=checkbox]').each(function () {
 						$(this).parent().parent().find('.invoiceQuantitychk').val('');
+						$(this).parent().parent().find('.invprice').val('');
 				});
 			}
 		});
@@ -99,10 +104,14 @@ $('document').ready(function(){
 		} else {
 			$(".all").prop("checked", false);
 		}
-		if($(this).is(":checked"))
+		if($(this).is(":checked")){
 		$(this).parent().parent().find('.invoiceQuantitychk').val($(this).attr('rel'));
-		else
+		$(this).parent().parent().find('.invprice').val($(this).attr('rel2'));
+		}
+		else{
 		$(this).parent().parent().find('.invoiceQuantitychk').val('');
+		$(this).parent().parent().find('.invprice').val('');
+		}
 		});
 });
 	

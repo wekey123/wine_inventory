@@ -59,7 +59,7 @@
             <div class="col-md-6"><?php echo h($product['Product']['location']); ?></div>
         </div>
         
-		<div class="row">
+		<?php /*?><div class="row">
             <div class="col-md-4 heading"><?php echo __('Flavor'); ?></div>
             <div class="col-md-6"><?php echo h($product['Product']['flavor']); ?></div>
         </div>
@@ -67,7 +67,7 @@
         <div class="row">
             <div class="col-md-4 heading"><?php echo __('Label'); ?></div>
             <div class="col-md-6"><?php echo h($product['Product']['label']); ?></div>
-        </div>
+        </div><?php */?>
 		
         <div class="row">
             <div class="col-md-4 heading"><?php echo __('Image'); ?></div>

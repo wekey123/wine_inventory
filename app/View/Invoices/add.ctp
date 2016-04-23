@@ -94,55 +94,7 @@
         </div>
 </div>
 </div>
-  <input type="hidden" name="" id="countValues" value="1" />
+<input type="hidden" name="" id="countValues" value="1" />
+<input type="hidden" value="<?php echo $ServerBaseURL.'/invoices/orderlist'; ?>" id="vendorListURL"  />
+<input type="hidden" value="<?php echo $ServerBaseURL.'/invoices/ajax'; ?>" id="ajaxURL"  />
 <?php echo $this->Html->script('inventory'); ?>
-
-<script>
-	$('#VarientrQtyType').on('change',function(e){
-		if($(this).val()== 'Case')
-		$('#qty'+$(this).attr('rel')).val('');
-		else
-		$('#qty'+$(this).attr('rel')).val(1);
-		 
-	});
-	
-	$('#VendorType').on('change',function(e){
-		$('#VendorCatType').html('');
-		$('#error_msg_no').html('');
-		$.ajax({
-			  type: 'POST',
-			  url: '<?php echo $ServerBaseURL.'/invoices/orderlist'; ?>',//whatever any url
-			  data: {label: $(this).val()},
-			  success: function(message) {
-				  if(message != 'no'){
-					  console.log(message);
-					  $('#VendorCatType').html(message);
-				  }else{
-					   $('.invoiceFormAll').hide();
-		 			   $('#invoiceForm').html('');
-					   $('#error_msg_no').html('Currently the vendor has no orders.');
-					 	console.log(message);
-				  }
-			   }
-		   });
-	 });
-	 
-	 $('#VendorCatType').on('change',function(e){
-		 if($(this).val()){
-		 $('.invoiceFormAll').show();
-		 $('#invoiceForm').html('');
-		 
-			$.ajax({
-			  type: 'POST',
-			  url: '<?php echo $ServerBaseURL.'/invoices/ajax'; ?>',//whatever any url
-			  data: {label: $(this).val()},
-			  success: function(message) {
-				  $('#invoiceForm').append(message);
-			   }
-		   });
-		 }else{
-		 $('.invoiceFormAll').hide();$('#invoiceForm').html('');$('#error_msg_no').html('');
-		 }
-	 });
-	 
-</script>

@@ -101,39 +101,4 @@
 		$('#qty'+$(this).attr('rel')).val(1);
 		 
 	});
-	
-	$('#VendorType').on('change',function(e){
-		$('#VendorCatType').html('');
-		$.ajax({
-			  type: 'POST',
-			  url: '<?php echo $ServerBaseURL.'/invoices/orderlist'; ?>',//whatever any url
-			  data: {label: $(this).val()},
-			  success: function(message) {
-				  if(message){
-					  console.log(message);
-					  $('#VendorCatType').html(message);
-				  }else{
-					 console.log(message);
-				  }
-			   }
-		   });
-	 });
-	 
-	 $('#VendorCatType').on('change',function(e){
-		 if($(this).val()){
-		 $('.invoiceFormAll').show();
-		 $('#invoiceForm').html('');
-		 
-			$.ajax({
-			  type: 'POST',
-			  url: '<?php echo $ServerBaseURL.'/invoices/ajax'; ?>',//whatever any url
-			  data: {label: $(this).val()},
-			  success: function(message) {
-				  $('#invoiceForm').append(message);
-			   }
-		   });
-		 }else
-		 $('.invoiceFormAll').hide();$('#invoiceForm').html('');
-	 });
-	 
 </script>
