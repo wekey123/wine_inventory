@@ -1,4 +1,4 @@
-var shopping = angular.module('shopping', ['ngRoute','ngResource','ngCookies','angular.filter','simplePagination','ui.bootstrap','LocalStorageModule']);
+var shopping = angular.module('shopping', ['ngRoute','ngResource','ngCookies','angular.filter','simplePagination','ui.bootstrap','LocalStorageModule','ui.date']);
 
 
 shopping.config(function($routeProvider,$locationProvider){console.log('Function: config');
@@ -13,7 +13,7 @@ shopping.config(function($routeProvider,$locationProvider){console.log('Function
 		.when("/edit/:id",{templateUrl: '/inventory/app/webroot/js/angular/page/po.html',controller:'editPoController'})
 		.when("/editcart/:id",{templateUrl: '/inventory/app/webroot/js/angular/page/cart.html',controller:'cartController'})
 		.when("/salesadd",{templateUrl: '/inventory/app/webroot/js/angular/page/salesadd.html',controller:'salesAddController'})
-		.when("/salesedit",{templateUrl: '/inventory/app/webroot/js/angular/page/salesadd.html',controller:'salesEditController'})
+		.when("/salesedit/:id",{templateUrl: '/inventory/app/webroot/js/angular/page/salesadd.html',controller:'salesEditController'})
 		.otherwise({ redirectTo: "/po" });
 	}else{
 	console.log('B');
@@ -23,7 +23,7 @@ shopping.config(function($routeProvider,$locationProvider){console.log('Function
 		.when("/edit/:id",{templateUrl: '/app/webroot/js/angular/page/po.html',controller:'editPoController'})
 		.when("/editcart/:id",{templateUrl: '/app/webroot/js/angular/page/cart.html',controller:'editcartController'})
 		.when("/salesadd",{templateUrl: '/app/webroot/js/angular/page/salesadd.html',controller:'salesAddController'})
-		.when("/salesedit",{templateUrl: '/app/webroot/js/angular/page/salesadd.html',controller:'salesEditController'})
+		.when("/salesedit/:id",{templateUrl: '/app/webroot/js/angular/page/salesadd.html',controller:'salesEditController'})
 		.otherwise({ redirectTo: "/po" });
 	}
 		
@@ -89,4 +89,25 @@ shopping.run(function($rootScope,$cookies,$location,$http,$routeParams){
 	 return Math.round(value * 100) / 100;	
 	}
 	
+});
+
+shopping.directive("datepicker", function () {
+  return {
+    restrict: "A",
+    require: "ngModel",
+    link: function (scope, elem, attrs, ngModelCtrl) {
+      var updateModel = function (dateText) {
+        scope.$apply(function () {
+          ngModelCtrl.$setViewValue(dateText);
+        });
+      };
+      var options = {
+        dateFormat: "dd/mm/yy",
+        onSelect: function (dateText) {
+          updateModel(dateText);
+        }
+      };
+      elem.datepicker(options);
+    }
+  }
 });

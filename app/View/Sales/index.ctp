@@ -49,8 +49,8 @@
 										<td><?php echo $this->Util->dateOnlyFormat($sale['Sale']['created']); ?>&nbsp;</td>
                                         <td class="actions">
                                             <?php echo $this->Html->link(__('View'), array('action' => 'view', $sale['Sale']['sales_no'])); ?> | 
-                                            <?php echo $this->Html->link(__('Edit'), array('action' => 'edit', $sale['Sale']['id'])); ?> |
-                                            <?php echo $this->Html->link(__('Download'), array('action' => 'report',$sale['Sale']['sales_no'])); ?>
+                                            <?php echo $this->Html->link(__('Edit'), array('action' => 'addproduct/#/salesedit/', $sale['Sale']['sales_no'])); ?> 
+                                            <?php /*?><?php echo $this->Html->link(__('Download'), array('action' => 'report',$sale['Sale']['sales_no'])); ?<?php */?>
                                         </td>
                                     </tr>
                                 <?php $i++; endforeach; ?>
