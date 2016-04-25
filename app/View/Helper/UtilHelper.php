@@ -136,6 +136,16 @@ class UtilHelper extends AppHelper {
 		 }else
 		     return '';
 	}
+	
+	 public function getInvoiceDetails($pid){
+		$model = new Invoice();
+		 if($pid != ''){ 
+		 	$invoice = $model->find("first",array('conditions'=>array('Invoice.invoice_no'=>$pid)));
+			return $invoice['Invoice'];
+		 }else
+		     return '';
+	}
+	
 	public function getVendorType($pid){
 		 $model = new Category();
 		 if($pid != ''){ 

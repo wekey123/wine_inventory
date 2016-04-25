@@ -72,14 +72,30 @@ class PaymentsController extends AppController {
 		self::vendorList();
 	}
 	
-	public function listpay($id = null) {
-		$this->Payment->recursive = 0;	
-			
-		if(is_numeric($id)){
-			$this->Paginator->settings = array('conditions'=>array('Payment.vendor_id' => $id), 'order' => array('Payment.vendor_id' => 'asc'));
-		}else{ 
-			$this->Paginator->settings = array('order' => array('Payment.vendor_id' => 'asc'));
+	public function listpay() {
+
+		if ($this->request->is('post')) {
+			$selectedVendor = $this->request->data['filterVendor'];
+			$start_date_timestamp = strtotime($this->request->data['dateFrom']);
+			$end_date_timestamp = strtotime($this->request->data['dateTo']);
+			$sdate = date('Y-m-d', $start_date_timestamp);
+			$edate = date('Y-m-d', $end_date_timestamp);
+			if(is_numeric($selectedVendor)){
+				
+				$cond= array('Payment.vendor_id' => $selectedVendor,'Payment.created  BETWEEN ? and ?'  => array($sdate.' 00:00:00', $edate.' 23:59:59'));
+			}else{ 
+				$cond = array('Payment.created  BETWEEN ? and ?'  => array($sdate.' 00:00:00', $edate.' 23:59:59'));
+			}
+			$this->set('data',$this->request->data);
+		}else{
+				$cond =  array('');
+				$this->request->data['dateFrom'] = date('m/d/Y');
+				$this->request->data['dateTo'] = date('m/d/Y');
 		}
+		
+		$this->Payment->recursive = 0;	
+		$this->Paginator->settings = array('conditions'=>$cond,'fields' => array('SUM(Payment.payment_amount) as total_amount','SUM(Payment.payment_qty) as total_quantity','Payment.id','Payment.po_no','Payment.vendor_id','Payment.invoice_no','Payment.payment_no','Payment.payment_amount','Payment.payment_qty','Payment.payment_date','Payment.payment_method','Payment.created','Payment.modified'),'group' => 'Payment.invoice_no','order' => array('Payment.vendor_id' => 'asc'));
+		//debug($this->Paginator->paginate()); exit;
 		$this->set('payments', $this->Paginator->paginate());
 		self::vendorList();
 	}
