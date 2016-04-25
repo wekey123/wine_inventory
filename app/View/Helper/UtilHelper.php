@@ -78,6 +78,15 @@ class UtilHelper extends AppHelper {
 		     return '';
 	}
 	
+	public function getProductVarydetails($pid){
+		 $model = new Vary();
+		 if($pid != ''){ 
+		 	return $model->find("first",array('conditions'=>array('Vary.product_id'=>$pid)));
+		 }else
+		     return '';
+	}
+	
+	
 	public function getVendorName($pid){
 		 $model = new Vendor();
 		 if($pid != ''){ 

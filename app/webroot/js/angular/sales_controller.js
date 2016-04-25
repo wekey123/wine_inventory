@@ -147,10 +147,15 @@ shopping.controller("salesAddController", ["$scope","$log","$timeout","$http",'$
 	/*pagination*/
 	
 	 $scope.addToCart = function(object,option) {
-		console.log(object);
+		 
 	    if (typeof object.invoice_qty != 'undefined'){
-			if(object.invoice_qty  != '' && object.price != ''){	
-			
+			if(object.invoice_qty  != '' && object.price != ''){
+				
+				if(typeof object.sold_qty == 'undefined'){	
+				$scope.validationError = "Don't leave stock Quantity as Empty"; 
+				return false;
+				}
+				
 				$scope.addData = {
 				vendor_id: parseInt(object.vendor_id),
 				category_id: parseInt(object.vendor_type),

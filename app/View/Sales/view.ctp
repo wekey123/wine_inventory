@@ -38,7 +38,10 @@
             </div>
             
             <div class="col-md-6" style="margin-bottom:35px;"> 
-                
+               <div class="row">
+                    <div class="col-md-4 heading"><?php echo __('Sold Date'); ?></div>
+                    <div class="col-md-8"><?php echo $this->Util->dateOnlyFormat($sale['Sale']['sold_date']); ?></div>
+                </div>
                 <div class="row">
                     <div class="col-md-4 heading"><?php echo __('Created'); ?></div>
                     <div class="col-md-8"><?php echo $this->Util->dateOnlyFormat($sale['Sale']['created']); ?></div>
@@ -64,6 +67,8 @@
                                         <tr>
                                             <th>#</th>
                                             <th><?php echo $this->Paginator->sort('Product Name'); ?></th>
+                                            <th><?php echo $this->Paginator->sort('Image'); ?></th>
+                                             <th><?php echo $this->Paginator->sort('Vendor'); ?></th>
                                             <th><?php echo $this->Paginator->sort('Sold Qty'); ?></th>
                                             <th><?php echo $this->Paginator->sort('Cust return Qty'); ?></th>
                                             <th><?php echo $this->Paginator->sort('MFG return Qty'); ?></th>
@@ -73,15 +78,18 @@
                                      <?php $i =1;foreach($sale['Vary'] as $prod): ?>
                                         <tr>
                                             <td><?php echo $i; ?>&nbsp;</td>
-                                            <td><?php $prodname=$this->Util->getProductdetails($prod['product_id']); 
-											 echo h($prodname['Product']['title']); ?>&nbsp;</td>																		
+                                            <td><?php $prodname=$this->Util->getProductdetails($prod['product_id']);?>
+                                             <?php echo h($prodname['Product']['title'].' ('.$prodname['Vary'][0]['variant'].' '.$prodname['Vary'][0]['metric'].' '.$prodname['Vary'][0]['qty'].'/'.$prodname['Vary'][0]['qty_type'].')'); ?>
+                                             </td>	
+                                            <td><?php echo $this->Html->image('product/small/'.$prodname['Product']['image'],array('style'=>"width: 50px;"));?></td>	
+                                            <td><?php echo $this->Util->getVendorNameAlone($prodname['Product']['vendor_id']); ?>&nbsp;</td>															
                                             <td><?php echo h($prod['sold_qty']); ?>&nbsp;</td>
                                             <td><?php echo h($prod['cr_qty']); ?>&nbsp;</td>
                                             <td><?php echo h($prod['mfg_return_qty']); ?>&nbsp;</td>
                                         </tr>
                                     <?php $i++;endforeach; ?>
                                      	<tr class="info">
-                                            <td colspan="2" align="center"><b>Total&nbsp;</b></td>
+                                            <td colspan="4" align="center"><b>Total&nbsp;</b></td>
                                             <td><b><?php echo h($prodTotal['sold_qty']); ?>&nbsp;</b></td>
                                             <td><b><?php echo h($prodTotal['cr_qty']); ?>&nbsp;</b></td>
                                             <td><b><?php echo h($prodTotal['mfg_return_qty']); ?>&nbsp;</b></td>

@@ -1,19 +1,14 @@
- <?php echo $this->element('tableScript'); ?>
+<?php echo $this->Html->css('jquery-ui.css');echo $this->Html->script('jquery-1.10.2');echo $this->Html->script('jquery-ui'); ?>
+<?php echo $this->element('tableScript'); ?>
  <div class="content-wrapper">
    <div class="container">
      <div class="row">
         <div class="col-md-12">
         <?php echo $this->Html->link('Add sale Entry', array('action' => 'addproduct/#/salesadd'),array('class'=>'btn btn-primary','style'=>'margin-bottom:20px; float:right')); ?>
             <h4 class="page-head-line">Sales List</h4>
-            <div class="form-group">
-                <label>Select Vendor</label>
-                <select class="form-control" name="filterVendor" id="filterVendor">
-                  <option value="" style="width:45%; float:left">Select Vendor</option>
-                     <?php foreach($vendor as $key => $vend) {?>
-                        <option value="<?php echo h($key); ?>"  style="width:45%; float:left"><?php echo h($vend); ?></option>
-                        <?php } ?>
-                </select>
-            </div>
+ <form method="post" name="searchSort">
+         	             <p>From: <input class="datepicker" id="dateFrom" name="dateFrom" type="text" value="<?php echo isset($data) ? $data['dateFrom'] : $this->request->data['dateFrom']?>"> To: <input class="datepicker" name="dateTo" id="dateTo" type="text" value="<?php echo isset($data) ? $data['dateTo'] : $this->request->data['dateTo']?>"><button class="buttApply" style="margin-left:20px;">APPLY</button></p>
+           </form>
         </div>
         <div class="col-md-12">
         <h5 style="color:#F0677C; float: left;"><?php echo $this->Flash->render(); ?></h4>
@@ -33,8 +28,8 @@
                                     <tr>
                                             <th><?php echo $this->Paginator->sort('#'); ?></th>
                                             <th><?php echo $this->Paginator->sort('sale_no'); ?></th>
-                                            <th><?php echo $this->Paginator->sort('total_quantity'); ?></th>
-                                            <th><?php echo $this->Paginator->sort('total_price'); ?></th>
+                                            <th><?php echo $this->Paginator->sort('total_quantity','Sold Qty'); ?></th>
+                                            <th><?php echo $this->Paginator->sort('total_price','Sold Price'); ?></th>
                                             <th><?php echo $this->Paginator->sort('created','Sold Date'); ?></th>
                                             <th class="actions"><?php echo __('Actions'); ?></th>
                                     </tr>
@@ -46,7 +41,7 @@
                                         <td><?php echo $this->Html->link($sale['Sale']['sales_no'], array('controller' => 'sales', 'action' => 'view',$sale['Sale']['sales_no'])); ?> </td>
                                         <td><?php echo h($sale['Sale']['total_quantity']); ?>&nbsp;</td>
                                         <td><?php echo $this->Util->currencyFormat($sale['Sale']['total_price']); ?>&nbsp;</td>
-										<td><?php echo $this->Util->dateOnlyFormat($sale['Sale']['created']); ?>&nbsp;</td>
+										<td><?php echo $this->Util->dateOnlyFormat($sale['Sale']['sold_date']); ?>&nbsp;</td>
                                         <td class="actions">
                                             <?php echo $this->Html->link(__('View'), array('action' => 'view', $sale['Sale']['sales_no'])); ?> | 
                                             <?php echo $this->Html->link(__('Edit'), array('action' => 'addproduct/#/salesedit/', $sale['Sale']['sales_no'])); ?> 

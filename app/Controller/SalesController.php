@@ -26,9 +26,24 @@ class SalesController extends AppController {
  * @return void
  */
 	public function index() {
+		
+		if ($this->request->is('post')) {
+			$start_date_timestamp = strtotime($this->request->data['dateFrom']);
+			$end_date_timestamp = strtotime($this->request->data['dateTo']);
+			$sdate = date('Y-m-d', $start_date_timestamp);
+			$edate = date('Y-m-d', $end_date_timestamp);
+			$cond= array('Sale.sold_date  BETWEEN ? and ?'  => array($sdate.' 00:00:00', $edate.' 23:59:59'));
+			$this->set('data',$this->request->data);
+		}else{
+			$cond =  array('');
+			$this->request->data['dateFrom'] = date('m/d/Y');
+			$this->request->data['dateTo'] = date('m/d/Y');
+		}
 		$this->Sale->recursive = 0;
+		$this->Paginator->settings = array('conditions'=> $cond);
 		$this->set('sales', $this->Paginator->paginate());
 		self::categoryList();
+		
 	}
 
 /**
