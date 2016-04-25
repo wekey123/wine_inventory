@@ -46,6 +46,43 @@ class PaymentsController extends AppController {
 		$this->set('payments', $this->Paginator->paginate());
 		self::vendorList();
 	}
+	
+	
+	public function vendor() {
+		$this->Payment->recursive = 0;		
+		/*$this->Paginator->settings = array('fields' => array(
+		'SUM(Payment.payment_amount) as total_amount',
+		'SUM(Payment.payment_qty) as total_quantity',
+        'Payment.id',
+		'Payment.po_no',
+		'Payment.vendor_id',
+		'Payment.invoice_no',
+		'Payment.payment_no',
+		'Payment.payment_amount',
+		'Payment.payment_qty',
+		'Payment.payment_date',
+		'Payment.payment_method',
+		'Payment.created',
+		'Payment.modified',
+		'User.username',
+		'User.id'),'group' => 'Payment.invoice_no', 'order' => array('Payment.created' => 'desc'));*/
+		
+		//debug($this->Paginator->paginate()); exit;
+		$this->set('payments', $this->Paginator->paginate());
+		self::vendorList();
+	}
+	
+	public function listpay($id = null) {
+		$this->Payment->recursive = 0;	
+			
+		if(is_numeric($id)){
+			$this->Paginator->settings = array('conditions'=>array('Payment.vendor_id' => $id), 'order' => array('Payment.vendor_id' => 'asc'));
+		}else{ 
+			$this->Paginator->settings = array('order' => array('Payment.vendor_id' => 'asc'));
+		}
+		$this->set('payments', $this->Paginator->paginate());
+		self::vendorList();
+	}
 
 /**
  * view method
