@@ -1,3 +1,11 @@
+<?php echo $this->element('tableScript'); ?>
+<script>
+	$(document).ready(function() {
+		$('#example1').DataTable({
+			bPaginate:false
+		});
+	} );
+</script>
 <div class="content-wrapper">
         <div class="container">
             <div class="row">
@@ -26,7 +34,7 @@
                         </div>
                         <div class="panel-body">
                             <div class="table-responsive" style="overflow-x:scroll;">
-                                <table id="example" class="table table-striped table-bordered" cellspacing="0" width="100%">
+                                <table id="example1" class="table table-striped table-bordered" cellspacing="0" width="100%">
                                     <thead>
                                         <tr>
                                             <th>#</th>
@@ -36,7 +44,7 @@
                                             
                                             <th><?php echo $this->Paginator->sort('Total Order Quantity'); ?></th>
                                             <th><?php echo $this->Paginator->sort('Total Invoice Quantity'); ?></th>
-                                            <th><?php echo $this->Paginator->sort('Total Paid Quantity'); ?></th>
+                                           <?php /*?> <th><?php echo $this->Paginator->sort('Total Paid Quantity'); ?></th><?php */?>
                                             <th><?php echo $this->Paginator->sort('Total Shipped Quantity'); ?></th>
                                             <th><?php echo $this->Paginator->sort('Total Unshipped Quantity'); ?></th>
                                             <th><?php echo $this->Paginator->sort('Total Inbound Quantity'); ?></th>
@@ -64,20 +72,21 @@
                                             
                                             <td><?php echo h($product['Vary'][0]['po_qty']); ?>&nbsp;</td>
                                             <td><?php echo h($product['Vary'][0]['invoice_qty']); ?>&nbsp;</td>
-                                            <td>NULL</td>
+                                            <!--<td>NULL</td>-->
                                             <td><?php echo h($product['Vary'][0]['ship_qty']); ?>&nbsp;</td>
                                             <td><?php echo h($product['Vary'][0]['unship_qty']); ?>&nbsp;</td>
                                             <td><?php echo h($product['Vary'][0]['inb_qty']); ?>&nbsp;</td>
                                             <td><?php echo h($product['Vary'][0]['inb_ship_missing_qty']); ?>&nbsp;</td>
                                             <td><?php echo h($product['Vary'][0]['defect_qty']); ?>&nbsp;</td>
-                                            <td>NULL</td>
-                                            <td><?php echo h($product['Vary'][0]['sellable_qty']); ?>&nbsp;</td>
+                                            <td><?php echo h($product['Vary'][0]['inb_missing_qty']); ?></td>
+                                            <?php $unsell= ($product['Vary'][0]['sellable_qty']-$product['Vary'][0]['sold_qty']-$product['Vary'][0]['cr_qty']-$product['Vary'][0]['mfg_return_qty']); ?>
+                                            <td><?php echo h($unsell > 0 ? $unsell : 0); ?>&nbsp;</td>
                                             
                                             <td><?php echo h($product['Vary'][0]['sold_qty']); ?>&nbsp;</td>
                                             <td><?php echo h($product['Vary'][0]['cr_qty']); ?>&nbsp;</td>
                                             <td><?php echo h($product['Vary'][0]['mfg_return_qty']); ?>&nbsp;</td>
-                                            <td><?php echo h($product['Vary'][0]['unsellable_qty']); ?>&nbsp;</td>
-                                            <td><?php echo h($product['Vary'][0]['qty_lost']); ?>&nbsp;</td>
+                                            <td><?php echo h($product['Vary'][0]['defect_qty']+$product['Vary'][0]['cr_qty']+$product['Vary'][0]['mfg_return_qty']); ?>&nbsp;</td>
+                                            <td><?php echo h($product['Vary'][0]['inb_ship_missing_qty']+$product['Vary'][0]['inb_missing_qty']); ?>&nbsp;</td>
                                            <?php /*?> <td class="actions"><?php echo $this->Html->link(__('View'), array('action' => 'listview', $product['Product']['id'])); ?></td><?php */?>
                                         </tr>
                                         
