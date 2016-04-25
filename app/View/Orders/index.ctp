@@ -98,7 +98,7 @@
                                         <td><?php echo $this->Util->currencyFormat($order[0]['total_price'], 'USD');  ?>&nbsp;</td>
                                         <?php /*?><td><?php echo h($order['User']['username']); ?>&nbsp;</td><?php */?>
                                         <td><?php  echo $this->Util->dateFormat($order['Order']['created']); ?>&nbsp;</td>
-                                        <td><?php  echo ($order['Order']['status'] == 0) ? 'Email Not Sent' : (($order['Order']['status'] == 1) ? 'Email Sent' : (($order['Order']['status'] == 2) ? 'Invoice Received' : (($order['Order']['status'] == 3) ? 'Partially Paid' : (($order['Order']['status'] == 4) ? 'Fully Paid' : (($order['Order']['status'] == 10) ? 'Email Not Sent (Only Invoice)' : '' ))))); ?>&nbsp;</td>
+                                        <td><?php  echo ($order['Order']['status'] == 0) ? 'Email Not Sent' : (($order['Order']['status'] == 1) ? 'Email Sent' : (($order['Order']['status'] == 2) ? 'Invoice Received' : (($order['Order']['status'] == 3) ? 'Partially Paid' : (($order['Order']['status'] == 4) ? 'Fully Paid' : (($order['Order']['status'] == 10) ? 'Email Not Sent (Only Invoice)' : 'Shipment Done' ))))); ?>&nbsp;</td>
                                         <td class="actions">
                                         
                                             <?php if($order['Order']['status'] == 0 || $order['Order']['status'] == 1){

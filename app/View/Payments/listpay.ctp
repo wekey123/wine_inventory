@@ -39,43 +39,38 @@
 	<thead>
 	<tr>
 			<th><?php echo $this->Paginator->sort('#'); ?></th>
-			<th><?php echo $this->Paginator->sort('po_no','P.O.No'); ?></th>
-			<th><?php echo $this->Paginator->sort('invoice_no'); ?></th>
-            <th><?php echo $this->Paginator->sort('vendor name'); ?></th>
-            <th><?php echo $this->Paginator->sort('order_quantity'); ?></th>
-            <th><?php echo $this->Paginator->sort('invoice_quantity'); ?></th>
-            <th><?php echo $this->Paginator->sort('payment_quantity'); ?></th>
-			<th><?php echo $this->Paginator->sort('paid_amount'); ?></th>
-			<th class="actions"><?php echo __('Actions'); ?></th>
+            <th><?php echo $this->Paginator->sort('vendor name','vendor name'); ?></th>
+            <th><?php echo $this->Paginator->sort('Invoice Date'); ?></th>
+			<th><?php echo $this->Paginator->sort('invoice_no','Invoice no'); ?></th>
+            <th><?php echo $this->Paginator->sort('Invoice Amount'); ?></th>
+            <th><?php echo $this->Paginator->sort('payment_method','Paid Through'); ?></th>
+			<th><?php echo $this->Paginator->sort('Payment amount'); ?></th>
+            <th><?php echo $this->Paginator->sort('Status'); ?></th>
 	</tr>
 	</thead>
 	 <tbody class="searchable" id="exampleBody">
-	<?php $i =1; $total['qty'] = 0; $total['amount'] = 0; $total['invoice_qty'] = 0; $total['order_qty'] = 0; foreach ($payments as $payment): ?>
+	<?php 
+		$i =1; $total['pay_amount'] = 0; $total['inv_amount'] = 0; 
+		foreach ($payments as $payment): 
+		$invoiceDetails = $this->Util->getInvoiceDetails($payment['Payment']['invoice_no']);
+	?>
 	<tr>
 		<td><?php echo h($i); ?><input type="hidden" value="<?php echo h($payment['Payment']['vendor_id']); ?>" /> </td>
-        <td>
-			<?php echo $this->Html->link($payment['Payment']['po_no'], array('controller' => 'orders', 'action' => 'view', $payment['Payment']['po_no'])); ?>
-        </td>
+        <td><?php echo h($this->Util->getVendorNameAlone($payment['Payment']['vendor_id'])); ?>&nbsp;</td>
+        <td><?php echo $this->Util->dateOnlyFormat($invoiceDetails['invoice_date']); ?></td>
 		<td>
 			<?php echo $this->Html->link($payment['Payment']['invoice_no'], array('controller' => 'invoices', 'action' => 'view', $payment['Payment']['invoice_no'])); ?>
 		</td>
-        <td><?php echo h($this->Util->getVendorNameAlone($payment['Payment']['vendor_id'])); ?>&nbsp;</td>
-        <td><?php echo $po_qty = $this->Util->getOrderQuantity($payment['Payment']['po_no']); ?>&nbsp;</td>
-        <td><?php echo $inv_qty = $this->Util->getInvoiceQuantity($payment['Payment']['invoice_no']); ?>&nbsp;</td>
-        <td><?php echo $payment[0]['total_quantity']; //$payment['Payment']['payment_qty']; ?>&nbsp;</td>
+        <td><?php echo $this->Util->currencyFormat($invoiceDetails['total_price']); ?></td>
+        <td><?php echo  $payment['Payment']['payment_method']; ?></td>
 		<td><?php echo $this->Util->currencyFormat($payment[0]['total_amount']); 
-		$total['invoice_qty']+=$inv_qty;
-		$total['order_qty']+=$po_qty;
-		$total['qty']+=$payment[0]['total_quantity'];
-		$total['amount']+=$payment[0]['total_amount'];
-		 ?>&nbsp;</td>
-		<td class="actions">
-			<?php echo $this->Html->link(__('View'), array('action' => 'view', $payment['Payment']['invoice_no'])); ?> | 
-            <?php echo $this->Html->link(__('Edit'), array('action' => 'edit', $payment['Payment']['invoice_no'])); ?>
-		</td>
+		$total['inv_amount']+=$invoiceDetails['total_price'];
+		$total['pay_amount']+=$payment[0]['total_amount']; ?>&nbsp;</td>
+        <td><?php if($invoiceDetails['status'] == 1){ echo "Partially Paid"; }else if($invoiceDetails['status'] == 2){ echo "Fully Paid"; }else{ echo "Fully Paid"; }   ?></td>
+
 	</tr>
 <?php $i++; endforeach; ?>
-	<tr id="totalrow"><td colspan="4"></td><td><?php echo  $total['invoice_qty']; ?></td><td><?php echo  $total['order_qty']; ?></td><td><?php echo  $total['qty']; ?></td><td colspan="2"><?php echo  $this->Util->currencyFormat($total['amount']); ?></td></tr>
+ <tr class="info"><td colspan="4"></td><td><b><?php echo  $this->Util->currencyFormat($total['inv_amount']); ?></b></td><td></td><td><b><?php echo  $this->Util->currencyFormat($total['pay_amount']); ?></b></td><td></td></tr>
 	</tbody>
 	</table>
     						</div>
@@ -84,7 +79,11 @@
                     <!-- End  Hover Rows  -->
          </div>
     </div>
-    
+   <!-- <div>
+     <table style="background-color:#d9edf7; border:0px; width:100%">
+    <tr ><td colspan="4"></td><td><?php echo  $this->Util->currencyFormat($total['inv_amount']); ?></td><td><?php echo  $this->Util->currencyFormat($total['pay_amount']); ?></td><td></td></tr>
+    </table>
+    </div>-->
 <script>	
 $(document).ready(function() {
 	  $(function() {
