@@ -11,7 +11,7 @@ shopping.config(function($routeProvider,$locationProvider){console.log('Function
         .when("/po",{templateUrl: '/inventory/app/webroot/js/angular/page/po.html',controller:'addPoController'})
 		.when("/cart",{templateUrl: '/inventory/app/webroot/js/angular/page/cart.html',controller:'cartController'})
 		.when("/edit/:id",{templateUrl: '/inventory/app/webroot/js/angular/page/po.html',controller:'editPoController'})
-		.when("/editcart/:id",{templateUrl: '/inventory/app/webroot/js/angular/page/cart.html',controller:'cartController'})
+		.when("/editcart/:id",{templateUrl: '/inventory/app/webroot/js/angular/page/cart.html',controller:'editcartController'})
 		.when("/salesadd",{templateUrl: '/inventory/app/webroot/js/angular/page/salesadd.html',controller:'salesAddController'})
 		.when("/salesedit/:id",{templateUrl: '/inventory/app/webroot/js/angular/page/salesadd.html',controller:'salesEditController'})
 		.otherwise({ redirectTo: "/po" });
