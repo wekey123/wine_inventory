@@ -74,6 +74,8 @@ class OrdersController extends AppController {
 					$this->request->data['Invoice']['user_id']= $user['id'];
 					$this->request->data['Invoice']['vendor_id'] = $value['items'][0]['vendor_id'];
 					$this->request->data['Invoice']['vendor'] = $value['vendor'];
+					$this->request->data['Invoice']['invoice_date'] = date("Y-m-d");
+					$this->request->data['Invoice']['estimated_shipping_date'] =  date("Y-m-d");
 					$this->request->data['Invoice']['po_no']=$po;
 					$this->request->data['Invoice']['invoice_no']=$inv_no;
 					$this->request->data['Invoice']['status']= 0;

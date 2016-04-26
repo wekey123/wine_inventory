@@ -17,7 +17,7 @@
                                             <th><?php echo $this->Paginator->sort('PO QTY'); ?></th>
                                             <th><?php echo $this->Paginator->sort('PO price'); ?></th>
                                             <th><?php echo $this->Paginator->sort('Invoice Quantity'); ?></th>
-                                            <th><?php echo $this->Paginator->sort('Price'); ?></th>
+                                            <th><?php echo $this->Paginator->sort('Invoice Price'); ?></th>
                                             <th><?php echo $this->Paginator->sort('SKU'); ?></th>
                                             <th><?php echo $this->Paginator->sort('Barcode'); ?></th>
                                             <th><?php //echo $this->Paginator->sort('Order Number'); ?><input type="checkbox" name="" class="all"  /></th>

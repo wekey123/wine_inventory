@@ -41,10 +41,11 @@
                              </li>
                              <li> <?php echo $this->Html->link('Payment',array('controller'=>'payments','action' => 'index'),array('class'=>trim($menuActive)=='Payment' ? 'menu-top-active dropdown-toggle' : 'dropdown-toggle','data-toggle'=>'dropdown','href'=>'#')); ?>
                               <ul class="dropdown-menu">
-                               		<li><?php echo $this->Html->link('Payment Vendor List',array('controller'=>'payments','action' => 'listpay'),array('style'=>'color:#222;','href'=>'#')); ?></li> 
+                               		
                                     <li><?php echo $this->Html->link('Payment List',array('controller'=>'payments','action' => 'index'),array('style'=>'color:#222;','href'=>'#')); ?></li>
                                    
                                     <li><?php echo $this->Html->link('Payment Entry',array('controller'=>'payments','action' => 'add'),array('style'=>'color:#222;','href'=>'#')); ?></li> 
+                                    <li><?php echo $this->Html->link('Payment Vendor List',array('controller'=>'payments','action' => 'listpay'),array('style'=>'color:#222;','href'=>'#')); ?></li> 
                                     
 							  </ul>
                              

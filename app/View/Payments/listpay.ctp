@@ -70,7 +70,7 @@
 
 	</tr>
 <?php $i++; endforeach; ?>
- <tr class="info"><td colspan="4"></td><td><b><?php echo  $this->Util->currencyFormat($total['inv_amount']); ?></b></td><td></td><td><b><?php echo  $this->Util->currencyFormat($total['pay_amount']); ?></b></td><td></td></tr>
+ <tr class="info"><td colspan="4" align="right">Sum of Invoice Amount : </td><td><b><?php echo  $this->Util->currencyFormat($total['inv_amount']); ?></b></td><td align="right">Sum of Payment amount : </td><td><b><?php echo  $this->Util->currencyFormat($total['pay_amount']); ?></b></td><td></td></tr>
 	</tbody>
 	</table>
     						</div>
@@ -84,13 +84,3 @@
     <tr ><td colspan="4"></td><td><?php echo  $this->Util->currencyFormat($total['inv_amount']); ?></td><td><?php echo  $this->Util->currencyFormat($total['pay_amount']); ?></td><td></td></tr>
     </table>
     </div>-->
-<script>	
-$(document).ready(function() {
-	  $(function() {
-		$('.datepicker').datepicker({
-			format: 'yyyy/mm/dd',
-			startDate: '-3d'
-		});
-	  });
-});
-</script>
