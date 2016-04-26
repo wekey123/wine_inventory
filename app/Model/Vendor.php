@@ -50,6 +50,10 @@ class Vendor extends AppModel {
 				//'on' => 'create', // Limit validation to 'create' or 'update' operations
 			),
 		),
+		'phone' => array(
+      	  'rule' => 'notBlank',
+			//'message' => 'Phone no is invalid',
+  		),
 		'status' => array(
 			'numeric' => array(
 				'rule' => array('numeric'),
