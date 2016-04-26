@@ -77,12 +77,11 @@
                                         <tr>
                                             <th>#</th>
                                             <th><?php echo $this->Paginator->sort('Product Name'); ?></th>
-                                            <th><?php echo $this->Paginator->sort('Invoice Quantity'); ?></th>
                                             <th><?php echo $this->Paginator->sort('Order Quantity'); ?></th>
-                                            <th><?php echo $this->Paginator->sort('Price'); ?></th>
+                                            <th><?php echo $this->Paginator->sort('Invoice Quantity'); ?></th>
+                                            <th><?php echo $this->Paginator->sort('Invoice Price'); ?></th>
                                             <th><?php echo $this->Paginator->sort('SKU'); ?></th>
                                             <th><?php echo $this->Paginator->sort('Barcode'); ?></th>
-                                            <th><?php echo $this->Paginator->sort('Invoice Number'); ?></th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -90,12 +89,12 @@
                                         <tr>
                                             <td><?php echo $i; ?>&nbsp;</td>
                                             <td><?php echo h($product['Product']['title'].' ('.$product['variant'].' '.$product['metric'].' '.$product['qty'].'/'.$product['qty_type'].')'); ?>&nbsp;</td>
-                                            <td><?php echo h($product['quantity']); ?>&nbsp;</td>
                                             <td><?php $ord=$this->Util->getOrderQuantityByVarid($product['var_id']); echo h($ord['Vary']['quantity']); ?>&nbsp;</td>
+                                            <td><?php echo h($product['quantity']); ?>&nbsp;</td>
+                                            
                                             <td><?php echo $this->Util->currencyFormat($product['price']); ?>&nbsp;</td>
                                             <td><?php echo h($product['sku']); ?>&nbsp;</td>
                                             <td><?php echo h($product['barcode']); ?>&nbsp;</td>
-                                            <td><?php echo h($product['po_no']); ?>&nbsp;</td>
                                         </tr>
                                     <?php $i++;endforeach; ?>
                                     </tbody>

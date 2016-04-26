@@ -115,6 +115,8 @@ $('#VendorType').on('change',function(e){
 				  if(message != 'no'){
 					  console.log(message);
 					  $('#VendorCatType').html(message);
+					  //For product section alone to stop next ajax on change VendorCatType
+					  $('#VendorCatTypes').html(message);
 				  }else{
 					   $('.invoiceFormAll').hide();
 		 			   $('#invoiceForm').html('');

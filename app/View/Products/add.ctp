@@ -15,7 +15,7 @@
 		echo $this->Form->input('user_id',array('div'=>false,'error'=>false,'type'=>'hidden'));
 		//echo $this->Form->input('category_name',array('div'=>false,'error'=>false, 'type'=>'select', 'options'=>$category, 'before' => '<div class="form-group">', 'after' => '</div>' , 'class'=>'validate[required] form-control','between'=>'<label><span class="mandatory">*</span> Category Name</label>','label'=>false));
 		echo $this->Form->input('vendor_id',array('div'=>false,'error'=>false, 'type'=>'select', 'options'=>$vendor, 'id'=>'VendorType', 'before' => '<div class="form-group">', 'after' => '</div>' , 'class'=>'validate[required] form-control',"empty" => "Select the Vendor",'between'=>'<label><span class="mandatory">*</span> Vendor Name</label>','label'=>false));
-		echo $this->Form->input('vendor_type',array('div'=>false,'error'=>false, 'type'=>'select', 'options'=>'', 'id'=>'VendorCatType', 'before' => '<div class="form-group">', 'after' => '</div>' , 'class'=>'validate[required] form-control',"empty" => "Select the VendorType",'between'=>'<label><span class="mandatory">*</span> Vendor Type</label>','label'=>false));
+		echo $this->Form->input('vendor_type',array('div'=>false,'error'=>false, 'type'=>'select', 'options'=>'', 'id'=>'VendorCatTypes', 'before' => '<div class="form-group">', 'after' => '</div>' , 'class'=>'validate[required] form-control',"empty" => "Select the VendorType",'between'=>'<label><span class="mandatory">*</span> Vendor Type</label>','label'=>false));
 		//echo $this->Form->input('category_id',array('div'=>false,'error'=>false,'type'=>'hidden'));
 		echo $this->Form->input('status',array('div'=>false,'error'=>false,'type'=>'hidden',));
 		echo $this->Form->input('title',array('div'=>false,'error'=>false,'type'=>'text', 'before' => '<div class="form-group">', 'after' => '</div>', 'class'=>'validate[required] form-control','between'=>'<label><span class="mandatory">*</span> Title</label>','label'=>false));
@@ -84,10 +84,13 @@
 <?php echo $this->Html->script('inventory'); ?>
 <script>
 	$('#VarientrQtyType').on('change',function(e){
-		if($(this).val()== 'Case')
+		if($(this).val()== 'Case'){
+		$('#qty'+$(this).attr('rel')).prop( "disabled", false );
 		$('#qty'+$(this).attr('rel')).val('');
-		else
+		}else{
 		$('#qty'+$(this).attr('rel')).val(1);
+		$('#qty'+$(this).attr('rel')).prop( "disabled", true );
+		}
 		 
 	});
 </script>
