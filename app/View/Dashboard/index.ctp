@@ -70,7 +70,7 @@ a.dasboard_link:hover {
 </div>
                        
 </div>
-					 <?php echo $this->Html->link('Inventory',array('controller'=>'inventories','action' => 'index'),array('class'=>'dasboard_link')); ?>
+					 <?php echo $this->Html->link('Inventory',array('controller'=>'inventories','action' => 'list'),array('class'=>'dasboard_link')); ?>
                 </div>
             </div>
 

@@ -97,7 +97,9 @@
                                      <td>{{result.vendor}}</td>
                                      <td>{{result.category}}</td>
                                      <td>{{result.title}} ({{result.size}}  {{ result.metric | uppercase }} {{ result.qty }}/{{ result.qty_type | uppercase }} )</td>
-                                     <td><img style="height:50px;" ng-src="/img/product/small/{{result.image}}" /></td>
+                                     <pre>{{server | json}}</pre>
+                                     <td ng-if="!server"><img style="height:50px;" ng-src="/img/product/small/{{result.image}}" /></td>
+                                     <td ng-if="server"><img style="height:50px;" ng-src="/inventory/img/product/small/{{result.image}}" /></td>
                                      <td><input type="text"  class="form-control" ng-model="result.price" /></td>
                                      <td><input type="text"  class="form-control"  ng-model="result.quantity" /></td>
                                      <td> ${{  result.sum = roundOfValue(result.quantity * result.price) }} </td>

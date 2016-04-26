@@ -101,7 +101,8 @@
                                      <td>{{result.vendor}}</td>
                                      <td>{{result.category}}</td>
                                      <td>{{result.title}} ({{result.size}}  {{ result.metric | uppercase }} {{ result.qty }}/{{ result.qty_type | uppercase }} )</td>
-                                     <td><img style="height:50px;" ng-src="/img/product/small/{{result.image}}" /></td>
+                                     <td ng-if="!server"><img style="height:50px;" ng-src="/img/product/small/{{result.image}}" /></td>
+                                     <td ng-if="server"><img style="height:50px;" ng-src="/inventory/img/product/small/{{result.image}}" /></td>
                                      <td ng-if="addCart">{{result.sellable_qty = ( result.invoice_qty -(result.db_sold_qty -- result.db_cr_qty -- result.db_mfg_qty)) -(result.sold_qty -- result.cr_qty -- result.mfg_qty) }}</td>
                                      <td ng-if="editCart">
                                     {{result.sellable_qty = ( result.invoice_qty -(result.db_sold_qty -- result.db_cr_qty -- result.db_mfg_qty)) -(result.sold_qty -- result.cr_qty -- result.mfg_qty) + (result.old_sold_qty -- result.old_cr_qty -- result.old_mfg_qty)}}
