@@ -144,7 +144,7 @@ shopping.controller("editPoController", ["$scope","$log","$timeout","$http",'$ro
 	 $scope.addToCart = function(object,option) {
 		 console.log('A');
 		 console.log($scope.cartVendorName);
-		if(!$scope.cartVendorName || !$scope.cookieCartItems){
+		if(!$scope.cartVendorName){
 			 cartService.setVendorName(object.vendor);
 			 $scope.cartVendorName = cartService.getVendorName();
 		}

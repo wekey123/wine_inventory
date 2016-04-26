@@ -42,7 +42,7 @@ shopping.controller("addPoController", ["$scope","$log","$timeout","$http",'$roo
 				});
 			});
 		});
-		
+		//$scope.selectedVendor = $scope.vendor[0]['vendorName'];
 		if(!$scope.cartVendorName)
 		$scope.selectedVendor = $scope.vendor[0]['vendorName'];
 		else
@@ -125,18 +125,21 @@ shopping.controller("addPoController", ["$scope","$log","$timeout","$http",'$roo
 	/*pagination*/
 	
 	 $scope.addToCart = function(object,option) {
-		 console.log('A');
-		 console.log($scope.cartVendorName);
-		if(!$scope.cartVendorName || !$scope.cookieCartItems){
+		
+		if(!$scope.cartVendorName){
+			 console.log('A');
 			 cartService.setVendorName(object.vendor);
 			 $scope.cartVendorName = cartService.getVendorName();
+		}else{
+			console.log('B');
+			$scope.cartVendorName = cartService.getVendorName();
 		}
-		 console.log('B');
-		 console.log($scope.cartVendorName);
+		console.log($scope.cartVendorName);
 		if($scope.cartVendorName != object.vendor){
 		    $scope.validationError = "Please Select Same Vendor Products"; 
 			return false;
 		}
+		//return false;
 	    if (typeof object.quantity != 'undefined'){
 			if(object.quantity  != '' && object.price != ''){	
 			
