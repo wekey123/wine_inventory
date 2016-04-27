@@ -53,12 +53,14 @@ class Vendor extends AppModel {
 		'phone' => array(
       		'notBlank' => array(
 				'rule' => array('notBlank'),
-				'message' => 'Phone no is invalid',
-			
+
 			),'numeric' => array(
 				'rule' => array('numeric'),
-				'message' => 'Phone no is invalid',
-			),
+				'message' => 'Phone No is invalid',
+			),'phone' => array(
+       			 'rule' => array('phone','/\d{10}/', 'all'),
+				 'message' => 'Phone No must have 10 digits',
+  			  )
   		),
 		'status' => array(
 			'numeric' => array(
