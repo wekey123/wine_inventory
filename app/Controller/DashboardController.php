@@ -33,7 +33,7 @@ class DashboardController extends AppController {
 		$count['Product'] = $this->Vary->find('count',array('conditions'=>array('Vary.type'=>'product')));
 		$count['Order'] = $this->Vary->find('count',array('conditions'=>array('Vary.type'=>'order'),'group'=> array('Vary.po_no')));
 		$count['Invoice'] = $this->Vary->find('count',array('conditions'=>array('Vary.type'=>'invoice'),'group'=> array('Vary.po_no')));
-		$count['Inventory'] = $this->Vary->find('count',array('conditions'=>array('Vary.type'=>'inventory')));
+		$count['Inventory'] = $this->Vary->find('count',array('conditions'=>array('Vary.type'=>'product','Vary.sellable_qty>0')));
 		$this->set('Count',$count);
 	}
 

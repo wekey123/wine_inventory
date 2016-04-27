@@ -51,8 +51,14 @@ class Vendor extends AppModel {
 			),
 		),
 		'phone' => array(
-      	  'rule' => 'notBlank',
-			//'message' => 'Phone no is invalid',
+      		'notBlank' => array(
+				'rule' => array('notBlank'),
+				'message' => 'Phone no is invalid',
+			
+			),'numeric' => array(
+				'rule' => array('numeric'),
+				'message' => 'Phone no is invalid',
+			),
   		),
 		'status' => array(
 			'numeric' => array(

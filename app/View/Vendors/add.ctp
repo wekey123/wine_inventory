@@ -17,6 +17,16 @@
             <div class="col-md-12">
                 <h1 class="page-head-line"><?php echo __('Add Vendor'); ?> </h1>
             </div>
+           	 <?php if(!empty($this->validationErrors['Vendor'])){ ?>
+           		 <div class="col-md-12">
+        		<h5 style="color:#F0677C; float: left;">
+				<?php 
+					foreach($this->validationErrors['Vendor'] as $errors)
+					echo $errors[0];
+				  ?>
+                </h4>
+       		  </div>
+             <?php } ?>
         </div>
                
    <div class="row">           
@@ -28,7 +38,7 @@
                 echo $this->Form->input('name',array('div'=>false,'error'=>false,'type'=>'text', 'before' => '<div class="form-group">', 'after' => '</div>', 'class'=>'validate[required] form-control'));
                 echo $this->Form->input('address',array('div'=>false,'error'=>false,'type'=>'textarea', 'before' => '<div class="form-group">', 'after' => '</div>', 'class'=>'validate[required] form-control'));
                 echo $this->Form->input('email',array('div'=>false,'error'=>false,'type'=>'text', 'before' => '<div class="form-group">', 'after' => '</div>', 'class'=>'validate[required] form-control'));
-                echo $this->Form->input('phone',array('div'=>false,'error'=>false,'type'=>'text', 'before' => '<div class="form-group">', 'after' => '</div>', 'class'=>'validate[required] form-control'));
+                echo $this->Form->input('phone',array('maxlength'=>'10','div'=>false,'error'=>false,'type'=>'text', 'before' => '<div class="form-group">', 'after' => '</div>', 'class'=>'validate[required] form-control'));
             ?>
                 </div>
             

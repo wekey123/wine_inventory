@@ -49,17 +49,18 @@ class VendorsController extends AppController {
  * @return void
  */
 	public function add() {
+		Configure::write('debug', 0);
 		if ($this->request->is('post')) {
 			$this->Vendor->create();
 			//debug($this->request->data); exit;
 			if ($this->Vendor->save($this->request->data)) {
 				
-				foreach($this->request->data['Vendor']['Category'] as $categoryname){
-					$this->request->data['Category']['vendor_id'] = $this->Vendor->getLastInsertId();
-					$this->request->data['Category']['name'] = ucwords(strtolower($categoryname));
-					$this->Category->create();
-					$this->Category->save($this->request->data);
-				}
+					foreach($this->request->data['Vendor']['Category'] as $categoryname){
+						$this->request->data['Category']['vendor_id'] = $this->Vendor->getLastInsertId();
+						$this->request->data['Category']['name'] = ucwords(strtolower($categoryname));
+						$this->Category->create();
+						$this->Category->save($this->request->data);
+					}
 				
 				$this->Flash->success(__('The vendor has been saved.'));
 				return $this->redirect(array('action' => 'index'));
@@ -77,7 +78,7 @@ class VendorsController extends AppController {
  * @return void
  */
 	public function edit($id = null) {
-		//Configure::write('debug', 0);
+		Configure::write('debug', 0);
 		if (!$this->Vendor->exists($id)) {
 			throw new NotFoundException(__('Invalid vendor'));
 		}
